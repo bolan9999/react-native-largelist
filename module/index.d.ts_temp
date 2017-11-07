@@ -1,0 +1,42 @@
+import * as React from "react";
+import { ViewProperties } from "react-native";
+
+declare module "STTVTableView" {
+  export interface IndexPathType {
+    section: number;
+    row: number;
+  }
+  export enum ReloadCellAnimationType {
+    fade = 0,
+    right = 1,
+    left = 2,
+    top = 3,
+    bottom = 4,
+    none = 5,
+    middle = 6,
+    automatic = 100
+  }
+  interface TableViewProperties extends ViewProperties {
+    numberOfSections?: number;
+    numberOfRowsInSection: (section: number) => number;
+    renderCell: (section: number, row: number) => any;
+    heightForCell: (section: number, row: number) => number;
+    renderSection?: (section: number) => any;
+    heightForSection?: (section: number) => number;
+    renderHeader?: () => any;
+    renderFooter?: () => any;
+    bounces?: boolean;
+    refreshable?: boolean;
+    onTopRefresh?: () => any;
+  }
+  export class TableView extends React.Component<TableViewProperties> {
+    reloadCells(
+      indexPaths: IndexPathType[],
+      animation: number = ReloadCellAnimationType.automatic
+    ): void;
+
+    reloadAll(): void;
+
+    scrollTo(indexPath: IndexPathType): void;
+  }
+}

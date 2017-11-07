@@ -1,0 +1,26 @@
+{
+	"name": "sttv-tableview",
+	"version": "0.0.2",
+	"private": false,
+	"description": "A high performance TableView for React Native.",
+	"author": "bolan9999 <bolan999999@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"test": "jest"
+	},
+	"dependencies": {
+		"prop-types": "^15.6.0",
+		"react": "16.0.0-beta.5",
+		"react-native": "0.49.5"
+	},
+	"devDependencies": {
+		"babel-jest": "21.2.0",
+		"babel-preset-react-native": "4.0.0",
+		"jest": "21.2.1",
+		"react-test-renderer": "16.0.0-beta.5"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
+}
