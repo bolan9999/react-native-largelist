@@ -1,8 +1,17 @@
 # STTVTableView
 **STTVTableView** is a high performance TableView for React Native(iOS only right row, Android will support on version 1.0.0).
 
+## Features
+
+* Bridged from "UITableView",Highly reused，there are only a little free Views
+* Support for large list, in theory, the number of Cell almost no effect on performance
+* Memory and CPU usage is significantly lower than SectionList
+* Support ultra-fast speed slide, support rapid slide to the top!
+* The API is simple and straightforward, the parameters have obvious type declarations, and you do not need help documentation to get started quickly
+* Support reload
+
 ## Preview
-![Preview](https://github.com/bolan9999/STTVTableView/raw/master/readme_resources/test.mov)
+![Preview](https://github.com/bolan9999/STTVTableView/raw/master/readme_resources/example.gif)
 
 ## Getting Started
 
