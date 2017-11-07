@@ -2,7 +2,7 @@
 **STTVTableView** is a high performance TableView for React Native(iOS only right row, Android will support on version 1.0.0).
 
 ## Preview
-![Preview](https://github.com/bolan9999/STTVTableView/tree/master/readme_resources/example.gif)
+![Preview](https://github.com/bolan9999/STTVTableView/raw/master/readme_resources/example.gif)
 
 ## Getting Started
 
