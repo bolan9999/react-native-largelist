@@ -11,7 +11,7 @@
 * Support reload
 
 ## Preview
-![Preview](https://github.com/bolan9999/STTVTableView/raw/master/readme_resources/example.gif)
+![Preview](https://youtu.be/pLqo0dh53co)
 
 ## Getting Started
 
