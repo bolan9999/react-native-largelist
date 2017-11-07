@@ -52,7 +52,7 @@ export default class App extends React.Component {
           <TouchableOpacity
             onPress={() => {
               this.color = "blue";
-              // this.ref.reloadCell([{"section":0, "row":0},{"section":0,"row":1}], 100);
+              // this.ref.reloadCells([{"section":0, "row":0},{"section":0,"row":1}], 100);
               // this.ref.reloadAll();
               this.ref.scrollTo({section:0, row:5});
             }}
