@@ -12,6 +12,8 @@
 
 ## Preview
 
+This is a STTVTableView with 3000 cells
+
 ![Preview](https://github.com/bolan9999/STTVTableView/raw/master/readme_resources/example.gif)
 
 ## Getting Started
