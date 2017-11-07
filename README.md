@@ -12,7 +12,7 @@
 
 ## Preview
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/pLqo0dh53co" frameborder="0" allowfullscreen></iframe>
+![Preview](https://github.com/bolan9999/STTVTableView/raw/master/readme_resources/example.gif)
 
 ## Getting Started
 
