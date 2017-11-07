@@ -48,7 +48,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        {true &&
+        {false &&
           <TouchableOpacity
             onPress={() => {
               this.color = "blue";
