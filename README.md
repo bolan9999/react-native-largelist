@@ -11,7 +11,8 @@
 * Support reload
 
 ## Preview
-![Preview](https://youtu.be/pLqo0dh53co)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/pLqo0dh53co" frameborder="0" allowfullscreen></iframe>
 
 ## Getting Started
 
