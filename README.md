@@ -1,4 +1,7 @@
 # STTVTableView
+
+中文文档请点击这里：[中文文档](https://github.com/bolan9999/STTVTableView/blob/master/README-cn.md)
+
 **STTVTableView** is a high performance TableView for React Native(iOS only right row, Android will support on version 1.0.0).
 
 ## Features
