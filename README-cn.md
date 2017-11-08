@@ -1,4 +1,7 @@
 # STTVTableView
+
+For English readme.md [click here](https://github.com/bolan9999/STTVTableView/blob/master/README.md)
+
 **STTVTableView** 是一个原生封装的高性能的React Native列表组件(目前仅支持iOS。Android将在正式版V1.0.0支持).
 
 ## 特点
