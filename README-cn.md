@@ -1,6 +1,14 @@
 # STTVTableView
 **STTVTableView** 是一个原生封装的高性能的React Native列表组件(目前仅支持iOS。Android将在正式版V1.0.0支持).
 
+## 特点
+* 使用原生UITableView桥接，高度重用，总View数量只比必须要显示的当前数量多一点，
+* 内存及CPU占用明显低于官方SectionList,
+* 支持超快速度滑动，支持快速到顶，不会出现空白及Section停在中间的问题
+* API简单明了，参数有明显的类型声明，无需帮助文档即可快速入手
+* 支持超大列表，理论上Cell的数量多少对性能几乎无影响
+* 支持更新
+
 ## 预览
 ![Preview](https://github.com/bolan9999/STTVTableView/raw/master/readme_resources/example.gif)
 
