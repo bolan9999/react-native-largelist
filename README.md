@@ -135,3 +135,14 @@ reloadCells | indexPaths:IndexPathType[], animation:ReloadCellAnimationType | vo
 reloadAll | void | void | reload all cells
 scrollTo | indexPath:IndexPathType | void | scroll to indexpath
 
+## Known problems
+* When the sliding speed is very fast, immediately rotate the screen, there will be a short Cell whiteboard (solution is ready)
+* When the height of each Cell is not the same as the time, beyond the js rendering speed, you will see the element inside the cell beyond the phenomenon, immediately after the slow recovery can be restored
+* Currently not support change props. To change STTVTableView, please change the data source, and use reloadAll method
+* Pulling down to refresh uses Apple native components.  There are some problems, and I will try to use tripartite components
+
+## goal plan
+* Add Android support
+* Optimize the drop-down refresh
+* Optimized for quick whiteboard rotation when rotating the screen with a brief Whiteboard Cell problem
+* Increase the Cell left and right sliding display additional View features
