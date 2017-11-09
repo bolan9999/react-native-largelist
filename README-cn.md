@@ -131,3 +131,14 @@ reloadCells | indexPaths:IndexPathType[], animation:ReloadCellAnimationType | vo
 reloadAll | void | void | 重新加载列表所有Cell
 scrollTo | indexPath:IndexPathType | void | 滑动到指定的Cell（最终位置居中）
 
+## 已知问题
+* 当滑动速度非常快的时候，立即旋转屏幕，会出现短暂的Cell白板 （已有方案解决）
+* 当每个Cell的高度严重不一样的时候，超出js渲染速度时，会模糊地看到cell里面元素超出现象，速度放慢后立马可以恢复
+* 目前暂时不支持更改props，改变STTVTableView，请更改数据源，并使用reloadAll的方法
+* 下拉刷新使用苹果原生的组件，目前问题较多，正考虑使用三方组件
+
+## 目标计划
+* 增加Android支持
+* 优化下拉刷新
+* 优化快速滑动时旋转屏幕出现短暂白板Cell的问题
+* 增加Cell左右滑动显示额外View的功能
