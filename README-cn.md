@@ -104,3 +104,30 @@ renderFooter | () => React.Element | null | 函数：列表头部组件的render
 bounces | boolean | true | 组件滑动到边缘是否可以继续滑动，松开后弹回
 refreshable | boolean | true | 是否允许下拉刷新
 onTopRefresh | () => any | ()=>{} | 下拉刷新的回调
+
+方法：
+
+```
+interface IndexPathType {
+  section: number,
+  row: number
+}
+
+export enum ReloadCellAnimationType {
+  fade: 0,
+  right: 1,
+  left: 2,
+  top: 3,
+  bottom: 4,
+  none: 5,
+  middle: 6,
+  automatic: 100
+};
+```
+
+方法 | 参数 | 返回 | 作用
+--- | --- | --- | ---
+reloadCells | indexPaths:IndexPathType[], animation:ReloadCellAnimationType | void | 重新加载一些Cell
+reloadAll | void | void | 重新加载列表所有Cell
+scrollTo | indexPath:IndexPathType | void | 滑动到指定的Cell（最终位置居中）
+
