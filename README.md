@@ -93,23 +93,23 @@ import { TableView } from "sttv-tableview";
 import { TableView } from "sttv-tableview"
 ```
 
-属性:
+Props:
 
-属性  |  类型  |  默认  |  作用  
+Props  |  type  |  default  |  effect  
 ------ | ------ | --------- | --------
-numberOfSections | number | 1 | 总的Section数量
-numberOfRowsInSection | (section:number) => number | section=>0 | 函数：根据section索引返回当前section的Cell数量
-renderCell | (section:number,row:number) => React.Element | 必须 | 函数:根据当前Section和Row，返回当前Cell的render
-heightForCell | (section:number,row:number) => number | 必须 | 函数：根据Section和row index，返回当前Cell的高度
-renderSection | (section:number) => React.Element | section=>null | 函数：当前Section的render函数
-heightForSection | (section:number) => number | 0 | 函数：返回当前section的高度
-renderHeader | () => React.Element | null | 函数：列表的头部组件render函数
-renderFooter | () => React.Element | null | 函数：列表头部组件的render函数
-bounces | boolean | true | 组件滑动到边缘是否可以继续滑动，松开后弹回
-refreshable | boolean | true | 是否允许下拉刷新
-onTopRefresh | () => any | ()=>{} | 下拉刷新的回调
+numberOfSections | number | 1 | number of sections in tableview
+numberOfRowsInSection | (section:number) => number | section=>0 | function：return the number of rows in section
+renderCell | (section:number,row:number) => React.Element | 必须 | function: render of cell with section and row index
+heightForCell | (section:number,row:number) => number | 必须 | function：return height for cell with section and row index 
+renderSection | (section:number) => React.Element | section=>null | function：render of section with section index
+heightForSection | (section:number) => number | 0 | function：return height of section with section index
+renderHeader | () => React.Element | null | function：render of header in the tableview
+renderFooter | () => React.Element | null | function：render of footer in tableview
+bounces | boolean | true | bounces
+refreshable | boolean | true | allow pulling to refresh
+onTopRefresh | () => any | ()=>{} | callback of pulling to refresh
 
-方法：
+method：
 
 ```
 interface IndexPathType {
@@ -129,9 +129,9 @@ export enum ReloadCellAnimationType {
 };
 ```
 
-方法 | 参数 | 返回 | 作用
+method | parameter | return | effect
 --- | --- | --- | ---
-reloadCells | indexPaths:IndexPathType[], animation:ReloadCellAnimationType | void | 重新加载一些Cell
-reloadAll | void | void | 重新加载列表所有Cell
-scrollTo | indexPath:IndexPathType | void | 滑动到指定的Cell（最终位置居中）
+reloadCells | indexPaths:IndexPathType[], animation:ReloadCellAnimationType | void | reload some cells
+reloadAll | void | void | reload all cells
+scrollTo | indexPath:IndexPathType | void | scroll to indexpath
 
