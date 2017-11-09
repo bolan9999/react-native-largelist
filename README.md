@@ -99,8 +99,8 @@ Props  |  type  |  default  |  effect  
 ------ | ------ | --------- | --------
 numberOfSections | number | 1 | number of sections in tableview
 numberOfRowsInSection | (section:number) => number | section=>0 | function：return the number of rows in section
-renderCell | (section:number,row:number) => React.Element | 必须 | function: render of cell with section and row index
-heightForCell | (section:number,row:number) => number | 必须 | function：return height for cell with section and row index 
+renderCell | (section:number,row:number) => React.Element | required | function: render of cell with section and row index
+heightForCell | (section:number,row:number) => number | required | function：return height for cell with section and row index 
 renderSection | (section:number) => React.Element | section=>null | function：render of section with section index
 heightForSection | (section:number) => number | 0 | function：return height of section with section index
 renderHeader | () => React.Element | null | function：render of header in the tableview
