@@ -67,7 +67,7 @@ import { LargeList } from "react-native-largelist";
 ...
 ```
 
-# Usage
+# 基本用法
 
 ```
 import { LargeList } from "react-native-largelist"
@@ -89,13 +89,29 @@ bounces | boolean | true | 组件滑动到边缘是否可以继续滑动，松�
 refreshing | boolean | true | 是否正在刷新
 onRefresh | () => any | ()=>{} | 下拉刷新的回调
 
+# 原理
+在了解高级用法之前，我们先要了解下基本原理：
+
+和UITableView/RecyclerView基本原理一样，每一行的Cell/Item是重用的，当上面的Cell/Item滑离屏幕的时候，它对于我们来说已经不用再展示了，所以，把它挪到底部，用新的数据渲染。这样就不会出现由于数据量过大，造成View的浪费导致加载卡顿。
+
+但是，这又和原生的UITableView/RecyclerView不一样，因为UI线程和我们的JavaScript线程不是同一个线程，并且他们是异步的，他们之间通讯还会花费较多的时间。所以，我在可视区域之外的上下各自额外渲染了一段距离（safeMargin），用以缓冲，避免用户突然的滑动造成视觉上看到上下边缘的加载是闪烁的。
+
+下面的图可以直观地看到react-native-largelist的设计：
+
+![](./readme_resources/largelist_advanced_usage.png)
+
+当然，在之后的版本中，我会把iOS原生优化加入其中的选项中，这样，不论你滑动的速度有多快，用户都不会看到白板的情况了。
+
+# 高级用法
+
+属性 | 类型 | 默认 | 作用
+--- | --- | --- | ---
+safeMargin | number | 600 | 上下额外的预渲染高度
 
 ## 目标计划
 
-1. 完成帮助文档
-2. freeRefs数量自动计算
-3. safeMargin动态修改
-4. 提供外界监听滑动
-5. 提供主动滑动到目的地
-6. refresh禁止全更新
-7. 提供编辑功能
+1. safeMargin动态修改
+2. 提供外界监听滑动
+3. 提供主动滑动到目的地
+4. refresh禁止全更新
+5. 提供编辑功能

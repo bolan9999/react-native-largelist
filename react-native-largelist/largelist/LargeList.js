@@ -30,11 +30,6 @@ interface Offset {
   y: number
 }
 
-interface Position {
-  begin: number,
-  end: number
-}
-
 interface IndexPath {
   section: number,
   row: number
@@ -56,11 +51,9 @@ class LargeList extends React.Component {
     renderHeader: PropTypes.func,
     renderFooter: PropTypes.func,
     bounces: PropTypes.bool,
-    refreshable: PropTypes.bool,
     onTopRefresh: PropTypes.func,
 
     safeMargin: PropTypes.number,
-    refreshControl: PropTypes.element,
     refreshing: PropTypes.bool,
     onRefresh: PropTypes.func
   };
@@ -72,10 +65,9 @@ class LargeList extends React.Component {
     renderHeader: null,
     renderFooter: null,
     bounces: true,
-    refreshable: false,
-    onTopRefresh: () => {},
+    onRefresh: () => {},
 
-    safeMargin: 100
+    safeMargin: 600
   };
 
   sections: Element[];
@@ -107,9 +99,10 @@ class LargeList extends React.Component {
 
   forceTimer: number;
   created: boolean;
-  refreshControl: RefreshControl;
   refreshing:boolean=false;
   keyForCreating: number=0;
+  minCellHeight: number = 40;
+  minSectionHeight: number = 40;
 
   constructor(props) {
     super(props);
@@ -131,8 +124,14 @@ class LargeList extends React.Component {
     this.sizeConfirmed=false;
     this.created = false;
     for (let i=0;i<this.props.numberOfSections;++i) {
+      if (this.minSectionHeight > this.props.heightForSection(i)) {
+        this.minSectionHeight = this.props.heightForSection(i);
+      }
       this.contentSize.height += this.props.heightForSection(i);
       for (let j=0;j<this.props.numberOfRowsInSection(i);++j){
+        if (this.minCellHeight > this.props.heightForCell(i,j)) {
+          this.minCellHeight = this.props.heightForCell(i,j);
+        }
         this.contentSize.height += this.props.heightForCell(i,j);
       }
     }
@@ -172,10 +171,10 @@ class LargeList extends React.Component {
       this.bottomIndexPath = {section:section,row:row};
       return;
     }
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < Math.floor(this.props.safeMargin/this.minSectionHeight)+2; i++) {
       this.sections.push(this._createSection(section + i + 1, -10000, this.freeSectionRefs));
     }
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < Math.floor(this.props.safeMargin/this.minCellHeight)+2; i++) {
       this.cells.push(this._createCell(section, row + i, -10000, this.freeRefs));
     }
   }
@@ -185,7 +184,7 @@ class LargeList extends React.Component {
       <View style={this.props.style}>
         <ScrollView
           bounces={this.props.bounces}
-          refreshControl={<RefreshControl refreshing={this.props.refreshing} onRefresh={this.props.onRefresh}/>}
+          refreshControl={this.props.refreshing!==undefined && <RefreshControl refreshing={this.props.refreshing} onRefresh={this.props.onRefresh}/>}
           contentContainerStyle={{ alignSelf: "stretch", height: this.contentSize.height }}
           onLayout={this._onLayout.bind(this)}
           style={{flex:1}}

@@ -7,8 +7,8 @@
  */
 
 import React from "react";
-// import { LargeList } from "../react-native-largelist";
-import { LargeList } from "react-native-largelist";
+import { LargeList } from "../react-native-largelist";
+// import { LargeList } from "react-native-largelist";
 import { View, Text, StyleSheet, RefreshControl } from "react-native";
 
 class LargeListSample extends React.Component {
