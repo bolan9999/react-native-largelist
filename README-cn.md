@@ -1,6 +1,6 @@
 # react-native-largelist
 
-For English readme.md [click here](https://github.com/bolan9999/react-native-largelist/blob/master/README.md)
+For English readme.md [click here](./README.md)
 
 **react-native-largelist** 是一个为React Native准备的高性能的列表组件，它比官方的SectionList给人以更好的性能体验（兼容iOS和Android）.
 
@@ -8,7 +8,7 @@ For English readme.md [click here](https://github.com/bolan9999/react-native-lar
 * react-native-largelist 比官网的SectionList性能表现更好
 
 ## 预览
-![Preview](https://github.com/bolan9999/react-native-largelist/raw/master/readme_resources/example.gif)
+![Preview](./readme_resources/example.gif)
 
 ## 接入步骤
 

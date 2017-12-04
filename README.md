@@ -1,6 +1,6 @@
 # react-native-largelist
 
-中文文档请 [点击这里](https://github.com/bolan9999/react-native-largelist/blob/master/README-cn.md)
+中文文档请 [点击这里](./README-cn.md)
 
 React-native-largelist is a high performance large list component for React-Native. It's performance is much better than SectionList.
 
@@ -16,7 +16,7 @@ React-native-largelist is a high performance large list component for React-Nati
 
 This is a STTVTableView with 3000 cells
 
-![Preview](https://github.com/bolan9999/react-native-largelist/raw/master/readme_resources/example.gif)
+![Preview](./readme_resources/example.gif)
 
 ## Getting Started
 
