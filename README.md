@@ -98,6 +98,9 @@ refreshing | boolean | true | refreshing
 onRefresh | () => any | ()=>{} | callback of pulling to refresh
 onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Callback when scrolling.
 
+# principle
+![](./readme_resources/largelist_advanced_usage.png)
+
 # Advanced Usage
 ### safeMargin ( type:number ,default: 600)
 Untranslated
