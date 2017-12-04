@@ -99,49 +99,64 @@ onRefresh | () => any | ()=>{} | callback of pulling to refresh
 onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Callback when scrolling.
 
 # Principle
+Before we learn advanced usage, we must first understand the basic principles:
+
+Every Cell/Item is reused just like UITableView/RecyclerView. The top Cell/Item which is Slided to the outside of the visible region does not need to show. So, I move it bottom, render it with the new datasource.
+
+But,as you know, It is different with native UITableView/RecyclerView. They are not one thread between Main Thread(UI Thread) and JavaScript Thread. And They are synchronous, and the communication between them may take not a few time. So, I try to render more Cells/Items at the upper and lower ends of the visual area. I call it safeArea. And I use it to buffer, to avoid the user slide suddenly and the visual view of the upper and lower edges is flickering.
+
+Look up the design of react-native-largelist:
+
 ![](./readme_resources/largelist_advanced_usage.png)
 
 # Advanced Usage
 ### safeMargin ( type:number ,default: 600)
-Untranslated
+The height of rendering children out side of visiable area. The greater the value is, the less easily you see the blank in the fast sliding process, but the longer the first time it is loaded
 ### dynamicMargin (type:number,default: 500)
-Untranslated
+The height of dynamic safe margin when sliding too fast. For example, if safeMargin=600 and dynamicMargin=500, it will render 100 height on top and 1100 height on bottom out side of the visiable area when sliding down too fast. 
+
+Notice: 
+
+1. It does not work when the speed of sliding is slow.
+2. It can not be set larger than safeMargin
+
+
 ### scrollEventThrottle (type: number ,default: ios:16 android:32)
-Untranslated
+It is the same as scrollEventThrottle on ScrollView
 ### onIndexPathDidEnterSafeArea (type:(indexPath:IndexPath)=>any)
-Untranslated
+The callback when an indexpath did enter safeArea.
 ### onIndexPathDidLeaveSafeArea (type:(indexPath:IndexPath)=>any)
-Untranslated
+The callback when an indexpath did leave safeArea.
 
 # Method
 ### scrollTo(offset:Offset, animated:boolean=true)
-Untranslated
+Scroll to offset.
 ### scrollToIndexPath(indexPath:IndexPath, animated:boolean = true)
-Untranslated
+Scroll to an indexpath.
 ### scrollToEnd(animated:boolean=true)
-Untranslated
+Scroll to the end of the LargeList.
 ### visiableIndexPaths():IndexPath[]
-Untranslated
+Get the visiable indexpaths at this time.
 ### renderedIndexPaths():IndexPath[]
-Untranslated
+Get the rendered indexpaths at this time.
 ### freeCount(): number
-Untranslated
+Get the count of free views at this time.
 
 # Dynamic variable
 ### size:Size
-Untranslated.   Size：{width:number,height:number}
+Current size of LargeList.   Size：{width:number,height:number}
 ### contentOffset:Offset
-Untranslated.   Offset：{x:number,y:number}
+Current contentOffset of LargeList.   Offset：{x:number,y:number}
 ### safeArea: Range
-Untranslated.   Range:{top:number,bottom:number}
+Current safeArea of LargeList..   Range:{top:number,bottom:number}
 ### topIndexPath: IndexPath
-Untranslated.   IndexPath:{section:number,row:number}
+Current topIndexPath of LargeList.   IndexPath:{section:number,row:number}
 ### bottomIndexPath: IndexPath
-Untranslated.   IndexPath:{section:number,row:number}
+Current bottomIndexPath of LargeList.   IndexPath:{section:number,row:number}
 ### contentSize:Size
-Untranslated.   Size:{width:number, height:number}
+Current contentSize of LargeList.   Size:{width:number, height:number}
 ### currentSection:number
-Untranslated.
+Current section index of LargeList.
 ### headerHeight:number
 Get LargeList's header height
 ### footerHeight:number
