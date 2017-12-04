@@ -1,23 +1,22 @@
-# STTVTableView
+# react-native-largelist
 
-中文文档请点击这里：[中文文档](https://github.com/bolan9999/STTVTableView/blob/master/README-cn.md)
+中文文档请 [点击这里](https://github.com/bolan9999/react-native-largelist/blob/master/README-cn.md)
 
-**STTVTableView** is a high performance TableView for React Native(iOS only right row, Android will support on version 1.0.0).
+React-native-largelist is a high performance large list component for React-Native. It's performance is much better than SectionList.
+
+
+
+**react-native-largelist** is a high performance list component for React Native(iOS & Android).
 
 ## Features
 
-* Bridged from "UITableView",Highly reused，there are only a little free Views
-* Support for large list, in theory, the number of Cell almost no effect on performance
-* Memory and CPU usage is significantly lower than SectionList
-* Support ultra-fast speed slide, support rapid slide to the top!
-* The API is simple and straightforward, the parameters have obvious type declarations, and you do not need help documentation to get started quickly
-* Support reload
+* react-native-largelist is better than SectionList
 
 ## Preview
 
 This is a STTVTableView with 3000 cells
 
-![Preview](https://github.com/bolan9999/STTVTableView/raw/master/readme_resources/example.gif)
+![Preview](https://github.com/bolan9999/react-native-largelist/raw/master/readme_resources/example.gif)
 
 ## Getting Started
 
@@ -27,70 +26,58 @@ iOS:
 * Using this command to install:
 
 ```
-npm add sttv-tableview
+npm add react-native-largelist
 ```
-* Make sure your iOS project's setting: Project(or Target) --> build setting -->Other Link Flags have the option of '-ObjC'.
-* Drag " ${ProjectPath}/node_modules/sttv-tableview/ios/STTVTableView.xcodeproj " to your iOS project and make sure STTVTableView.framework is linked to your project.
+
 * Using it like this:
 
 ```
-import { TableView } from "sttv-tableview";
+import { LargeList } from "react-native-largelist";
 
 //other code
 ...
-<TableView
-	ref={ref => (this.ref = ref)}
-	style={{ flex: 1, backgroundColor: "red" }}
-	bounces={true}
-	refreshable={true}
-	onTopRefresh={() => console.log("refreshing")}
-	numberOfRowsInSection={section => 3000}
-	numberOfSections={1}
-	heightForCell={(section, row) => (row % 2 ? 48 : 96)}
-	renderCell={this.renderItem.bind(this)}
-	renderSection={section =>
-		<View
-			style={{
-				flex: 1,
-				backgroundColor: "gray",
-				justifyContent: "center",
-				alignItems: "center"
-			}}
-		>
-			<Text>
-				I am section {section}
-			</Text>
-		</View>}
-	heightForSection={section => (section % 2 ? 40 : 80)}
-	renderHeader={() =>
-		<View
-			style={{
-				height: 100,
-				backgroundColor: "rgb(245,245,245)",
-				justifyContent: "center",
-				alignItems: "center"
-			}}
-		>
-			<Text>I am header</Text>
-		</View>}
-	renderFooter={() =>
-		<View
-			style={{
-				height: 100,
-				justifyContent: "center",
-				alignItems: "center"
-			}}
-		>
-			<Text>I am footer</Text>
-		</View>}
-	/>
+<LargeList
+        style={{ flex: 1 }}
+        bounces={true}
+        refreshing={this.state.refreshing}
+        onRefresh={() => {
+          this.setState({ refreshing: true });
+          setTimeout(() => this.setState({ refreshing: false }), 2000);
+        }}
+        safeMargin={600}
+        numberOfRowsInSection={section => this.props.numberOfEachSection}
+        numberOfSections={this.props.numberOfSections}
+        heightForCell={(section, row) =>
+          row % 2 ? this.minCellHeight : this.maxCellHeight}
+        renderCell={this.renderItem.bind(this)}
+        heightForSection={section =>
+          section % 2 ? this.minSectionHeight : this.maxSectionHeight}
+        renderHeader={this.renderHeader.bind(this)}
+        renderFooter={this.renderFooter.bind(this)}
+        renderSection={section => {
+          return (
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: section % 2 ? "grey" : "yellow",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              <Text>
+                I am section {section}
+              </Text>
+            </View>
+          );
+        }}
+      />
 ...
 ```
 
 # Usage
 
 ```
-import { TableView } from "sttv-tableview"
+import { LargeList } from "react-native-largelist"
 ```
 
 Props:
@@ -106,43 +93,7 @@ heightForSection | (section:number) => number | 0 | function：return height of 
 renderHeader | () => React.Element | null | function：render of header in the tableview
 renderFooter | () => React.Element | null | function：render of footer in tableview
 bounces | boolean | true | bounces
-refreshable | boolean | true | allow pulling to refresh
-onTopRefresh | () => any | ()=>{} | callback of pulling to refresh
+refreshing | boolean | true | refreshing
+onRefresh | () => any | ()=>{} | callback of pulling to refresh
 
-method：
 
-```
-interface IndexPathType {
-  section: number,
-  row: number
-}
-
-export enum ReloadCellAnimationType {
-  fade: 0,
-  right: 1,
-  left: 2,
-  top: 3,
-  bottom: 4,
-  none: 5,
-  middle: 6,
-  automatic: 100
-};
-```
-
-method | parameter | return | effect
---- | --- | --- | ---
-reloadCells | indexPaths:IndexPathType[], animation:ReloadCellAnimationType | void | reload some cells
-reloadAll | void | void | reload all cells
-scrollTo | indexPath:IndexPathType | void | scroll to indexpath
-
-## Known Issues
-* When the sliding speed is very fast, immediately rotate the screen, there will be a short Cell whiteboard (solution is ready)
-* When the height of each Cell is not the same as the time, beyond the js rendering speed, you will see the element inside the cell beyond the phenomenon, immediately after the slow recovery can be restored
-* Currently not support change props. To change STTVTableView, please change the data source, and use reloadAll method
-* Pulling down to refresh uses Apple native components.  There are some problems, and I will try to use tripartite components
-
-## goal plan
-* Add Android support
-* Optimize the drop-down refresh
-* Optimized for quick whiteboard rotation when rotating the screen with a brief Whiteboard Cell problem
-* Increase the Cell left and right sliding display additional View features
