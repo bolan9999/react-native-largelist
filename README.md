@@ -98,7 +98,7 @@ refreshing | boolean | true | refreshing
 onRefresh | () => any | ()=>{} | callback of pulling to refresh
 onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Callback when scrolling.
 
-# principle
+# Principle
 ![](./readme_resources/largelist_advanced_usage.png)
 
 # Advanced Usage
@@ -127,21 +127,21 @@ Untranslated
 ### freeCount(): number
 Untranslated
 
-# dynisic
+# Dynamic variable
 ### size:Size
-Untranslated   Size：{width:number,height:number}
+Untranslated.   Size：{width:number,height:number}
 ### contentOffset:Offset
-Untranslated   Offset：{x:number,y:number}
+Untranslated.   Offset：{x:number,y:number}
 ### safeArea: Range
-Untranslated   Range:{top:number,bottom:number}
+Untranslated.   Range:{top:number,bottom:number}
 ### topIndexPath: IndexPath
-Untranslated   IndexPath:{section:number,row:number}
+Untranslated.   IndexPath:{section:number,row:number}
 ### bottomIndexPath: IndexPath
-Untranslated   IndexPath:{section:number,row:number}
+Untranslated.   IndexPath:{section:number,row:number}
 ### contentSize:Size
-Untranslated   Size:{width:number, height:number}
+Untranslated.   Size:{width:number, height:number}
 ### currentSection:number
-Untranslated
+Untranslated.
 ### headerHeight:number
 Get LargeList's header height
 ### footerHeight:number
