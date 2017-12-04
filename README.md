@@ -84,6 +84,7 @@ Props:
 
 Props  |  type  |  default  |  effect  
 ------ | ------ | --------- | --------
+（ViewPropTypes） | （ViewPropTypes） |  | All props of View
 numberOfSections | number | 1 | number of sections in tableview
 numberOfRowsInSection | (section:number) => number | section=>0 | function：return the number of rows in section
 renderCell | (section:number,row:number) => React.Element | required | function: render of cell with section and row index
@@ -95,5 +96,50 @@ renderFooter | () => React.Element | null | function：render of footer in table
 bounces | boolean | true | bounces
 refreshing | boolean | true | refreshing
 onRefresh | () => any | ()=>{} | callback of pulling to refresh
+onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Callback when scrolling.
 
+# Advanced Usage
+### safeMargin ( type:number ,default: 600)
+Untranslated
+### dynamicMargin (type:number,default: 500)
+Untranslated
+### scrollEventThrottle (type: number ,default: ios:16 android:32)
+Untranslated
+### onIndexPathDidEnterSafeArea (type:(indexPath:IndexPath)=>any)
+Untranslated
+### onIndexPathDidLeaveSafeArea (type:(indexPath:IndexPath)=>any)
+Untranslated
 
+# Method
+### scrollTo(offset:Offset, animated:boolean=true)
+Untranslated
+### scrollToIndexPath(indexPath:IndexPath, animated:boolean = true)
+Untranslated
+### scrollToEnd(animated:boolean=true)
+Untranslated
+### visiableIndexPaths():IndexPath[]
+Untranslated
+### renderedIndexPaths():IndexPath[]
+Untranslated
+### freeCount(): number
+Untranslated
+
+# dynisic
+### size:Size
+Untranslated   Size：{width:number,height:number}
+### contentOffset:Offset
+Untranslated   Offset：{x:number,y:number}
+### safeArea: Range
+Untranslated   Range:{top:number,bottom:number}
+### topIndexPath: IndexPath
+Untranslated   IndexPath:{section:number,row:number}
+### bottomIndexPath: IndexPath
+Untranslated   IndexPath:{section:number,row:number}
+### contentSize:Size
+Untranslated   Size:{width:number, height:number}
+### currentSection:number
+Untranslated
+### headerHeight:number
+Get LargeList's header height
+### footerHeight:number
+Get LargeList's footer height

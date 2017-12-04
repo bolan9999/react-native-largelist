@@ -9,7 +9,7 @@
 import React from "react";
 import { LargeList } from "../react-native-largelist";
 // import { LargeList } from "react-native-largelist";
-import { View, Text, StyleSheet, RefreshControl } from "react-native";
+import { View, Text, StyleSheet, RefreshControl,TouchableOpacity } from "react-native";
 
 class LargeListSample extends React.Component {
   color;
@@ -18,6 +18,7 @@ class LargeListSample extends React.Component {
   minSectionHeight = 48;
   maxSectionHeight = 96;
   refreshing = false;
+  largeList: LargeList;
 
   constructor(props) {
     super(props);
@@ -26,15 +27,26 @@ class LargeListSample extends React.Component {
 
   render() {
     return (
+      <View style={{flex:1}}>
+        <TouchableOpacity style={{height:50, alignItems:"center",justifyContent:"center"}} onPress={()=>{
+          // this.largeList && this.largeList.scrollTo({x:0,y:10000});
+          // this.largeList && this.largeList.scrollToIndexPath({section:4,row:50});
+          // let variable = this.largeList && this.largeList.freeCount();
+          // let variable = this.largeList && this.largeList.visiableIndexPaths();
+          let variable = this.largeList && this.largeList.renderedIndexPaths();
+          console.log("count=",variable);
+        }}>
+          <Text>ScrollTo</Text>
+        </TouchableOpacity>
       <LargeList
         style={{ flex: 1 }}
+        ref={ref=>this.largeList=ref}
         bounces={true}
         refreshing={this.state.refreshing}
         onRefresh={() => {
           this.setState({ refreshing: true });
           setTimeout(() => this.setState({ refreshing: false }), 2000);
         }}
-        safeMargin={600}
         numberOfRowsInSection={section => this.props.numberOfEachSection}
         numberOfSections={this.props.numberOfSections}
         heightForCell={(section, row) =>
@@ -61,6 +73,7 @@ class LargeListSample extends React.Component {
           );
         }}
       />
+      </View>
     );
   }
 
