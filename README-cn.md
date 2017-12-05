@@ -19,7 +19,7 @@ iOS:
 * 使用下面的命令安装:
 
 ```
-npm add react-native-largelist
+npm install react-native-largelist --save
 ```
 
 * 像下面这样使用它:

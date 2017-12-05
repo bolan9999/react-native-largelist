@@ -14,7 +14,7 @@ React-native-largelist is a high performance large list component for React-Nati
 
 ## Preview
 
-This is a STTVTableView with 3000 cells
+This is a react-native-largelist with 3000 cells
 
 ![Preview](./readme_resources/example.gif)
 
@@ -26,7 +26,7 @@ iOS:
 * Using this command to install:
 
 ```
-npm add react-native-largelist
+npm install react-native-largelist --save
 ```
 
 * Using it like this:
