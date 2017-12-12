@@ -7,5 +7,5 @@
  *
  */
 
-export * from "./LargeListSimple";
+export * from "./LargeListSample";
 export * from "./SectionListSample";

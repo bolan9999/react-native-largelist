@@ -7,7 +7,7 @@ import {
   ScrollView,
   TextInput
 } from "react-native";
-import { LargeListSample, SectionListSample } from "./simples";
+import { LargeListSample, SectionListSample } from "./samples";
 
 export default class App extends React.Component {
   constructor(props) {
