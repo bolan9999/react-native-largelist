@@ -28,32 +28,31 @@ class LargeListCell extends React.Component {
 
   indexPath: IndexPath;
   waitForRender: boolean;
+  locationUpdated: boolean;
 
   forceUpdate() {
     this.waitForRender = false;
+    if (this.locationUpdated) this.positionUpdate();
+    this.locationUpdated = false;
     this.setState({});
+  }
+
+  positionUpdate() {
+    this.locationUpdated = true;
+    this.rootView.setNativeProps({
+      style: { top: this.top, height: this.height }
+    });
   }
 
   updateToIndexPath(
     indexPath: IndexPath,
     top: number,
-    height: number,
-    force: boolean
+    height: number
   ) {
+    this.waitForRender = true;
     this.indexPath = { section: indexPath.section, row: indexPath.row };
     this.top = top;
     this.height = height;
-    if (!force) {
-      this.waitForRender = true;
-      this.rootView.setNativeProps({
-        style: {
-          top: top,
-          height: height
-        }
-      });
-      return;
-    }
-    this.forceUpdate();
   }
 
   constructor(props) {
@@ -67,6 +66,7 @@ class LargeListCell extends React.Component {
   }
 
   render() {
+
     return (
       <View
         ref={ref => (this.rootView = ref)}
