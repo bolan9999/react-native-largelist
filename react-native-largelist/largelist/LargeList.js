@@ -63,6 +63,9 @@ class LargeList extends React.Component {
     scrollEventThrottle: PropTypes.number,
     onScroll: PropTypes.func,
 
+    speedLevel1: PropTypes.number,
+    speedLevel2: PropTypes.number,
+
     onIndexPathDidEnterSafeArea: PropTypes.func,
     onIndexPathDidLeaveSafeArea: PropTypes.func
 
@@ -83,7 +86,9 @@ class LargeList extends React.Component {
 
     safeMargin: 600,
     dynamicMargin: 500,
-    scrollEventThrottle: Platform.OS === "ios" ? 16 : 32
+    scrollEventThrottle: Platform.OS === "ios" ? 16 : 32,
+    speedLevel1: Platform.OS === "ios" ? 4 : 4,
+    speedLevel2: Platform.OS === "ios" ? 10 : 10
   };
 
   sections: Element[] = [];
@@ -197,7 +202,7 @@ class LargeList extends React.Component {
 
   render() {
     return (
-      <View {...this.props}>
+      <View {...this.props} style={[this.props.style,{overflow:"hidden"}]}>
         <ScrollView
           ref={ref => (this.scrollViewRef = ref)}
           bounces={this.props.bounces}
@@ -251,8 +256,7 @@ class LargeList extends React.Component {
             left: 0,
             right: 0,
             top: this.sizeConfirmed ? 0 : -10000,
-            height: this.props.heightForSection(0),
-            zIndex: 99999999
+            height: this.props.heightForSection(0)
           }}
           section={0}
           renderSection={this.props.renderSection}
@@ -262,7 +266,7 @@ class LargeList extends React.Component {
     );
   }
 
-  _createSection(section: number, top: number, refs) {
+  _createSection(section: number, top: number, refs: LargeListSection[]) {
     return (
       <LargeListSection
         ref={reference => reference && refs.push(reference)}
@@ -272,7 +276,7 @@ class LargeList extends React.Component {
           left: 0,
           right: 0,
           top: top,
-          height: this.props.heightForSection(section)
+          height: refs==this.workSectionRefs ? this.props.heightForSection(section) : 0
         }}
         section={section}
         renderSection={this.props.renderSection}
@@ -280,8 +284,13 @@ class LargeList extends React.Component {
     );
   }
 
-  _createCell(section: number, row: number, top: number, refs) {
-    let height = this.props.heightForCell(section, row);
+  _createCell(
+    section: number,
+    row: number,
+    top: number,
+    refs: LargeListCell[]
+  ) {
+    let height = refs==this.workRefs ? this.props.heightForCell(section, row) : 0;
     return (
       <LargeListCell
         ref={reference => reference && refs.push(reference)}
@@ -301,31 +310,41 @@ class LargeList extends React.Component {
 
   _onMomentumScrollEnd() {
     this.lastScrollTime = 0;
-    this._forceUpdate();
+    // setTimeout(()=>
+    this._forceUpdate();//,50);
   }
 
   _onScroll(e) {
     let offset: Offset = e.nativeEvent.contentOffset;
+    let distance = Math.abs(offset.y - this.contentOffset.y);
+    if (distance<this.minCellHeight) {
+      this._exchangeSection(offset);
+      return;
+    }
     let now: number = new Date().getTime();
     let speed: number = 0;
     let topMargin: number = this.props.safeMargin;
     let bottomMargin: number = this.props.safeMargin;
     if (this.lastScrollTime > 0) {
-      speed =
-        Math.abs(offset.y - this.contentOffset.y) / (now - this.lastScrollTime);
-    } else if (
-      Math.abs(offset.y - this.contentOffset.y) > this.props.safeMargin
-    ) {
+      speed = distance / (now - this.lastScrollTime);
+    } else if (distance > this.props.safeMargin) {
       speed = 5;
     }
     this.lastScrollTime = now;
-    let forceReload =
+    let reloadType: number = 0;
+    if (
       offset.y < topMargin ||
       offset.y + this.size.height + bottomMargin > this.contentSize.height ||
-      speed < 4;
+      speed < this.props.speedLevel1
+    ) {
+      reloadType = 0;
+    } else if (speed < this.props.speedLevel2) {
+      reloadType = 1;
+    }
+
 
     if (offset.y > this.contentOffset.y) {
-      if (speed >= 4) {
+      if (reloadType === 1) {
         topMargin = this.props.safeMargin - this.props.dynamicMargin;
         bottomMargin = this.props.safeMargin + this.props.dynamicMargin;
       }
@@ -378,7 +397,6 @@ class LargeList extends React.Component {
           let reference = this.freeSectionRefs.pop();
 
           if (!reference) {
-            this.created = true;
             this.sections.push(
               this._createSection(
                 this.bottomIndexPath.section,
@@ -404,39 +422,30 @@ class LargeList extends React.Component {
 
         let reference = this.freeRefs.pop();
         if (!reference) {
-          this.cells.push(
-            this._createCell(
-              this.bottomIndexPath.section,
-              this.bottomIndexPath.row,
-              this.safeArea.bottom,
-              this.workRefs
-            )
-          );
-          this.created = true;
+          reference = this._topCellRef();
+          this.topIndexPath = this._nextIndexPathWithIndexPath(reference.indexPath);
+          this.safeArea.top = reference.top+reference.height;
         } else {
-          reference.updateToIndexPath(
-            this.bottomIndexPath,
-            this.safeArea.bottom,
-            this.props.heightForCell(
-              this.bottomIndexPath.section,
-              this.bottomIndexPath.row
-            ),
-            false
-          );
           this.workRefs.push(reference);
         }
+        let nextHeight = this.props.heightForCell(
+          this.bottomIndexPath.section,
+          this.bottomIndexPath.row
+        );
+        reference.updateToIndexPath(
+          this.bottomIndexPath,
+          this.safeArea.bottom,
+          nextHeight
+        );
         this.props.onIndexPathDidEnterSafeArea &&
           this.props.onIndexPathDidEnterSafeArea({
             section: this.bottomIndexPath.section,
             row: this.bottomIndexPath.row
           });
-        this.safeArea.bottom += this.props.heightForCell(
-          this.bottomIndexPath.section,
-          this.bottomIndexPath.row
-        );
+        this.safeArea.bottom += nextHeight;
       }
     } else {
-      if (speed >= 4) {
+      if (reloadType===1) {
         topMargin = this.props.safeMargin + this.props.dynamicMargin;
         bottomMargin = this.props.safeMargin - this.props.dynamicMargin;
       }
@@ -484,7 +493,6 @@ class LargeList extends React.Component {
         if (this.topIndexPath.row == -1) {
           let reference = this.freeSectionRefs.pop();
           if (!reference) {
-            this.created = true;
             this.sections.push(
               this._createSection(
                 this.topIndexPath.section,
@@ -518,47 +526,44 @@ class LargeList extends React.Component {
         }
         let reference = this.freeRefs.pop();
         if (!reference) {
-          this.created = true;
-          this.cells.push(
-            this._createCell(
-              this.topIndexPath.section,
-              this.topIndexPath.row,
-              this.safeArea.top -
-                this.props.heightForCell(
-                  this.topIndexPath.section,
-                  this.topIndexPath.row
-                ),
-              this.workRefs
-            )
-          );
+          reference = this._bottomCellRef();
+          this.bottomIndexPath = this._previousIndexPathWithIndexPath(reference.indexPath);
+          this.safeArea.bottom =reference.top;
         } else {
-          reference.updateToIndexPath(
-            this.topIndexPath,
-            this.safeArea.top -
-              this.props.heightForCell(
-                this.topIndexPath.section,
-                this.topIndexPath.row
-              ),
-            this.props.heightForCell(
-              this.topIndexPath.section,
-              this.topIndexPath.row
-            ),
-            false
-          );
           this.workRefs.push(reference);
         }
+        let nextHeight = this.props.heightForCell(
+          this.topIndexPath.section,
+          this.topIndexPath.row
+        );
+        reference.updateToIndexPath(
+          this.topIndexPath,
+          this.safeArea.top - nextHeight,
+          nextHeight
+        );
         this.props.onIndexPathDidEnterSafeArea &&
           this.props.onIndexPathDidEnterSafeArea({
             section: this.topIndexPath.section,
             row: this.topIndexPath.row
           });
-        this.safeArea.top -= this.props.heightForCell(
-          this.topIndexPath.section,
-          this.topIndexPath.row
-        );
+        this.safeArea.top -= nextHeight;
       }
     }
+
+    this._exchangeSection(offset);
+    switch (reloadType) {
+      case 0:
+        this._forceUpdate();
+        break;
+      default:
+        this._positionUpdate();
+        break;
+    }
     this.contentOffset = offset;
+    this.props.onScroll && this.props.onScroll(e);
+  }
+
+  _exchangeSection(offset:Offset){
     let exchanging = false;
     this.workSectionRefs.forEach(item => {
       if (
@@ -566,7 +571,6 @@ class LargeList extends React.Component {
         offset.y < item.top &&
         item.top < this.currentSectionRef.height + offset.y
       ) {
-        // this.nextSection=item.section;
         exchanging = true;
         this.currentSectionRef.updateToSection(
           this.currentSection,
@@ -580,7 +584,7 @@ class LargeList extends React.Component {
       this.workSectionRefs.forEach(item => {
         if (
           this.currentSection != item.section &&
-          item.top <= offset.y &&
+          item.top < offset.y &&
           item.top + item.height > offset.y
         ) {
           this.currentSection = item.section;
@@ -588,14 +592,14 @@ class LargeList extends React.Component {
             this.currentSection,
             0,
             this.props.heightForSection(this.currentSection),
-            false
+            true
           );
         }
       });
       this.workRefs.forEach(item => {
         if (
           this.currentSection != item.indexPath.section &&
-          item.top <= offset.y &&
+          item.top < offset.y &&
           item.top + item.height > offset.y
         ) {
           this.currentSection = item.indexPath.section;
@@ -603,7 +607,7 @@ class LargeList extends React.Component {
             this.currentSection,
             0,
             this.props.heightForSection(this.currentSection),
-            false
+            true
           );
         }
       });
@@ -623,24 +627,6 @@ class LargeList extends React.Component {
         false
       );
     }
-    // if (this.forceTimer>0) {
-    //   clearTimeout(this.forceTimer);
-    //   this.forceTimer=0;
-    // }
-    if (forceReload) {
-      // if (this.created) {
-      //   this.created = false;
-      //   this.setState({});
-      // } else {
-      this._forceUpdate();
-      // }
-    } else {
-      // this.forceTimer = setTimeout(()=>{
-      //   this.forceTimer = 0;
-      //   this._forceUpdate();
-      // },50);
-    }
-    this.props.onScroll && this.props.onScroll(e);
   }
 
   _forceUpdate() {
@@ -655,6 +641,11 @@ class LargeList extends React.Component {
     if (this.currentSectionRef.waitForRender) {
       this.currentSectionRef.forceUpdate();
     }
+  }
+  _positionUpdate() {
+    this.workRefs.forEach(item => {
+      if (item.waitForRender) item.positionUpdate();
+    });
   }
 
   _onLayout(e) {
@@ -708,6 +699,30 @@ class LargeList extends React.Component {
     if (indexPath1.section != indexPath2.section)
       return indexPath1.section - indexPath2.section;
     return indexPath1.row - indexPath2.row;
+  }
+
+  _topCellRef():LargeListCell {
+    let top = this.contentSize.height;
+    let cell:LargeListCell;
+    this.workRefs.forEach(item=>{
+      if (top>item.top){
+        cell = item;
+        top = item.top;
+      }
+    });
+    return cell;
+  }
+
+  _bottomCellRef():LargeListCell {
+    let top = 0;
+    let cell:LargeListCell;
+    this.workRefs.forEach(item=>{
+      if (top<item.top){
+        cell = item;
+        top = item.top;
+      }
+    });
+    return cell;
   }
 
   scrollTo(offset: Offset, animated: boolean = true) {
@@ -770,6 +785,7 @@ class LargeList extends React.Component {
   freeCount(): number {
     return this.freeRefs.length;
   }
+
 }
 
 export { LargeList };
