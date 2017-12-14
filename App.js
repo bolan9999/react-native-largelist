@@ -7,12 +7,21 @@ import {
   ScrollView,
   TextInput
 } from "react-native";
-import { LargeListSample, SectionListSample } from "./samples";
+import {
+  LargeListSample,
+  SectionListSample,
+  LargeListSample2
+} from "./samples";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { type: 0, numberOfSections: 10, numberOfEachSection: 100 };
+    this.state = {
+      type: 0,
+      numberOfSections: 10,
+      numberOfEachSection: 100,
+      nativeOptimize: 0
+    };
   }
 
   render() {
@@ -29,8 +38,11 @@ export default class App extends React.Component {
           <LargeListSample
             numberOfSections={this.state.numberOfSections}
             numberOfEachSection={this.state.numberOfEachSection}
+            nativeOptimize={this.state.nativeOptimize == 1}
           />
         );
+      case 3:
+        return <LargeListSample2 style={{ flex: 1 }} />;
     }
     return this.renderChoose();
   }
@@ -58,6 +70,17 @@ export default class App extends React.Component {
               this.setState({ numberOfEachSection: parseInt(text) })}
           />
         </View>
+        <View style={{ flexDirection: "row", marginTop: 20, marginLeft: 50 }}>
+          <Text style={{ width: 80 }}>nativeOptimize</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType={"numeric"}
+            defaultValue={this.state.nativeOptimize.toString()}
+            onChangeText={text =>
+              text.length > 0 &&
+              this.setState({ nativeOptimize: parseInt(text) })}
+          />
+        </View>
         <View
           style={{
             flexDirection: "row",
@@ -72,6 +95,18 @@ export default class App extends React.Component {
             <Text style={styles.text}>LargeList</Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={() => this.setState({ type: 3 })}
+        >
+          <Text style={styles.text}>LargeListSample2</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={() => this.setState({ type: 4 })}
+        >
+          <Text style={styles.text}>LargeListSample3</Text>
+        </TouchableOpacity>
       </ScrollView>
     );
   }

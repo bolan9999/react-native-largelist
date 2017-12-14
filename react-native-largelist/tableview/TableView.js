@@ -149,7 +149,7 @@ class TableView extends React.Component {
     TableViewModule.reloadAll({}, this.tag);
   }
 
-  scrollTo(indexPath: IndexPathType) {
+  scrollToIndexPath(indexPath: IndexPathType) {
     TableViewModule.scrollTo(indexPath, this.tag);
   }
 }
