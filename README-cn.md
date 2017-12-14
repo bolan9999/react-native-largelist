@@ -116,6 +116,10 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 当一个indexPath进入SafeArea时回调
 ### onIndexPathDidLeaveSafeArea (type:(indexPath:IndexPath)=>any)
 当一个indexPath离开SafeArea时回调
+### speedLevel1 (type:number, default:4)
+当滑动的速度超过这个speedLevel1，LargeList则不会rerender，仅仅只是移动位置。  单位是  每毫秒移动的逻辑像素量。
+### speedLevel2 (type:number, default:10)
+当前版本无意义
 ### nativeOptimize (type:bool, default: false)
 启用原生优化，iOS专用。这是一个实验性的功能，使用该功能以后，safeArea就没有意义了。要使用改功能，请将"${YourProject}/node_modules/react-native-largelist/ios/STTVTableView.xcodeproj"拖入您的iOS项目，并且保证链接了它
 

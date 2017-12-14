@@ -127,6 +127,10 @@ It is the same as scrollEventThrottle on ScrollView
 The callback when an indexpath did enter safeArea.
 ### onIndexPathDidLeaveSafeArea (type:(indexPath:IndexPath)=>any)
 The callback when an indexpath did leave safeArea.
+### speedLevel1 (type:number, default:4)
+If the speed of scrolling is faster than speedLevel1, LargeList will not rerender, just use "setNativeProps" to move the position. Unit is    logic pixels/ms.
+### speedLevel2 (type:number, default:10)
+It does not work for the current version.
 ### nativeOptimize (type:bool, default: false)
 Use native optimize, iOS only. This is an experimental prop.If it is set, safeArea doesn't make sense. To use the prop, you should add "${YourProject}/node_modules/react-native-largelist/ios/STTVTableView.xcodeproj" to your iOS project. And make sure link it.
 
