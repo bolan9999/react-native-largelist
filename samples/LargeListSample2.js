@@ -13,12 +13,22 @@ import { LargeList } from "../react-native-largelist";
 import { messages } from "./DataSource";
 
 class LargeListSample2 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {refreshing:false};
+  }
+
   render() {
     return (
       <LargeList
         style={this.props.style}
         numberOfRowsInSection={() => messages.length}
         heightForCell={() => 88}
+        onRefresh={()=>{
+          this.setState({refreshing:true});
+          setTimeout(()=>this.setState({refreshing:false}),2000);
+        }}
+        refreshing={this.state.refreshing}
         renderCell={this.renderItem.bind(this)}
       />
     );
