@@ -20,8 +20,6 @@ This is a react-native-largelist with 3000 cells
 
 ## Getting Started
 
-iOS:
-
 * Make sure your project is react-native project.
 * Using this command to install:
 
