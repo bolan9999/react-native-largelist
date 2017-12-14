@@ -94,8 +94,8 @@ heightForSection | (section:number) => number | 0 | function：return height of 
 renderHeader | () => React.Element | null | function：render of header in the tableview
 renderFooter | () => React.Element | null | function：render of footer in tableview
 bounces | boolean | true | bounces
-refreshing | boolean | true | refreshing
-onRefresh | () => any | ()=>{} | callback of pulling to refresh
+refreshing | boolean | undefined | refreshing
+onRefresh | () => any | undefined | callback of pulling to refresh,if not undefined ,a default RefreshControl is add to LargeList
 onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Callback when scrolling.
 
 # Principle
