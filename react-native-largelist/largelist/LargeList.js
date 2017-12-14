@@ -573,8 +573,8 @@ class LargeList extends React.Component {
     this.workSectionRefs.forEach(item => {
       if (
         this.currentSection == item.section - 1 &&
-        offset.y < item.top &&
-        item.top < this.currentSectionRef.height + offset.y
+        offset.y <= item.top &&
+        item.top <= this.currentSectionRef.height + offset.y
       ) {
         exchanging = true;
         this.currentSectionRef.updateToSection(
@@ -589,8 +589,8 @@ class LargeList extends React.Component {
       this.workSectionRefs.forEach(item => {
         if (
           this.currentSection != item.section &&
-          item.top < offset.y &&
-          item.top + item.height > offset.y
+          item.top <= offset.y &&
+          item.top + item.height >= offset.y
         ) {
           this.currentSection = item.section;
           this.currentSectionRef.updateToSection(
@@ -604,8 +604,8 @@ class LargeList extends React.Component {
       this.workRefs.forEach(item => {
         if (
           this.currentSection != item.indexPath.section &&
-          item.top < offset.y &&
-          item.top + item.height > offset.y
+          item.top <= offset.y &&
+          item.top + item.height >= offset.y
         ) {
           this.currentSection = item.indexPath.section;
           this.currentSectionRef.updateToSection(

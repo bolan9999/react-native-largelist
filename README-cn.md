@@ -82,8 +82,8 @@ renderCell | (section:number,row:number) => React.Element | 必须 | 函数:根�
 heightForCell | (section:number,row:number) => number | 必须 | 函数：根据Section和row index，返回当前Cell的高度
 renderSection | (section:number) => React.Element | section=>null | 函数：当前Section的render函数
 heightForSection | (section:number) => number | 0 | 函数：返回当前section的高度
-renderHeader | () => React.Element | null | 函数：列表的头部组件的render函数
-renderFooter | () => React.Element | null | 函数：列表的尾部组件的render函数
+renderHeader | () => React.Element | ()=>null | 函数：列表的头部组件的render函数
+renderFooter | () => React.Element | ()=>null | 函数：列表的尾部组件的render函数
 bounces | boolean | true | 组件滑动到边缘是否可以继续滑动，松开后弹回
 refreshing | boolean | undefined | 是否正在刷新
 onRefresh | () => any | undefined | 下拉刷新的回调,如果用户设置了此属性，则添加一个刷新控件

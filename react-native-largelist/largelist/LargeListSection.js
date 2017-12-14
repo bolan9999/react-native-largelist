@@ -30,7 +30,12 @@ class LargeListSection extends React.Component {
   waitForRender: boolean;
 
   forceUpdate() {
+    if (this.waitForRender)
+      this.rootView.setNativeProps({
+        style: { top: this.top, height: this.height }
+      });
     this.waitForRender = false;
+
     this.setState({});
   }
 

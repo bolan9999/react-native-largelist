@@ -89,8 +89,8 @@ renderCell | (section:number,row:number) => React.Element | required | function:
 heightForCell | (section:number,row:number) => number | required | function：return height for cell with section and row index 
 renderSection | (section:number) => React.Element | section=>null | function：render of section with section index
 heightForSection | (section:number) => number | 0 | function：return height of section with section index
-renderHeader | () => React.Element | null | function：render of header in the tableview
-renderFooter | () => React.Element | null | function：render of footer in tableview
+renderHeader | () => React.Element | ()=>null | function：render of header in the tableview
+renderFooter | () => React.Element | ()=>null | function：render of footer in tableview
 bounces | boolean | true | bounces
 refreshing | boolean | undefined | refreshing
 onRefresh | () => any | undefined | callback of pulling to refresh,if not undefined ,a default RefreshControl is add to LargeList
