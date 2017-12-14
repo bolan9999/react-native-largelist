@@ -16,21 +16,26 @@ class Cell extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { row: props.row, style: props.style, update: updateIdf };
+    this.state = {
+      section: Math.floor(props.row / this.props.numberOfMostRows),
+      row: props.row % props.numberOfMostRows,
+      style: props.style,
+      update: updateIdf,
+      jsRenderedRow:props.row
+    };
   }
   render() {
     return (
       <NativeCell
         {...this.props}
         style={this.state.style}
-        jsRenderedRow={this.state.row}
+        jsRenderedRow={this.state.jsRenderedRow}
         jsFree={++busyIdf}
         onUpdate={this.onUpdate.bind(this)}
-        onChange={this.onUpdate.bind(this)}
       >
         {this.props.renderChildren({
-          section: Math.floor(this.state.row / this.props.numberOfMostRows),
-          row: this.state.row % this.props.numberOfMostRows
+          section: this.state.section,
+          row: this.state.row
         })}
       </NativeCell>
     );
@@ -47,12 +52,12 @@ class Cell extends React.Component {
       top: 0,
       height: this.props.heightForCell(section, row)
     };
-    console.log("onUpdate",new Date().getTime());
     this.setState({
       section: section,
       row: row,
       style: style,
-      update: ++updateIdf
+      update: ++updateIdf,
+      jsRenderedRow:e.nativeEvent.row
     });
   }
 }

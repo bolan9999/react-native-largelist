@@ -19,13 +19,15 @@
 
 -(void)setJsView:(STTVCellView *)jsView{
     if (!jsView || _jsView == jsView) return;
-    NSLog(@"time=%lf",[[NSDate date] timeIntervalSince1970]-self.lastTime);
     _jsView = jsView;
     for (UIView *subview in self.contentView.subviews) {
         [subview removeFromSuperview];
     }
     [jsView removeFromSuperview];
     [self.contentView addSubview:_jsView];
+    if (self.tag != self.createTag) {
+        [jsView updateToRow:self.tag];
+    }
 }
 //- (void)setFrame:(CGRect)frame{
 //    [super setFrame:frame];

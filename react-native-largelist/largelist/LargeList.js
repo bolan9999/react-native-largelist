@@ -21,6 +21,7 @@ import {
 import PropTypes from "prop-types";
 import { LargeListCell } from "./LargeListCell";
 import { LargeListSection } from "./LargeListSection";
+import { TableView } from "../tableview";
 
 interface Size {
   width: number,
@@ -65,6 +66,7 @@ class LargeList extends React.Component {
 
     speedLevel1: PropTypes.number,
     speedLevel2: PropTypes.number,
+    nativeOptimize: PropTypes.bool,
 
     onIndexPathDidEnterSafeArea: PropTypes.func,
     onIndexPathDidLeaveSafeArea: PropTypes.func
@@ -77,12 +79,13 @@ class LargeList extends React.Component {
   static defaultProps = {
     numberOfSections: 1,
     numberOfRowsInSection: section => 0,
-    renderSection: () => <View style={{ flex: 1 }} />,
+    renderSection: () => null,
     heightForSection: section => 0,
-    renderHeader: null,
-    renderFooter: null,
+    renderHeader: ()=>null,
+    renderFooter: ()=>null,
     bounces: true,
     onRefresh: () => {},
+    nativeOptimize:false,
 
     safeMargin: 600,
     dynamicMargin: 500,
@@ -122,17 +125,19 @@ class LargeList extends React.Component {
   keyForCreating: number = 0;
   minCellHeight: number = 40;
   minSectionHeight: number = 40;
-  scrollViewRef: ScrollView;
+  scrollViewRef: ScrollView|TableView;
+  native:boolean=false;
 
   constructor(props) {
     super(props);
+    this.native = Platform.OS==="ios" && props.nativeOptimize && TableView;
     for (let i = 0; i < this.props.numberOfSections; ++i) {
-      if (this.minSectionHeight > this.props.heightForSection(i)) {
+      if (this.minSectionHeight > this.props.heightForSection(i) && this.props.heightForSection(i)>10) {
         this.minSectionHeight = this.props.heightForSection(i);
       }
       this.contentSize.height += this.props.heightForSection(i);
       for (let j = 0; j < this.props.numberOfRowsInSection(i); ++j) {
-        if (this.minCellHeight > this.props.heightForCell(i, j)) {
+        if (this.minCellHeight > this.props.heightForCell(i, j) && this.props.heightForCell(i, j)>10) {
           this.minCellHeight = this.props.heightForCell(i, j);
         }
         this.contentSize.height += this.props.heightForCell(i, j);
@@ -201,17 +206,18 @@ class LargeList extends React.Component {
   }
 
   render() {
+    if (this.native) return <TableView ref={ref=>this.scrollViewRef=ref} {...this.props}/>
     return (
       <View {...this.props} style={[this.props.style,{overflow:"hidden"}]}>
         <ScrollView
           ref={ref => (this.scrollViewRef = ref)}
           bounces={this.props.bounces}
           refreshControl={
-            this.props.refreshing !== undefined &&
+            this.props.refreshing !== undefined ?
             <RefreshControl
               refreshing={this.props.refreshing}
               onRefresh={this.props.onRefresh}
-            />
+            /> : null
           }
           contentContainerStyle={{
             alignSelf: "stretch",
@@ -731,6 +737,10 @@ class LargeList extends React.Component {
   }
 
   scrollToIndexPath(indexPath: IndexPath, animated: boolean = true) {
+    if (this.native) {
+      this.scrollViewRef.scrollToIndexPath(indexPath);
+      return;
+    }
     let sumHeight = this.headerHeight ? this.headerHeight : 0;
     for (let section = 0; section < this.props.numberOfSections; ++section) {
       sumHeight += this.props.heightForSection(section);

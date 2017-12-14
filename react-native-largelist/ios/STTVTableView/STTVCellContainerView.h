@@ -11,7 +11,8 @@
 
 @interface STTVCellContainerView : UIView
 
-
+@property (nonatomic, assign) BOOL scrolling;
+@property (nonatomic, assign) BOOL fastScrolling;
 
 - (void)createViewOnCell:(__kindof UITableViewCell *)cell numberOfMostRows:(NSInteger)numberOfMostRows;
 

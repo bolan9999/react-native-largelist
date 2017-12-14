@@ -16,6 +16,8 @@
 
 @property (nonatomic, strong) NSMutableDictionary <NSNumber *, __kindof STTVTableViewCell *>*attempCells;
 
+@property (nonatomic, strong) NSMutableArray *cellViews;
+
 @end
 
 @implementation STTVCellContainerView
@@ -23,16 +25,16 @@
 - (instancetype)init {
     if (self = [super init]) {
         self.attempCells = [NSMutableDictionary dictionaryWithCapacity:32];
+        self.cellViews = [NSMutableArray arrayWithCapacity:32];
+        [self beginMonitorThread];
     }
     return self;
 }
 
-- (void)createViewOnCell:(__kindof UITableViewCell *)cell numberOfMostRows:(NSInteger)numberOfMostRows{
-    [self.attempCells setObject:cell forKey:@(cell.tag)];
+- (void)createViewOnCell:(STTVTableViewCell *)cell numberOfMostRows:(NSInteger)numberOfMostRows{
+    [self.attempCells setObject:cell forKey:@(cell.createTag)];
     NSAssert(self.onCreateCell, @"STTVTableView: error:onCreateCell is nil when createViewOnCell");
-    STTVTableViewCell *sttvCell = cell;
-    sttvCell.lastTime = [[NSDate date] timeIntervalSince1970];
-    self.onCreateCell(@{@"section":@(cell.tag/numberOfMostRows),@"row":@(cell.tag%numberOfMostRows)});
+    self.onCreateCell(@{@"section":@(cell.createTag/numberOfMostRows),@"row":@(cell.createTag%numberOfMostRows)});
 }
 
 
@@ -41,10 +43,49 @@
         STTVTableViewCell *cell = self.attempCells[@(view.jsRenderedRow)];
         if (cell && !view.superview) {
             cell.jsView = view;
+            if (![self.cellViews containsObject:view]) {
+                [self.cellViews addObject:view];
+            }
             [self.attempCells removeObjectForKey:@(view.jsRenderedRow)];
         }
     }
-    
+}
+
+- (void)setScrolling:(BOOL)scrolling {
+    _scrolling = scrolling;
+    if (_scrolling==NO) {
+        self.fastScrolling = NO;
+    }
+}
+
+- (void) beginMonitorThread {
+    __block __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSInteger freeCount = 0, waitForUpdateCount = 1,busyCount=0;
+        while (weakSelf) {
+            freeCount=waitForUpdateCount=busyCount=0;
+            NSArray *cellViews = [NSArray arrayWithArray:self.cellViews];
+            for (STTVCellView *view in cellViews) {
+                if (view.jsFree) {
+                    freeCount++;
+                } else {
+                    busyCount ++;
+                }
+                if (view.nativeRow != view.jsDistanceRow) {
+                    waitForUpdateCount++;
+                }
+            }
+            if (waitForUpdateCount>0 && busyCount<3 && !self.fastScrolling) {
+                for (STTVCellView *view in cellViews) {
+                    [view checkToUpdate];
+                }
+            }
+            [NSThread sleepForTimeInterval:0.05];
+//            while (!weakSelf.scrolling) {
+//                [NSThread sleepForTimeInterval:0.2];
+//            }
+        }
+    });
 }
 
 @end
