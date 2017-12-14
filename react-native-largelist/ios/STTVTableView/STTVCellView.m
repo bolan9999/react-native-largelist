@@ -12,7 +12,7 @@
 @interface STTVCellView ()
 
 @property (nonatomic, copy) RCTBubblingEventBlock onUpdate;
-@property (nonatomic, assign) NSTimeInterval lastTime;
+@property (nonatomic, assign) BOOL waiting;
 
 @end
 
@@ -22,6 +22,7 @@
     if (self = [super init]) {
         self.jsRenderedRow = -1;
         self.nativeRow = -1;
+        self.jsDistanceRow = -1;
     }
     return self;
 }
@@ -29,10 +30,7 @@
 - (void)setJsRenderedRow:(NSInteger)jsRenderedRow {
     _jsRenderedRow = jsRenderedRow;
     if (self.nativeRow == -1) {
-        self.nativeRow = jsRenderedRow;
-    }
-    if (self.lastTime) {
-        NSLog(@"time stamp:%lf", [[NSDate date] timeIntervalSince1970] - self.lastTime);
+        self.jsDistanceRow = self.nativeRow = jsRenderedRow;
     }
 }
 
@@ -45,22 +43,42 @@
 
 - (void)updateToRow:(NSInteger)row{
     self.nativeRow = row;
-    self.lastTime = [[NSDate date] timeIntervalSince1970];
-    [self waitForRefresh];
+//    if (row<15){
+//        NSLog(@"updateToRow:%@",@(row));
+//    }
+//    if (self.jsFree) {
+//        self.jsFree = NO;
+//        self.jsDistanceRow = row;
+//        self.onUpdate(@{@"row":@(self.nativeRow)});
+//    }
+//    [self waitForRefresh:YES];
 }
 
-- (void) waitForRefresh{
-    if (!self.shouldForceReload && self.nativeRow == self.jsRenderedRow) {
-        return;
-    }
-    if (self.jsFree) {
+//- (void) waitForRefresh:(BOOL) canCancel{
+//    if (self.waiting && canCancel) {
+//        return;
+//    }
+//    if (!self.shouldForceReload && self.nativeRow == self.jsRenderedRow) {
+//        return;
+//    }
+//    if (self.jsFree) {
+//        self.waiting = NO;
+//        self.jsFree = NO;
+//        self.shouldForceReload = NO;
+//        self.onUpdate(@{@"row":@(self.nativeRow)});
+//    } else {
+//        self.waiting = YES;
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            [self waitForRefresh:NO];
+//        });
+//    }
+//}
+
+- (void)checkToUpdate {
+    if (self.jsFree && self.nativeRow != self.jsDistanceRow) {
         self.jsFree = NO;
-        self.shouldForceReload = NO;
+        self.jsDistanceRow = self.nativeRow;
         self.onUpdate(@{@"row":@(self.nativeRow)});
-    } else {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self waitForRefresh];
-        });
     }
 }
 

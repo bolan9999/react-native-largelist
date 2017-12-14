@@ -12,6 +12,6 @@
 @interface STTVTableViewCell : UITableViewCell
 
 @property(nonatomic, strong) STTVCellView* jsView;
-@property(nonatomic, assign) NSTimeInterval lastTime;
+@property(nonatomic, assign) NSInteger createTag;
 
 @end

@@ -20,6 +20,7 @@
 RCT_EXPORT_MODULE(STTVTableViewModule);
 
 RCT_EXPORT_METHOD(reloadCells:(NSArray <NSDictionary *>*)jsIndexPaths tableViewTag:(nonnull NSNumber*)tag animation:(nonnull NSNumber*)animation){
+    dispatch_async(dispatch_get_main_queue(), ^{
     STTVTableView *tableView = [[STTVTableViewManager shared] tableViewForTag:tag];
     if (!tableView) {
         NSLog(@"STTVTableView: warning: can not find cell when  tag=%@", tag);
@@ -30,24 +31,26 @@ RCT_EXPORT_METHOD(reloadCells:(NSArray <NSDictionary *>*)jsIndexPaths tableViewT
         [indexPaths addObject: [NSIndexPath indexPathForRow:[indexPath[@"row"] integerValue] inSection:[indexPath[@"section"] integerValue]]];
     }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    
         [tableView reloadIndexPath:indexPaths withRowAnimation:[animation integerValue]];
     });
     
 }
 
 RCT_EXPORT_METHOD(reloadAll:(NSDictionary *)params onTableViewTag:(nonnull NSNumber *)tag){
+    dispatch_async(dispatch_get_main_queue(), ^{
     STTVTableView *tableView = [[STTVTableViewManager shared] tableViewForTag:tag];
     if (!tableView) {
         NSLog(@"STTVTableView: warning: can not find cell when  tag=%@", tag);
         return;
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
+    
         [tableView reloadAll];
     });
 }
 
 RCT_EXPORT_METHOD(scrollTo:(NSDictionary *)params onTableViewTag:(nonnull NSNumber *)tag){
+    dispatch_async(dispatch_get_main_queue(), ^{
     STTVTableView *tableView = [[STTVTableViewManager shared] tableViewForTag:tag];
     if (!tableView) {
         NSLog(@"STTVTableView: warning: can not find cell when  tag=%@", tag);
@@ -55,7 +58,7 @@ RCT_EXPORT_METHOD(scrollTo:(NSDictionary *)params onTableViewTag:(nonnull NSNumb
     }
     NSInteger section = [params[@"section"] integerValue];
     NSInteger row = [params[@"row"] integerValue];
-    dispatch_async(dispatch_get_main_queue(), ^{
+    
         [tableView scrollToIndexPath:[NSIndexPath indexPathForRow:row inSection:section] atScrollPosition:0 animated:YES];
     });
 }

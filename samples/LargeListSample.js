@@ -38,12 +38,7 @@ class LargeListSample extends React.Component {
         <TouchableOpacity
           style={{ flex:1, alignItems: "center", justifyContent: "center" }}
           onPress={() => {
-            // this.largeList && this.largeList.scrollTo({x:0,y:10000});
-            this.largeList.scrollTo({x:0,y:0});
-            // let variable = this.largeList && this.largeList.freeCount();
-            // let variable = this.largeList && this.largeList.visiableIndexPaths();
-            // let variable = this.largeList && this.largeList.renderedIndexPaths();
-            // console.log("variable=",variable);
+            this.largeList.scrollToIndexPath({section:0,row:0});
           }}
         >
           <Text>ScrollToTop</Text>
@@ -51,7 +46,7 @@ class LargeListSample extends React.Component {
         <TouchableOpacity
           style={{ flex:1, alignItems: "center", justifyContent: "center" }}
           onPress={() => {
-            this.largeList && this.largeList.scrollToEnd();
+            this.largeList.scrollToIndexPath({section:1,row:50});
           }}
         >
           <Text>ScrollToEnd</Text>
@@ -62,6 +57,7 @@ class LargeListSample extends React.Component {
           ref={ref => (this.largeList = ref)}
           bounces={true}
           refreshing={this.state.refreshing}
+          nativeOptimize={this.props.nativeOptimize}
           onRefresh={() => {
             this.setState({ refreshing: true });
             setTimeout(() => this.setState({ refreshing: false }), 2000);

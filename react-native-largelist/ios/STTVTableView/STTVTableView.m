@@ -124,6 +124,7 @@
     if (!cell) {
         cell = [[STTVTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
         cell.tag = rowTag;
+        cell.createTag = rowTag;
         NSAssert(self.cellContainer, @"STTVTableView : error: cellContainer not found when dequeue cell");
         [self.cellContainer createViewOnCell:cell numberOfMostRows:self.numberOfMaxCell];
         return cell;
@@ -132,6 +133,33 @@
     cell.contentView.backgroundColor = cell.jsView.subviews.firstObject.backgroundColor;
     [cell.jsView updateToRow:rowTag];
     return cell;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    self.cellContainer.scrolling = YES;
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
+    self.cellContainer.fastScrolling = YES;
+    return YES;
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    self.cellContainer.scrolling = NO;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        self.cellContainer.scrolling = NO;
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    self.cellContainer.scrolling = NO;
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    self.cellContainer.scrolling = NO;
 }
 
 -(void)onRefreshBegin:(UIRefreshControl *)sender{
@@ -161,6 +189,7 @@
 }
 
 - (void)scrollToIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UITableViewScrollPosition)position animated:(BOOL)animated{
+    self.cellContainer.fastScrolling = YES;
     [self.table scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
