@@ -87,8 +87,8 @@ heightForSection | (section:number) => number | 0 | 函数：返回当前section
 renderHeader | () => React.Element | null | 函数：列表的头部组件的render函数
 renderFooter | () => React.Element | null | 函数：列表的尾部组件的render函数
 bounces | boolean | true | 组件滑动到边缘是否可以继续滑动，松开后弹回
-refreshing | boolean | true | 是否正在刷新
-onRefresh | () => any | ()=>{} | 下拉刷新的回调
+refreshing | boolean | undefined | 是否正在刷新
+onRefresh | () => any | undefined | 下拉刷新的回调,如果用户设置了此属性，则添加一个刷新控件
 onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动的回调，同官方ScrollView
 
 # 原理
