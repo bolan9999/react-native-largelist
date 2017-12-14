@@ -127,6 +127,8 @@ It is the same as scrollEventThrottle on ScrollView
 The callback when an indexpath did enter safeArea.
 ### onIndexPathDidLeaveSafeArea (type:(indexPath:IndexPath)=>any)
 The callback when an indexpath did leave safeArea.
+### nativeOptimize (type:bool, default: false)
+Use native optimize, iOS only. This is an experimental prop.If it is set, safeArea doesn't make sense. To use the prop, you should add "${YourProject}/node_modules/react-native-largelist/ios/STTVTableView.xcodeproj" to your iOS project. And make sure link it.
 
 # Method
 ### scrollTo(offset:Offset, animated:boolean=true)
