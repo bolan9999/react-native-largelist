@@ -343,7 +343,7 @@ class LargeList extends React.Component {
       speed < this.props.speedLevel1
     ) {
       reloadType = 0;
-    } else if (speed < this.props.speedLevel2) {
+    } else {
       reloadType = 1;
     }
 
