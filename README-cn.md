@@ -12,8 +12,6 @@ For English readme.md [click here](./README.md)
 
 ## 接入步骤
 
-iOS:
-
 * 确认您的项目是React Native项目
 
 * 使用下面的命令安装:
