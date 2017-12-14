@@ -55,7 +55,7 @@ class LargeList extends React.Component {
     renderHeader: PropTypes.func,
     renderFooter: PropTypes.func,
     bounces: PropTypes.bool,
-    onTopRefresh: PropTypes.func,
+    onRefresh: PropTypes.func,
 
     safeMargin: PropTypes.number,
     refreshing: PropTypes.bool,
@@ -84,7 +84,6 @@ class LargeList extends React.Component {
     renderHeader: ()=>null,
     renderFooter: ()=>null,
     bounces: true,
-    onRefresh: () => {},
     nativeOptimize:false,
 
     safeMargin: 600,
@@ -213,7 +212,7 @@ class LargeList extends React.Component {
           ref={ref => (this.scrollViewRef = ref)}
           bounces={this.props.bounces}
           refreshControl={
-            this.props.refreshing !== undefined ?
+            this.props.onRefresh !== undefined ?
             <RefreshControl
               refreshing={this.props.refreshing}
               onRefresh={this.props.onRefresh}
