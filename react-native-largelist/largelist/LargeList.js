@@ -392,6 +392,10 @@ class LargeList extends React.Component {
         this.safeArea.bottom < this.contentSize.height - this.footerHeight &&
         this.safeArea.bottom < offset.y + this.size.height + bottomMargin
       ) {
+        if (this._compareIndexPath(this.bottomIndexPath,{section:this.props.numberOfSections-1,row:this.props.numberOfRowsInSection(this.props.numberOfSections-1)-1})>=0)
+        {
+          break;
+        }
         this.bottomIndexPath.row++;
         if (
           this.bottomIndexPath.row >=
@@ -494,8 +498,11 @@ class LargeList extends React.Component {
         this.safeArea.top > this.headerHeight &&
         this.safeArea.top > offset.y - topMargin
       ) {
+        if (this._compareIndexPath(this.topIndexPath,{section:0,row:-1})<=0){
+          break;
+        }
         this.topIndexPath.row--;
-        if (this.topIndexPath.row == -1) {
+        if (this.topIndexPath.row === -1) {
           let reference = this.freeSectionRefs.pop();
           if (!reference) {
             this.sections.push(
@@ -522,7 +529,7 @@ class LargeList extends React.Component {
           );
           continue;
         }
-        if (this.topIndexPath.row == -2) {
+        if (this.topIndexPath.row === -2) {
           this.topIndexPath.section--;
           this.topIndexPath.row = this.props.numberOfRowsInSection(
             this.topIndexPath.section
@@ -701,7 +708,7 @@ class LargeList extends React.Component {
   }
 
   _compareIndexPath(indexPath1: IndexPath, indexPath2: IndexPath) {
-    if (indexPath1.section != indexPath2.section)
+    if (indexPath1.section !== indexPath2.section)
       return indexPath1.section - indexPath2.section;
     return indexPath1.row - indexPath2.row;
   }

@@ -10,7 +10,8 @@ import {
 import {
   LargeListSample,
   SectionListSample,
-  LargeListSample2
+  LargeListSample2,
+  LargeListSample3
 } from "./samples";
 
 export default class App extends React.Component {
@@ -43,6 +44,8 @@ export default class App extends React.Component {
         );
       case 3:
         return <LargeListSample2 style={{ flex: 1 }} />;
+      case 4:
+        return <LargeListSample3 style={{ flex: 1 }} />;
     }
     return this.renderChoose();
   }

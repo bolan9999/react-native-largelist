@@ -8,7 +8,7 @@
  */
 
 
-let icons = {
+let iconObject = {
   icon1:require("./icon1.png"),
   icon2:require("./icon2.png"),
   icon3:require("./icon3.png"),
@@ -19,7 +19,9 @@ let icons = {
   icon8:require("./icon8.png"),
   icon9:require("./icon9.png"),
   icon10:require("./icon10.png"),
-  icon11:require("./icon11.png"),
+  icon11:require("./icon8.png"),
 }
 
-export {icons};
+let iconArray = Object.values(iconObject);
+
+export {iconObject,iconArray};
