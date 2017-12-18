@@ -81,10 +81,10 @@ class LargeList extends React.Component {
     numberOfRowsInSection: section => 0,
     renderSection: () => null,
     heightForSection: section => 0,
-    renderHeader: ()=>null,
-    renderFooter: ()=>null,
+    renderHeader: () => null,
+    renderFooter: () => null,
     bounces: true,
-    nativeOptimize:false,
+    nativeOptimize: false,
 
     safeMargin: 600,
     dynamicMargin: 500,
@@ -124,19 +124,25 @@ class LargeList extends React.Component {
   keyForCreating: number = 0;
   minCellHeight: number = 40;
   minSectionHeight: number = 40;
-  scrollViewRef: ScrollView|TableView;
-  native:boolean=false;
+  scrollViewRef: ScrollView | TableView;
+  native: boolean = false;
 
   constructor(props) {
     super(props);
-    this.native = Platform.OS==="ios" && props.nativeOptimize && TableView;
+    this.native = Platform.OS === "ios" && props.nativeOptimize && TableView;
     for (let i = 0; i < this.props.numberOfSections; ++i) {
-      if (this.minSectionHeight > this.props.heightForSection(i) && this.props.heightForSection(i)>10) {
+      if (
+        this.minSectionHeight > this.props.heightForSection(i) &&
+        this.props.heightForSection(i) > 10
+      ) {
         this.minSectionHeight = this.props.heightForSection(i);
       }
       this.contentSize.height += this.props.heightForSection(i);
       for (let j = 0; j < this.props.numberOfRowsInSection(i); ++j) {
-        if (this.minCellHeight > this.props.heightForCell(i, j) && this.props.heightForCell(i, j)>10) {
+        if (
+          this.minCellHeight > this.props.heightForCell(i, j) &&
+          this.props.heightForCell(i, j) > 10
+        ) {
           this.minCellHeight = this.props.heightForCell(i, j);
         }
         this.contentSize.height += this.props.heightForCell(i, j);
@@ -205,18 +211,22 @@ class LargeList extends React.Component {
   }
 
   render() {
-    if (this.native) return <TableView ref={ref=>this.scrollViewRef=ref} {...this.props}/>
+    if (this.native)
+      return (
+        <TableView ref={ref => (this.scrollViewRef = ref)} {...this.props} />
+      );
     return (
-      <View {...this.props} style={[this.props.style,{overflow:"hidden"}]}>
+      <View {...this.props} style={[this.props.style, { overflow: "hidden" }]}>
         <ScrollView
           ref={ref => (this.scrollViewRef = ref)}
           bounces={this.props.bounces}
           refreshControl={
-            this.props.onRefresh !== undefined ?
-            <RefreshControl
-              refreshing={this.props.refreshing}
-              onRefresh={this.props.onRefresh}
-            /> : null
+            this.props.onRefresh !== undefined
+              ? <RefreshControl
+                  refreshing={this.props.refreshing}
+                  onRefresh={this.props.onRefresh}
+                />
+              : null
           }
           contentContainerStyle={{
             alignSelf: "stretch",
@@ -281,7 +291,10 @@ class LargeList extends React.Component {
           left: 0,
           right: 0,
           top: top,
-          height: refs==this.workSectionRefs ? this.props.heightForSection(section) : 0
+          height:
+            refs == this.workSectionRefs
+              ? this.props.heightForSection(section)
+              : 0
         }}
         section={section}
         renderSection={this.props.renderSection}
@@ -295,7 +308,8 @@ class LargeList extends React.Component {
     top: number,
     refs: LargeListCell[]
   ) {
-    let height = refs==this.workRefs ? this.props.heightForCell(section, row) : 0;
+    let height =
+      refs == this.workRefs ? this.props.heightForCell(section, row) : 0;
     return (
       <LargeListCell
         ref={reference => reference && refs.push(reference)}
@@ -316,13 +330,13 @@ class LargeList extends React.Component {
   _onMomentumScrollEnd() {
     this.lastScrollTime = 0;
     // setTimeout(()=>
-    this._forceUpdate();//,50);
+    this._forceUpdate(); //,50);
   }
 
   _onScroll(e) {
     let offset: Offset = e.nativeEvent.contentOffset;
     let distance = Math.abs(offset.y - this.contentOffset.y);
-    if (distance<this.minCellHeight) {
+    if (distance < this.minCellHeight) {
       this._exchangeSection(offset);
       return;
     }
@@ -347,64 +361,64 @@ class LargeList extends React.Component {
       reloadType = 1;
     }
 
-
     if (offset.y > this.contentOffset.y) {
       if (reloadType === 1) {
         topMargin = this.props.safeMargin - this.props.dynamicMargin;
         bottomMargin = this.props.safeMargin + this.props.dynamicMargin;
       }
-      this.workSectionRefs.forEach(section => {
-        if (section.top + section.height < offset.y - topMargin) {
-          this.freeSectionRefs.push(section);
-          if (this.safeArea.top < section.top + section.height) {
-            this.safeArea.top = section.top + section.height;
-          }
+
+      //下滑 处理上边
+      while (this.safeArea.top < offset.y - topMargin && this.safeArea.top>this.headerHeight) {
+        let lastIndexPath = this.topIndexPath;
+        this.topIndexPath = this._nextIndexPathWithIndexPath(this.topIndexPath);
+        if (lastIndexPath.row === -1) {
+          this.safeArea.top += this.props.heightForSection(
+            lastIndexPath.section
+          );
+          //Section离开事件
+        } else {
+          this.safeArea.top += this.props.heightForCell(
+            lastIndexPath.section,
+            lastIndexPath.row
+          );
+          this.props.onIndexPathDidLeaveSafeArea &&
+            this.props.onIndexPathDidLeaveSafeArea({
+              section: lastIndexPath.section,
+              row: lastIndexPath.row
+            });
+        }
+      }
+
+      //下滑 移动无用Section和Cell
+      this.workSectionRefs.forEach(item => {
+        if (item.section < this.topIndexPath.section) {
+          this.freeSectionRefs.push(item);
         }
       });
       this.freeSectionRefs.forEach(section => {
         let index = this.workSectionRefs.indexOf(section);
         this.workSectionRefs.splice(index, index > -1 ? 1 : 0);
       });
-
-      this.workRefs.forEach(cell => {
-        if (cell.top + cell.height < offset.y - topMargin) {
-          this.freeRefs.push(cell);
-          this.props.onIndexPathDidLeaveSafeArea &&
-            this.props.onIndexPathDidLeaveSafeArea({
-              section: cell.indexPath.section,
-              row: cell.indexPath.row
-            });
-          if (this._compareIndexPath(this.topIndexPath, cell.indexPath) <= 0) {
-            this.topIndexPath = this._nextIndexPathWithIndexPath(
-              cell.indexPath
-            );
-          }
-          if (this.safeArea.top < cell.top + cell.height) {
-            this.safeArea.top = cell.top + cell.height;
-          }
+      this.workRefs.forEach(item => {
+        if (this._compareIndexPath(item.indexPath, this.topIndexPath) < 0) {
+          this.freeRefs.push(item);
         }
       });
       this.freeRefs.forEach(cell => {
         let index = this.workRefs.indexOf(cell);
         this.workRefs.splice(index, index > -1 ? 1 : 0);
       });
-      while (
-        this.safeArea.bottom < this.contentSize.height - this.footerHeight &&
-        this.safeArea.bottom < offset.y + this.size.height + bottomMargin
-      ) {
-        if (this._compareIndexPath(this.bottomIndexPath,{section:this.props.numberOfSections-1,row:this.props.numberOfRowsInSection(this.props.numberOfSections-1)-1})>=0)
-        {
-          break;
-        }
-        this.bottomIndexPath.row++;
-        if (
-          this.bottomIndexPath.row >=
-          this.props.numberOfRowsInSection(this.bottomIndexPath.section)
-        ) {
-          this.bottomIndexPath.section++;
-          this.bottomIndexPath.row = -1;
-          let reference = this.freeSectionRefs.pop();
 
+      //下滑 处理下边
+      while (
+        this.safeArea.bottom < offset.y + this.size.height + bottomMargin &&
+        this.safeArea.bottom < this.contentSize.height - this.footerHeight
+      ) {
+        this.bottomIndexPath = this._nextIndexPathWithIndexPath(
+          this.bottomIndexPath
+        );
+        if (this.bottomIndexPath.row === -1) {
+          let reference = this.freeSectionRefs.pop();
           if (!reference) {
             this.sections.push(
               this._createSection(
@@ -422,144 +436,218 @@ class LargeList extends React.Component {
             );
             this.workSectionRefs.push(reference);
           }
-
           this.safeArea.bottom += this.props.heightForSection(
             this.bottomIndexPath.section
           );
-          continue;
-        }
-
-        let reference = this.freeRefs.pop();
-        if (!reference) {
-          reference = this._topCellRef();
-          this.topIndexPath = this._nextIndexPathWithIndexPath(reference.indexPath);
-          this.safeArea.top = reference.top+reference.height;
         } else {
-          this.workRefs.push(reference);
+            let reference = this.freeRefs.pop();
+            if (!reference) {
+              // console.error("can not find freeRefs when sliding");
+              reference = this._topCellRef();
+              this.topIndexPath = this._nextIndexPathWithIndexPath(reference.indexPath);
+              this.safeArea.top = reference.top+reference.height;
+            } else {
+              this.workRefs.push(reference);
+            }
+            let nextHeight = this.props.heightForCell(
+              this.bottomIndexPath.section,
+              this.bottomIndexPath.row
+            );
+            reference.updateToIndexPath(
+              this.bottomIndexPath,
+              this.safeArea.bottom,
+              nextHeight
+            );
+            this.props.onIndexPathDidEnterSafeArea &&
+              this.props.onIndexPathDidEnterSafeArea({
+                section: this.bottomIndexPath.section,
+                row: this.bottomIndexPath.row
+              });
+            this.safeArea.bottom += nextHeight;
         }
-        let nextHeight = this.props.heightForCell(
-          this.bottomIndexPath.section,
-          this.bottomIndexPath.row
-        );
-        reference.updateToIndexPath(
-          this.bottomIndexPath,
-          this.safeArea.bottom,
-          nextHeight
-        );
-        this.props.onIndexPathDidEnterSafeArea &&
-          this.props.onIndexPathDidEnterSafeArea({
-            section: this.bottomIndexPath.section,
-            row: this.bottomIndexPath.row
-          });
-        this.safeArea.bottom += nextHeight;
       }
     } else {
-      if (reloadType===1) {
+      if (reloadType === 1) {
         topMargin = this.props.safeMargin + this.props.dynamicMargin;
         bottomMargin = this.props.safeMargin - this.props.dynamicMargin;
       }
-      this.workSectionRefs.forEach(section => {
-        if (section.top > offset.y + this.size.height + bottomMargin) {
-          this.freeSectionRefs.push(section);
-          if (this.safeArea.bottom > section.top) {
-            this.safeArea.bottom = section.top;
-          }
+
+      //上滑，处理下边
+      while (
+        this.safeArea.bottom >
+        offset.y + this.size.height + bottomMargin
+      ) {
+        let lastIndexPath = this.bottomIndexPath;
+        this.bottomIndexPath = this._previousIndexPathWithIndexPath(
+          this.bottomIndexPath
+        );
+        if (lastIndexPath.row === -1) {
+          this.safeArea.bottom -= this.props.heightForSection(
+            lastIndexPath.section
+          );
+          //Section离开事件
+        } else {
+          this.safeArea.bottom -= this.props.heightForCell(
+            lastIndexPath.section,
+            lastIndexPath.row
+          );
+          this.props.onIndexPathDidLeaveSafeArea &&
+            this.props.onIndexPathDidLeaveSafeArea({
+              section: lastIndexPath.section,
+              row: lastIndexPath.row
+            });
+        }
+      }
+
+      //移动Cell
+      this.workSectionRefs.forEach(item => {
+        if (item.section > this.bottomIndexPath.section) {
+          this.freeSectionRefs.push(item);
         }
       });
       this.freeSectionRefs.forEach(section => {
         let index = this.workSectionRefs.indexOf(section);
         this.workSectionRefs.splice(index, index > -1 ? 1 : 0);
       });
-      this.workRefs.forEach(cell => {
-        if (cell.top > offset.y + this.size.height + bottomMargin) {
-          this.freeRefs.push(cell);
-          this.props.onIndexPathDidLeaveSafeArea &&
-            this.props.onIndexPathDidLeaveSafeArea({
-              section: cell.indexPath.section,
-              row: cell.indexPath.row
-            });
-          if (
-            this._compareIndexPath(this.bottomIndexPath, cell.indexPath) >= 0
-          ) {
-            this.bottomIndexPath = this._previousIndexPathWithIndexPath(
-              cell.indexPath
-            );
-          }
-          if (this.safeArea.bottom > cell.top) {
-            this.safeArea.bottom = cell.top;
-          }
+
+      this.workRefs.forEach(item => {
+        if (this._compareIndexPath(item.indexPath, this.bottomIndexPath) > 0) {
+          this.freeRefs.push(item);
         }
       });
       this.freeRefs.forEach(cell => {
         let index = this.workRefs.indexOf(cell);
         this.workRefs.splice(index, index > -1 ? 1 : 0);
       });
+
+
+      //上滑，处理上边
       while (
-        this.safeArea.top > this.headerHeight &&
-        this.safeArea.top > offset.y - topMargin
-      ) {
-        if (this._compareIndexPath(this.topIndexPath,{section:0,row:-1})<=0){
-          break;
-        }
-        this.topIndexPath.row--;
+        this.safeArea.top > offset.y - topMargin &&
+        this.safeArea.top > this.headerHeight
+        ) {
+        // let lastIndexPath = this.bottomIndexPath;
+        this.topIndexPath = this._previousIndexPathWithIndexPath(
+          this.topIndexPath
+        );
         if (this.topIndexPath.row === -1) {
+          this.safeArea.top -= this.props.heightForSection(this.topIndexPath.section);
           let reference = this.freeSectionRefs.pop();
           if (!reference) {
+            console.error("freeSectionRefs can not find when sliding to top on bottom");
             this.sections.push(
               this._createSection(
                 this.topIndexPath.section,
-                this.safeArea.top -
-                  this.props.heightForSection(this.topIndexPath.section),
+                this.safeArea.top,
                 this.workSectionRefs
               )
             );
           } else {
             reference.updateToSection(
               this.topIndexPath.section,
-              this.safeArea.top -
-                this.props.heightForSection(this.topIndexPath.section),
+              this.safeArea.top,
               this.props.heightForSection(this.topIndexPath.section),
               true
             );
             this.workSectionRefs.push(reference);
           }
-
-          this.safeArea.top -= this.props.heightForSection(
-            this.topIndexPath.section
-          );
-          continue;
-        }
-        if (this.topIndexPath.row === -2) {
-          this.topIndexPath.section--;
-          this.topIndexPath.row = this.props.numberOfRowsInSection(
-            this.topIndexPath.section
-          );
-          continue;
-        }
-        let reference = this.freeRefs.pop();
-        if (!reference) {
-          reference = this._bottomCellRef();
-          this.bottomIndexPath = this._previousIndexPathWithIndexPath(reference.indexPath);
-          this.safeArea.bottom =reference.top;
         } else {
-          this.workRefs.push(reference);
-        }
-        let nextHeight = this.props.heightForCell(
-          this.topIndexPath.section,
-          this.topIndexPath.row
-        );
-        reference.updateToIndexPath(
-          this.topIndexPath,
-          this.safeArea.top - nextHeight,
-          nextHeight
-        );
-        this.props.onIndexPathDidEnterSafeArea &&
+          this.safeArea.top -= this.props.heightForCell(this.topIndexPath.section,this.topIndexPath.row);
+          let reference = this.freeRefs.pop();
+          if (!reference) {
+            reference = this._bottomCellRef();
+            this.bottomIndexPath = this._previousIndexPathWithIndexPath(reference.indexPath);
+            this.safeArea.bottom = reference.top;
+          } else {
+            this.workRefs.push(reference);
+          }
+          let nextHeight = this.props.heightForCell(
+            this.topIndexPath.section,
+            this.topIndexPath.row
+          );
+          reference.updateToIndexPath(
+            this.topIndexPath,
+            this.safeArea.top,
+            nextHeight
+          );
+          this.props.onIndexPathDidEnterSafeArea &&
           this.props.onIndexPathDidEnterSafeArea({
             section: this.topIndexPath.section,
             row: this.topIndexPath.row
           });
-        this.safeArea.top -= nextHeight;
+        }
       }
+    //   while (
+    //     this.safeArea.top > this.headerHeight &&
+    //     this.safeArea.top > offset.y - topMargin
+    //   ) {
+    //     if (
+    //       this._compareIndexPath(this.topIndexPath, { section: 0, row: -1 }) <=
+    //       0
+    //     ) {
+    //       break;
+    //     }
+    //     this.topIndexPath.row--;
+    //     if (this.topIndexPath.row === -1) {
+    //       let reference = this.freeSectionRefs.pop();
+    //       if (!reference) {
+    //         this.sections.push(
+    //           this._createSection(
+    //             this.topIndexPath.section,
+    //             this.safeArea.top -
+    //               this.props.heightForSection(this.topIndexPath.section),
+    //             this.workSectionRefs
+    //           )
+    //         );
+    //       } else {
+    //         reference.updateToSection(
+    //           this.topIndexPath.section,
+    //           this.safeArea.top -
+    //             this.props.heightForSection(this.topIndexPath.section),
+    //           this.props.heightForSection(this.topIndexPath.section),
+    //           true
+    //         );
+    //         this.workSectionRefs.push(reference);
+    //       }
+    //
+    //       this.safeArea.top -= this.props.heightForSection(
+    //         this.topIndexPath.section
+    //       );
+    //       continue;
+    //     }
+    //     if (this.topIndexPath.row === -2) {
+    //       this.topIndexPath.section--;
+    //       this.topIndexPath.row = this.props.numberOfRowsInSection(
+    //         this.topIndexPath.section
+    //       );
+    //       continue;
+    //     }
+    //     let reference = this.freeRefs.pop();
+    //     if (!reference) {
+    //       reference = this._bottomCellRef();
+    //       this.bottomIndexPath = this._previousIndexPathWithIndexPath(
+    //         reference.indexPath
+    //       );
+    //       this.safeArea.bottom = reference.top;
+    //     } else {
+    //       this.workRefs.push(reference);
+    //     }
+    //     let nextHeight = this.props.heightForCell(
+    //       this.topIndexPath.section,
+    //       this.topIndexPath.row
+    //     );
+    //     reference.updateToIndexPath(
+    //       this.topIndexPath,
+    //       this.safeArea.top - nextHeight,
+    //       nextHeight
+    //     );
+    //     this.props.onIndexPathDidEnterSafeArea &&
+    //       this.props.onIndexPathDidEnterSafeArea({
+    //         section: this.topIndexPath.section,
+    //         row: this.topIndexPath.row
+    //       });
+    //     this.safeArea.top -= nextHeight;
+    //   }
     }
 
     this._exchangeSection(offset);
@@ -575,7 +663,7 @@ class LargeList extends React.Component {
     this.props.onScroll && this.props.onScroll(e);
   }
 
-  _exchangeSection(offset:Offset){
+  _exchangeSection(offset: Offset) {
     let exchanging = false;
     this.workSectionRefs.forEach(item => {
       if (
@@ -713,11 +801,11 @@ class LargeList extends React.Component {
     return indexPath1.row - indexPath2.row;
   }
 
-  _topCellRef():LargeListCell {
+  _topCellRef(): LargeListCell {
     let top = this.contentSize.height;
-    let cell:LargeListCell;
-    this.workRefs.forEach(item=>{
-      if (top>item.top){
+    let cell: LargeListCell;
+    this.workRefs.forEach(item => {
+      if (top > item.top) {
         cell = item;
         top = item.top;
       }
@@ -725,11 +813,11 @@ class LargeList extends React.Component {
     return cell;
   }
 
-  _bottomCellRef():LargeListCell {
+  _bottomCellRef(): LargeListCell {
     let top = 0;
-    let cell:LargeListCell;
-    this.workRefs.forEach(item=>{
-      if (top<item.top){
+    let cell: LargeListCell;
+    this.workRefs.forEach(item => {
+      if (top < item.top) {
         cell = item;
         top = item.top;
       }
@@ -801,7 +889,6 @@ class LargeList extends React.Component {
   freeCount(): number {
     return this.freeRefs.length;
   }
-
 }
 
 export { LargeList };

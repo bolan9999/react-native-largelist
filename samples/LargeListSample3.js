@@ -24,6 +24,8 @@ class LargeListSample3 extends React.Component {
     return (
       <LargeList
         style={this.props.style}
+        // safeMargin={0}
+        // dynamicMargin={0}
         numberOfSections={contacts.length}
         numberOfRowsInSection={section => {
           if (section<0) {
