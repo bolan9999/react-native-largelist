@@ -329,8 +329,7 @@ class LargeList extends React.Component {
 
   _onMomentumScrollEnd() {
     this.lastScrollTime = 0;
-    // setTimeout(()=>
-    this._forceUpdate(); //,50);
+    this._forceUpdate();
   }
 
   _onScroll(e) {
@@ -442,7 +441,6 @@ class LargeList extends React.Component {
         } else {
             let reference = this.freeRefs.pop();
             if (!reference) {
-              // console.error("can not find freeRefs when sliding");
               reference = this._topCellRef();
               this.topIndexPath = this._nextIndexPathWithIndexPath(reference.indexPath);
               this.safeArea.top = reference.top+reference.height;
@@ -526,7 +524,6 @@ class LargeList extends React.Component {
         this.safeArea.top > offset.y - topMargin &&
         this.safeArea.top > this.headerHeight
         ) {
-        // let lastIndexPath = this.bottomIndexPath;
         this.topIndexPath = this._previousIndexPathWithIndexPath(
           this.topIndexPath
         );
@@ -534,7 +531,6 @@ class LargeList extends React.Component {
           this.safeArea.top -= this.props.heightForSection(this.topIndexPath.section);
           let reference = this.freeSectionRefs.pop();
           if (!reference) {
-            console.error("freeSectionRefs can not find when sliding to top on bottom");
             this.sections.push(
               this._createSection(
                 this.topIndexPath.section,
@@ -577,77 +573,6 @@ class LargeList extends React.Component {
           });
         }
       }
-    //   while (
-    //     this.safeArea.top > this.headerHeight &&
-    //     this.safeArea.top > offset.y - topMargin
-    //   ) {
-    //     if (
-    //       this._compareIndexPath(this.topIndexPath, { section: 0, row: -1 }) <=
-    //       0
-    //     ) {
-    //       break;
-    //     }
-    //     this.topIndexPath.row--;
-    //     if (this.topIndexPath.row === -1) {
-    //       let reference = this.freeSectionRefs.pop();
-    //       if (!reference) {
-    //         this.sections.push(
-    //           this._createSection(
-    //             this.topIndexPath.section,
-    //             this.safeArea.top -
-    //               this.props.heightForSection(this.topIndexPath.section),
-    //             this.workSectionRefs
-    //           )
-    //         );
-    //       } else {
-    //         reference.updateToSection(
-    //           this.topIndexPath.section,
-    //           this.safeArea.top -
-    //             this.props.heightForSection(this.topIndexPath.section),
-    //           this.props.heightForSection(this.topIndexPath.section),
-    //           true
-    //         );
-    //         this.workSectionRefs.push(reference);
-    //       }
-    //
-    //       this.safeArea.top -= this.props.heightForSection(
-    //         this.topIndexPath.section
-    //       );
-    //       continue;
-    //     }
-    //     if (this.topIndexPath.row === -2) {
-    //       this.topIndexPath.section--;
-    //       this.topIndexPath.row = this.props.numberOfRowsInSection(
-    //         this.topIndexPath.section
-    //       );
-    //       continue;
-    //     }
-    //     let reference = this.freeRefs.pop();
-    //     if (!reference) {
-    //       reference = this._bottomCellRef();
-    //       this.bottomIndexPath = this._previousIndexPathWithIndexPath(
-    //         reference.indexPath
-    //       );
-    //       this.safeArea.bottom = reference.top;
-    //     } else {
-    //       this.workRefs.push(reference);
-    //     }
-    //     let nextHeight = this.props.heightForCell(
-    //       this.topIndexPath.section,
-    //       this.topIndexPath.row
-    //     );
-    //     reference.updateToIndexPath(
-    //       this.topIndexPath,
-    //       this.safeArea.top - nextHeight,
-    //       nextHeight
-    //     );
-    //     this.props.onIndexPathDidEnterSafeArea &&
-    //       this.props.onIndexPathDidEnterSafeArea({
-    //         section: this.topIndexPath.section,
-    //         row: this.topIndexPath.row
-    //       });
-    //     this.safeArea.top -= nextHeight;
-    //   }
     }
 
     this._exchangeSection(offset);
