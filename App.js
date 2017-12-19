@@ -11,7 +11,8 @@ import {
   LargeListSample,
   SectionListSample,
   LargeListSample2,
-  LargeListSample3
+  LargeListSample3,
+  LargeListSample4
 } from "./samples";
 
 export default class App extends React.Component {
@@ -46,6 +47,8 @@ export default class App extends React.Component {
         return <LargeListSample2 style={{ flex: 1 }} />;
       case 4:
         return <LargeListSample3 style={{ flex: 1 }} />;
+      case 5:
+        return <LargeListSample4/>
     }
     return this.renderChoose();
   }
@@ -107,6 +110,12 @@ export default class App extends React.Component {
         <TouchableOpacity
           style={{ alignItems: "center" }}
           onPress={() => this.setState({ type: 4 })}
+        >
+          <Text style={styles.text}>LargeListSample3</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={() => this.setState({ type: 5 })}
         >
           <Text style={styles.text}>LargeListSample3</Text>
         </TouchableOpacity>

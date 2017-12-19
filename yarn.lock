@@ -3300,9 +3300,9 @@ react-devtools-core@^2.5.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-native-largelist@^0.0.5:
-  version "0.0.5"
-  resolved "http://registry.npm.taobao.org/react-native-largelist/download/react-native-largelist-0.0.5.tgz#012f4917a87c1f757decac39fdeb8816931b4fd9"
+react-native-largelist@^0.0.8:
+  version "0.0.8"
+  resolved "http://vnpm.msxf.local/react-native-largelist/-/react-native-largelist-0.0.8.tgz#d0670e257ed1222b906f9922d8b55b14eb67db6a"
   dependencies:
     prop-types "^15.6.0"
 
