@@ -18,6 +18,7 @@ interface IndexPath {
 
 class LargeListSection extends React.Component {
   static propTypes = {
+    numberOfSections: PropTypes.number,
     renderSection: PropTypes.func,
     section: PropTypes.number
   };
@@ -70,12 +71,13 @@ class LargeListSection extends React.Component {
   }
 
   render() {
+    let show = this.section>=0 && this.section<this.props.numberOfSections && this.top !== -10000;
     return (
       <View
         ref={ref => (this.rootView = ref)}
         style={[this.props.style, { top: this.top, height: this.height }]}
       >
-        {this.props.renderSection(this.section)}
+        {show && this.props.renderSection(this.section)}
       </View>
     );
   }
