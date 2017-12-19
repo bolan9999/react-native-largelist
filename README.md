@@ -125,6 +125,10 @@ It is the same as scrollEventThrottle on ScrollView
 The callback when an indexpath did enter safeArea.
 ### onIndexPathDidLeaveSafeArea (type:(indexPath:IndexPath)=>any)
 The callback when an indexpath did leave safeArea.
+### showsVerticalScrollIndicator (type:bool,default:true)
+Show vertical scroll indicator.
+### onSectionDidHangOnTop (type:section=>any, default: ()=>{})
+The callback when a new Section hang on the top of the LargeList.
 ### speedLevel1 (type:number, default:4)
 If the speed of scrolling is faster than speedLevel1, LargeList will not rerender, just use "setNativeProps" to move the position. Unit is    logic pixels/ms.
 ### speedLevel2 (type:number, default:10)
@@ -145,6 +149,18 @@ Get the visiable indexpaths at this time.
 Get the rendered indexpaths at this time.
 ### freeCount(): number
 Get the count of free views at this time.
+### reloadIndexPath(indexPath: IndexPath)
+Reload datasource on indexpath.
+### reloadIndexPaths(indexPaths: IndexPath[])
+Reload datasource in some indexpaths.
+### reloadAll()
+Reload all datasource.
+
+Notice:
+
+1. All reload methods do not work well when the height of any Cell or Section changes.
+2. All reload methods do not work well when number of sections or number of rows in section changes .
+3. I will add a new method to reload all datasource if any number or height changes in the future version.
 
 # Dynamic variable
 ### size:Size

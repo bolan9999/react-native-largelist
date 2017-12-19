@@ -114,6 +114,10 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 当一个indexPath进入SafeArea时回调
 ### onIndexPathDidLeaveSafeArea (type:(indexPath:IndexPath)=>any)
 当一个indexPath离开SafeArea时回调
+### showsVerticalScrollIndicator (type:bool,default:true)
+显示垂直滚动指示器
+### onSectionDidHangOnTop (type:section=>any, default: ()=>{})
+当一个新的Section被挂在LargeList顶部时的回调
 ### speedLevel1 (type:number, default:4)
 当滑动的速度超过这个speedLevel1，LargeList则不会rerender，仅仅只是移动位置。  单位是  每毫秒移动的逻辑像素量。
 ### speedLevel2 (type:number, default:10)
@@ -135,6 +139,17 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 获取当前已经渲染好的所有IndexPaths
 ### freeCount(): number
 获取当前空闲的Cell数量
+### reloadIndexPath(indexPath: IndexPath)
+重新加载指定indexPath.
+### reloadIndexPaths(indexPaths: IndexPath[])
+重新加载一些指定的indexPaths
+### reloadAll()
+重新加载所有indexPaths
+
+Notice:
+
+1. 如果section数量、高度或每个Section里面Cell数量和高度变化，所有的reload方法都不能正常使用
+2. 后期版本将添加数量、高度变化后的重新加载数据
 
 # 动态变量
 ### size:Size
