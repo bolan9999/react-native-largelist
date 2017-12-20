@@ -150,17 +150,23 @@ Get the rendered indexpaths at this time.
 ### freeCount(): number
 Get the count of free views at this time.
 ### reloadIndexPath(indexPath: IndexPath)
-Reload datasource on indexpath.
+Reload datasource on indexpath partially.
 ### reloadIndexPaths(indexPaths: IndexPath[])
-Reload datasource in some indexpaths.
+Reload datasource in some indexpaths partially.
 ### reloadAll()
-Reload all datasource.
+Reload all datasource partially.
 
 Notice:
 
-1. All reload methods do not work well when the height of any Cell or Section changes.
-2. All reload methods do not work well when number of sections or number of rows in section changes .
-3. I will add a new method to reload all datasource if any number or height changes in the future version.
+1. reloadIndexPath, reloadIndexPaths, reloadAll work partially. They do not work well when the numberOfSections ,numberOfRowsInSection,heightForSection,heightForCell change.Use reloadData instead.
+
+### reloadData()
+Reload all datasource globally.
+
+Notice:
+
+1. If the numberOfSections ,numberOfRowsInSection,heightForSection,heightForCell change, you must use this method to reload.
+2. Do not use this method often, because it is bad performance.
 
 # Dynamic variable
 ### size:Size

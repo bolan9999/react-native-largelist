@@ -14,8 +14,7 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  Platform,
-  TouchableHighlight
+  Platform
 } from "react-native";
 import { LargeList } from "../react-native-largelist";
 import { foods } from "./DataSource";
@@ -44,8 +43,6 @@ class LargeListSample4 extends React.Component {
           renderCell={this.renderIndexes.bind(this)}
           showsVerticalScrollIndicator={false}
           bounces={false}
-          safeMargin={0}
-          dynamicMargin={0}
         />
         <LargeList
           ref={ref => (this.listRef = ref)}
@@ -130,7 +127,7 @@ class LargeListSample4 extends React.Component {
               <Text style={{ fontSize: 14, color: "#666" }}>
                 {food.sales}
               </Text>
-              <Text style={{ fontSize: 14, color: "#666" }}>
+              <Text style={{ fontSize: 14, color: "#666",marginLeft:10 }}>
                 {food.praise}
               </Text>
             </View>
@@ -168,11 +165,15 @@ class LargeListSample4 extends React.Component {
   onSectionChange(section:number){
     foods[this.selectedIndex].selected = false;
     foods[section].selected = true;
+    // 使用局部更新
     this.indexes.reloadIndexPaths([
       { section: 0, row: this.selectedIndex },
       { section: 0, row: section }
     ]);
     this.selectedIndex = section;
+    // 使用更新所有数据源
+    // this.indexes.reloadData();
+
     let bFind = false;
     this.indexes.visiableIndexPaths().forEach(indexPath=>{
       if (indexPath.row===section) {
@@ -182,6 +183,7 @@ class LargeListSample4 extends React.Component {
     if (!bFind) {
       this.indexes.scrollToIndexPath({section:0,row:section});
     }
+
   }
 
   onBuy(food) {
