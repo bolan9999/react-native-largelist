@@ -140,16 +140,23 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 ### freeCount(): number
 获取当前空闲的Cell数量
 ### reloadIndexPath(indexPath: IndexPath)
-重新加载指定indexPath.
+局部重新加载指定indexPath.
 ### reloadIndexPaths(indexPaths: IndexPath[])
-重新加载一些指定的indexPaths
+局部重新加载一些指定的indexPaths
 ### reloadAll()
-重新加载所有indexPaths
+局部重新加载所有indexPaths
 
-Notice:
+注意:
 
-1. 如果section数量、高度或每个Section里面Cell数量和高度变化，所有的reload方法都不能正常使用
-2. 后期版本将添加数量、高度变化后的重新加载数据
+1. reloadIndexPath, reloadIndexPaths, reloadAll 都是局部重新加载，因此影响列表的全局属性，比如numberOfSections ,numberOfRowsInSection,heightForSection,heightForCell属性改变，则会导致错乱，请使用reloadData。
+
+### reloadData()
+全局重新加载所有数据
+
+注意：
+
+1. 如果影响列表的全局属性，比如numberOfSections ,numberOfRowsInSection,heightForSection,heightForCell属性改变，必须使用此方法更新
+2. 不要过度使用它，因为它的效率是很低的。
 
 # 动态变量
 ### size:Size
