@@ -181,3 +181,6 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 ## 目标计划
 1. 修正细节问题
 2. 提供编辑功能
+
+# 性能展示
+查看LargeList的性能表现：[优酷](http://v.youku.com/v_show/id_XMzI0ODc4ODkyOA==.html) 或者 [youtube](https://youtu.be/k95G3_QGYHE)
