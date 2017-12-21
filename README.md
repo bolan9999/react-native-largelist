@@ -18,6 +18,9 @@ This is a react-native-largelist with 3000 cells
 
 ![Preview](./readme_resources/example.gif)
 
+## Performance Show
+View the video of react-native-largelist performance on [youtube](https://youtu.be/k95G3_QGYHE) or [youku](http://v.youku.com/v_show/id_XMzI0ODc4ODkyOA==.html)
+
 ## Getting Started
 
 * Make sure your project is react-native project.
@@ -188,5 +191,3 @@ Get LargeList's header height
 ### footerHeight:number
 Get LargeList's footer height
 
-# Performance Show
-View the video of react-native-largelist performance on [youtube](https://youtu.be/k95G3_QGYHE) or [youku](http://v.youku.com/v_show/id_XMzI0ODc4ODkyOA==.html)
