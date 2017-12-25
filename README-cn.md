@@ -40,7 +40,7 @@ import { LargeList } from "react-native-largelist";
         }}
         safeMargin={600}
         numberOfRowsInSection={section => this.props.numberOfEachSection}
-        numberOfSections={this.props.numberOfSections}
+        numberOfSections={()=>this.props.numberOfSections}
         heightForCell={(section, row) =>
           row % 2 ? this.minCellHeight : this.maxCellHeight}
         renderCell={this.renderItem.bind(this)}
@@ -79,12 +79,12 @@ import { LargeList } from "react-native-largelist"
 属性  |  类型  |  默认  |  作用  
 ------ | ------ | --------- | --------
 （ViewPropTypes） | （ViewPropTypes） |  | View的所有属性
-numberOfSections | number | 1 | 总的Section数量
+numberOfSections | ()=>number | ()=>1 | 总的Section数量
 numberOfRowsInSection | (section:number) => number | section=>0 | 函数：根据section索引返回当前section的Cell数量
 renderCell | (section:number,row:number) => React.Element | 必须 | 函数:根据当前Section和Row，返回当前Cell的render
 heightForCell | (section:number,row:number) => number | 必须 | 函数：根据Section和row index，返回当前Cell的高度
 renderSection | (section:number) => React.Element | section=>null | 函数：当前Section的render函数
-heightForSection | (section:number) => number | 0 | 函数：返回当前section的高度
+heightForSection | (section:number) => number | ()=>0 | 函数：返回当前section的高度
 renderHeader | () => React.Element | ()=>null | 函数：列表的头部组件的render函数
 renderFooter | () => React.Element | ()=>null | 函数：列表的尾部组件的render函数
 bounces | boolean | true | 组件滑动到边缘是否可以继续滑动，松开后弹回
@@ -107,27 +107,80 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 
 # 高级属性
 
-### safeMargin ( type:number ,default: 600)
-上下额外的预渲染高度，值越大在快速滑动过程中越不容易看到空白，但是第一次加载的时间越长
-### dynamicMargin (type:number,default: 500)
-在快速滑动过程中，允许上下端相互借用的预渲染高度。比如假设safeMargin=600，dynamicMargin=500，在快速下滑过程中，上端只额外渲染100高度，下端额外渲染1100高度，反之亦然。 在慢速滑动过程中该属性无作用。请注意：该属性不能大于safeMargin
-### scrollEventThrottle (type: number ,default: ios:16 android:32)
-同ScrollView的scrollEventThrottle，滑动过程中，onScroll回调时间最小间隔，值越小，相同的滑动追踪次数越多，越不容易出现空白，性能越差。
-### onIndexPathDidEnterSafeArea (type:(indexPath:IndexPath)=>any)
-当一个indexPath进入SafeArea时回调
-### onIndexPathDidLeaveSafeArea (type:(indexPath:IndexPath)=>any)
-当一个indexPath离开SafeArea时回调
-### showsVerticalScrollIndicator (type:bool,default:true)
-显示垂直滚动指示器
-### onSectionDidHangOnTop (type:section=>any, default: ()=>{})
-当一个新的Section被挂在LargeList顶部时的回调
-### speedLevel1 (type:number, default:4)
-当滑动的速度超过这个speedLevel1，LargeList则不会rerender，仅仅只是移动位置。  单位是  每毫秒移动的逻辑像素量。
-### speedLevel2 (type:number, default:10)
-当前版本无意义
-### nativeOptimize (type:bool, default: false)
-启用原生优化，iOS专用。这是一个实验性的功能，使用该功能以后，safeArea就没有意义了。要使用改功能，请将"${YourProject}/node_modules/react-native-largelist/ios/STTVTableView.xcodeproj"拖入您的iOS项目，并且保证链接了它
+### safeMargin
+* type: number
+* default: 600
+* 上下额外的预渲染高度，值越大在快速滑动过程中越不容易看到空白，但是第一次加载的时间越长
 
+### dynamicMargin
+* type: number
+* default: 500
+* 在快速滑动过程中，允许上下端相互借用的预渲染高度。比如假设safeMargin=600，dynamicMargin=500，在快速下滑过程中，上端只额外渲染100高度，下端额外渲染1100高度，反之亦然。 在慢速滑动过程中该属性无作用。请注意：该属性不能大于safeMargin
+
+### scrollEventThrottle
+* type: number
+* default: ios:16
+* 同ScrollView的scrollEventThrottle，滑动过程中，onScroll回调时间最小间隔，值越小，相同的滑动追踪次数越多，越不容易出现空白，性能越差。
+
+### onIndexPathDidEnterSafeArea
+* type: (indexPath:IndexPath)=>any
+* default: ()=>null
+* 当一个indexPath进入SafeArea时回调
+
+### onIndexPathDidLeaveSafeArea
+* type: (indexPath:IndexPath)=>any
+* default: ()=>null
+* 当一个indexPath离开SafeArea时回调
+
+### showsVerticalScrollIndicator
+* type: bool
+* default: true
+* 显示垂直滚动指示器
+
+### onSectionDidHangOnTop
+* type: section=>any
+* default: ()=>null
+* 当一个新的Section被挂在LargeList顶部时的回调
+
+### speedLevel1
+* type: number
+* default: 4
+* 当滑动的速度超过这个speedLevel1，LargeList则不会rerender，仅仅只是移动位置。  单位是  每毫秒移动的逻辑像素量。
+
+### speedLevel2
+* type: number
+* default: 10
+* 当前版本无意义
+
+### nativeOptimize
+* type: bool
+* default: false
+* 启用原生优化，iOS专用。这是一个实验性的功能，使用该功能以后，safeArea就没有意义了。要使用改功能，请将"${YourProject}/node_modules/react-native-largelist/ios/STTVTableView.xcodeproj"拖入您的iOS项目，并且保证链接了它
+
+### onLoadMore
+* type: ()=>any
+* default: null
+* 上拉加载更多的回调，如果设置了此属性，则在下面会有一个上拉的控件
+
+### heightForLoadMore
+* type: ()=>number
+* default: ()=>70
+* 上拉控件的高度
+
+### allLoadCompleted
+* type: bool
+* default: false
+* 数据源是否全部加载完成
+
+### renderLoadingMore
+* type: ()=>React.Element
+* default: ()=> < ActivityIndicator style={{ marginTop: 10, alignSelf: "center" }} size={"large"}/ >
+* 用户自定义上拉加载更多的动画视图，目前暂不支持事件驱动动画
+
+### renderLoadCompleted
+* type: ()=>React.Element
+* default: ()=> < Text style={{ marginTop: 20, alignSelf: "center", fontSize: 16 }}>No more data< /Text >
+* 用户自定义上拉时，加载完成的动画视图。
 
 # 方法
 ### scrollTo(offset:Offset, animated:boolean=true)
@@ -136,7 +189,7 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 滑动到一个指定的IndexPath:{section:number,row:number}
 ### scrollToEnd(animated:boolean=true)
 滑动到最底部
-### visiableIndexPaths():IndexPath[]
+### visibleIndexPaths():IndexPath[]
 获取当前可见的所有IndexPaths
 ### renderedIndexPaths():IndexPath[]
 获取当前已经渲染好的所有IndexPaths
@@ -183,6 +236,20 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 
 ## 目标计划
 1. 修正细节问题
-2. 提供编辑功能
+2. 提供左右滑动编辑功能
+3. 代码优化，支持TypeScript类型检查
+
+
+# 更新日志
+
+### 版本 1.1.0
+* 添加上拉加载更多
+* 修复reloadData有时候出现问题
+* 修复scrollTo几个方法，如果动画为false，会出现bug的问题
+* 将 "visiableIndexPaths" 修改为 "visibleIndexPaths", "visiableIndexPaths" 将在2.0.0版本后完全不支持
+* "numberOfSections"的类型由number改变为function, number 将在2.0.0版本后完全不支持
+
+### Version 1.0.0
+* release
 
 

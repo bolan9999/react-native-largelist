@@ -21,7 +21,7 @@ class LargeListCell extends React.Component {
     renderCell: PropTypes.func,
     indexPath: PropTypes.object,
     numberOfRowsInSection: PropTypes.func,
-    numberOfSections: PropTypes.number
+    numberOfSections: PropTypes.func
   };
 
   rootView: View;
@@ -68,7 +68,7 @@ class LargeListCell extends React.Component {
     let show =
       this.top !== -10000 &&
       section >= 0 &&
-      section < this.props.numberOfSections &&
+      section < this.props.numberOfSections() &&
       row >= 0 &&
       row < this.props.numberOfRowsInSection(section);
     return (

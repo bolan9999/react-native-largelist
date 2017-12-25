@@ -47,7 +47,7 @@ import { LargeList } from "react-native-largelist";
         }}
         safeMargin={600}
         numberOfRowsInSection={section => this.props.numberOfEachSection}
-        numberOfSections={this.props.numberOfSections}
+        numberOfSections={()=>this.props.numberOfSections}
         heightForCell={(section, row) =>
           row % 2 ? this.minCellHeight : this.maxCellHeight}
         renderCell={this.renderItem.bind(this)}
@@ -86,12 +86,12 @@ Props:
 Props  |  type  |  default  |  effect  
 ------ | ------ | --------- | --------
 （ViewPropTypes） | （ViewPropTypes） |  | All props of View
-numberOfSections | number | 1 | number of sections in tableview
+numberOfSections | ()=>number | ()=>1 | number of sections in tableview
 numberOfRowsInSection | (section:number) => number | section=>0 | function：return the number of rows in section
 renderCell | (section:number,row:number) => React.Element | required | function: render of cell with section and row index
 heightForCell | (section:number,row:number) => number | required | function：return height for cell with section and row index 
 renderSection | (section:number) => React.Element | section=>null | function：render of section with section index
-heightForSection | (section:number) => number | 0 | function：return height of section with section index
+heightForSection | (section:number) => number | ()=>0 | function：return height of section with section index
 renderHeader | () => React.Element | ()=>null | function：render of header in the tableview
 renderFooter | () => React.Element | ()=>null | function：render of footer in tableview
 bounces | boolean | true | bounces
@@ -111,10 +111,15 @@ Look up the design of react-native-largelist:
 ![](./readme_resources/largelist_advanced_usage.png)
 
 # Advanced Usage
-### safeMargin ( type:number ,default: 600)
-The height of rendering children out side of visiable area. The greater the value is, the less easily you see the blank in the fast sliding process, but the longer the first time it is loaded
-### dynamicMargin (type:number,default: 500)
-The height of dynamic safe margin when sliding too fast. For example, if safeMargin=600 and dynamicMargin=500, it will render 100 height on top and 1100 height on bottom out side of the visiable area when sliding down too fast. 
+### safeMargin
+* type: number
+* default: 600
+* The height of rendering children out side of visible area. The greater the value is, the less easily you see the blank in the fast sliding process, but the longer the first time it is loaded
+
+### dynamicMargin
+* type: number
+* default: 500
+* The height of dynamic safe margin when sliding too fast. For example, if safeMargin=600 and dynamicMargin=500, it will render 100 height on top and 1100 height on bottom out side of the visible area when sliding down too fast.
 
 Notice: 
 
@@ -122,22 +127,71 @@ Notice:
 2. It can not be set larger than safeMargin
 
 
-### scrollEventThrottle (type: number ,default: ios:16 android:32)
-It is the same as scrollEventThrottle on ScrollView
-### onIndexPathDidEnterSafeArea (type:(indexPath:IndexPath)=>any)
-The callback when an indexpath did enter safeArea.
-### onIndexPathDidLeaveSafeArea (type:(indexPath:IndexPath)=>any)
-The callback when an indexpath did leave safeArea.
-### showsVerticalScrollIndicator (type:bool,default:true)
-Show vertical scroll indicator.
-### onSectionDidHangOnTop (type:section=>any, default: ()=>{})
-The callback when a new Section hang on the top of the LargeList.
-### speedLevel1 (type:number, default:4)
-If the speed of scrolling is faster than speedLevel1, LargeList will not rerender, just use "setNativeProps" to move the position. Unit is    logic pixels/ms.
-### speedLevel2 (type:number, default:10)
-It does not work for the current version.
-### nativeOptimize (type:bool, default: false)
-Use native optimize, iOS only. This is an experimental prop.If it is set, safeArea doesn't make sense. To use the prop, you should add "${YourProject}/node_modules/react-native-largelist/ios/STTVTableView.xcodeproj" to your iOS project. And make sure link it.
+### scrollEventThrottle
+* type: number
+* default: ios:16
+* It is the same as scrollEventThrottle on ScrollView
+
+### onIndexPathDidEnterSafeArea
+* type: (indexPath:IndexPath)=>any
+* default: ()=>null
+* The callback when an indexpath did enter safeArea.
+
+### onIndexPathDidLeaveSafeArea
+* type: (indexPath:IndexPath)=>any
+* default: ()=>null
+* The callback when an indexpath did leave safeArea.
+
+### showsVerticalScrollIndicator
+* type: bool
+* default: true
+* Show vertical scroll indicator.
+
+### onSectionDidHangOnTop
+* type: section=>any
+* default: ()=>null
+* The callback when a new Section hang on the top of the LargeList.
+
+### speedLevel1
+* type: number
+* default: 4
+* If the speed of scrolling is faster than speedLevel1, LargeList will not rerender, just use "setNativeProps" to move the position. Unit is    logic pixels/ms.
+
+### speedLevel2
+* type: number
+* default: 10
+* It does not work for the current version.
+
+### nativeOptimize
+* type: bool
+* default: false
+* Use native optimize, iOS only. This is an experimental prop.If it is set, safeArea doesn't make sense. To use the prop, you should add "${YourProject}/node_modules/react-native-largelist/ios/STTVTableView.xcodeproj" to your iOS project. And make sure link it.
+
+### onLoadMore
+* type: ()=>any
+* default: null
+* The callback when pull up on the bottom
+
+### heightForLoadMore
+* type: ()=>number
+* default: ()=>70
+* function: return the height of Loading More View.
+
+### allLoadCompleted
+* type: bool
+* default: false
+* Did all data source load completed?
+
+### renderLoadingMore
+* type: ()=>React.Element
+* default: ()=> < ActivityIndicator style={{ marginTop: 10, alignSelf: "center" }} size={"large"}/ >
+* The render of custom Loading More View
+
+### renderLoadCompleted
+* type: ()=>React.Element
+* default: ()=> < Text style={{ marginTop: 20, alignSelf: "center", fontSize: 16 }}>No more data< /Text >
+* The render of custom Loading Completed View.
+
 
 # Method
 ### scrollTo(offset:Offset, animated:boolean=true)
@@ -146,8 +200,8 @@ Scroll to offset.
 Scroll to an indexpath.
 ### scrollToEnd(animated:boolean=true)
 Scroll to the end of the LargeList.
-### visiableIndexPaths():IndexPath[]
-Get the visiable indexpaths at this time.
+### visibleIndexPaths():IndexPath[]
+Get the visible indexpaths at this time.
 ### renderedIndexPaths():IndexPath[]
 Get the rendered indexpaths at this time.
 ### freeCount(): number
@@ -190,4 +244,21 @@ Current section index of LargeList.
 Get LargeList's header height
 ### footerHeight:number
 Get LargeList's footer height
+
+### Goals and plans
+* Fix bug
+* Left and right swipe out to edit cell.
+* Code optimization， support typescript.
+
+# Update Log
+
+### Version 1.1.0
+* Add loading more
+* Fix bug when reload data
+* Fix bug on "scrollTo" when animated == false
+* Change "visiableIndexPaths" to "visibleIndexPaths", "visiableIndexPaths" will not support after 2.0.0
+* Change the type of "numberOfSections" from number to function, number will not support after 2.0.0
+
+### Version 1.0.0
+* release
 
