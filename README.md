@@ -16,7 +16,10 @@ React-native-largelist is a high performance large list component for React-Nati
 
 This is a react-native-largelist with 3000 cells
 
-![Preview](./readme_resources/example.gif)
+![Preview](./readme_resources/sample1.gif)
+![Preview](./readme_resources/sample2.gif)
+![Preview](./readme_resources/sample3.gif)
+![Preview](./readme_resources/sample4.gif)
 
 ## Performance Show
 View the video of react-native-largelist performance on [youtube](https://youtu.be/k95G3_QGYHE) or [youku](http://v.youku.com/v_show/id_XMzI0ODc4ODkyOA==.html)

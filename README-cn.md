@@ -8,7 +8,10 @@ For English readme.md [click here](./README.md)
 * react-native-largelist 比官网的SectionList性能表现更好
 
 ## 预览
-![Preview](./readme_resources/example.gif)
+![Preview](./readme_resources/sample1.gif)
+![Preview](./readme_resources/sample2.gif)
+![Preview](./readme_resources/sample3.gif)
+![Preview](./readme_resources/sample4.gif)
 
 ## 性能展示
 查看LargeList的性能表现：[优酷](http://v.youku.com/v_show/id_XMzI0ODc4ODkyOA==.html) 或者 [youtube](https://youtu.be/k95G3_QGYHE)
