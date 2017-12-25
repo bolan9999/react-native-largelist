@@ -10,47 +10,60 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import { LargeList } from "../react-native-largelist";
-import { contacts } from "./DataSource";
+import { contacts as orgContracts } from "./DataSource";
 import { iconObject } from "./icons";
 
 class LargeListSample3 extends React.Component {
+  contracts;
+  loadComplete =false;
 
   constructor(props) {
     super(props);
-    this.state = {refreshing:false};
+    this.contacts = orgContracts;
+    this.state = { refreshing: false, loadingMore: false };
   }
 
   render() {
     return (
       <LargeList
+        ref={ref => (this.root = ref)}
         style={this.props.style}
-        numberOfSections={contacts.length}
-        numberOfRowsInSection={section => contacts[section].info.length}
+        numberOfSections={()=>this.contacts.length}
+        numberOfRowsInSection={section => this.contacts[section].info.length}
         renderSection={this.renderSection.bind(this)}
         renderCell={this.renderItem.bind(this)}
         heightForSection={() => 40}
         heightForCell={() => 60}
         renderHeader={this.renderHeader.bind(this)}
         renderFooter={this.renderFooter.bind(this)}
-        onRefresh={()=>{
-          this.setState({refreshing:true});
-          setTimeout(()=>this.setState({refreshing:false}),2000);
+        onRefresh={() => {
+          this.setState({ refreshing: true });
+          setTimeout(() => this.setState({ refreshing: false }), 2000);
         }}
         refreshing={this.state.refreshing}
+        onLoadMore={() => {
+          setTimeout(() => {
+            this.contacts = this.contacts.concat(orgContracts);
+            this.loadComplete = true;
+            this.forceUpdate();
+            this.root.reloadData();
+          }, 2000);
+        }}
+        allLoadCompleted={this.loadComplete}
       />
     );
   }
 
   renderSection(section: number) {
-    if (!contacts[section]){
-      console.log("section is error",section);
+    if (!this.contacts[section]) {
+      console.log("section is error", section);
     }
     return (
       <View
         style={{ flex: 1, backgroundColor: "#EEE", justifyContent: "center" }}
       >
         <Text style={{ fontSize: 18, marginLeft: 16 }} fontWeight={1800}>
-          {contacts[section].header}
+          {this.contacts[section].header}
         </Text>
       </View>
     );
@@ -70,18 +83,21 @@ class LargeListSample3 extends React.Component {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
               style={{ marginLeft: 16, width: 40, height: 40 }}
-              source={contacts[section].info[row].icon}
+              source={this.contacts[section].info[row].icon}
             />
             <Text style={{ fontSize: 16, marginLeft: 10 }}>
-              {contacts[section].info[row].name}
+              {this.contacts[section].info[row].name}
             </Text>
           </View>
           <Text style={{ fontSize: 16, marginRight: 16 }}>
-            {contacts[section].info[row].phone}
+            {this.contacts[section].info[row].phone}
           </Text>
         </View>
-        {(row < contacts[section].info.length - 1 || section===contacts.length-1) &&
-          <View style={{ backgroundColor: "#CCC", height: 1,marginLeft:16 }} />}
+        {(row < this.contacts[section].info.length - 1 ||
+          section === this.contacts.length - 1) &&
+          <View
+            style={{ backgroundColor: "#CCC", height: 1, marginLeft: 16 }}
+          />}
       </View>
     );
   }
@@ -105,21 +121,27 @@ class LargeListSample3 extends React.Component {
             本机号码
           </Text>
         </View>
-        <Text style={{ fontSize: 16,marginRight:16 }}>15555555555</Text>
+        <Text style={{ fontSize: 16, marginRight: 16 }}>15555555555</Text>
       </View>
     );
   }
 
-  renderFooter(){
+  renderFooter() {
     let count = 0;
-    contacts.forEach(item=>{
-      item.info.forEach(()=>{
+    this.contacts.forEach(item => {
+      item.info.forEach(() => {
         count++;
       });
     });
-    return <View style={{height:48,alignItems:"center",justifyContent:"center"}}>
-      <Text style={{fontSize:16}}>共{count}位联系人</Text>
-    </View>
+    return (
+      <View
+        style={{ height: 48, alignItems: "center", justifyContent: "center" }}
+      >
+        <Text style={{ fontSize: 16 }}>
+          共{count}位联系人
+        </Text>
+      </View>
+    );
   }
 }
 

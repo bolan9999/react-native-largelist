@@ -47,7 +47,7 @@ class LargeListSample4 extends React.Component {
         <LargeList
           ref={ref => (this.listRef = ref)}
           style={{ flex: 4 }}
-          numberOfSections={foods.length}
+          numberOfSections={()=>foods.length}
           numberOfRowsInSection={section => foods[section].list.length}
           heightForSection={() => 36}
           renderSection={this.renderSection.bind(this)}
@@ -175,7 +175,7 @@ class LargeListSample4 extends React.Component {
     // this.indexes.reloadData();
 
     let bFind = false;
-    this.indexes.visiableIndexPaths().forEach(indexPath=>{
+    this.indexes.visibleIndexPaths().forEach(indexPath=>{
       if (indexPath.row===section) {
         bFind = true;
       }
