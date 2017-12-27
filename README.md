@@ -2,24 +2,34 @@
 
 中文文档请 [点击这里](./README-cn.md)
 
-React-native-largelist is a high performance large list component for React-Native. It's performance is much better than SectionList.
-
-
-
-**react-native-largelist** is a high performance list component for React Native(iOS & Android).
+**React-native-largelist** is a high performance large list component for React-Native. It's performance is much better than SectionList.(iOS & Android).
 
 ## Features
 
-* react-native-largelist is better than SectionList
+* The performance of react-native-largelist is much better than FlatList and SectionList.
+* Large data source supported, infinite data supported, super fast sliding support.
+* Full cross-platform.
+* Section support.
+* Callback when Cell/Item enter/leave the safeArea support.
+* List header/footer support.
+* Pull to Refresh and Scroll loading more.
+* Scroll loading more custom view support, all data source load completed custom view support.
+* Dynamic variable support, for example: size, contentOffset, currentSection, contentSize, height of Header/Footer, visibleIndexPaths and so on.
+* Scroll to offset or index path.
+* Reload data.
+* Custom optimize parameters.
+* More callbacks or dynamic variable can be added through a new issue.
 
 ## Preview
-
-This is a react-native-largelist with 3000 cells
 
 ![Preview](./readme_resources/sample1.gif)
 ![Preview](./readme_resources/sample2.gif)
 ![Preview](./readme_resources/sample3.gif)
 ![Preview](./readme_resources/sample4.gif)
+![Preview](./readme_resources/sample5.gif)
+![Preview](./readme_resources/sample6.gif)
+![Preview](./readme_resources/sample7.gif)
+![Preview](./readme_resources/sample8.gif)
 
 ## Performance Show
 View the video of react-native-largelist performance on [youtube](https://youtu.be/k95G3_QGYHE) or [youku](http://v.youku.com/v_show/id_XMzI0ODc4ODkyOA==.html)
@@ -41,44 +51,42 @@ import { LargeList } from "react-native-largelist";
 //other code
 ...
 <LargeList
-        style={{ flex: 1 }}
-        bounces={true}
-        refreshing={this.state.refreshing}
-        onRefresh={() => {
-          this.setState({ refreshing: true });
-          setTimeout(() => this.setState({ refreshing: false }), 2000);
+  style={{ flex: 1 }}
+  bounces={true}
+  refreshing={this.state.refreshing}
+  onRefresh={() => {
+    this.setState({ refreshing: true });
+    setTimeout(() => this.setState({ refreshing: false }), 2000);
+  }}
+  safeMargin={600}
+  numberOfRowsInSection={section => this.props.numberOfEachSection}
+  numberOfSections={()=>this.props.numberOfSections}
+  heightForCell={(section, row) => row % 2 ? this.minCellHeight : this.maxCellHeight}
+  renderCell={this.renderItem.bind(this)}
+  heightForSection={section =>section % 2 ? this.minSectionHeight : this.maxSectionHeight}
+  renderHeader={this.renderHeader.bind(this)}
+  renderFooter={this.renderFooter.bind(this)}
+  renderSection={section => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: section % 2 ? "grey" : "yellow",
+          justifyContent: "center",
+          alignItems: "center"
         }}
-        safeMargin={600}
-        numberOfRowsInSection={section => this.props.numberOfEachSection}
-        numberOfSections={()=>this.props.numberOfSections}
-        heightForCell={(section, row) =>
-          row % 2 ? this.minCellHeight : this.maxCellHeight}
-        renderCell={this.renderItem.bind(this)}
-        heightForSection={section =>
-          section % 2 ? this.minSectionHeight : this.maxSectionHeight}
-        renderHeader={this.renderHeader.bind(this)}
-        renderFooter={this.renderFooter.bind(this)}
-        renderSection={section => {
-          return (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: section % 2 ? "grey" : "yellow",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
-              <Text>
-                I am section {section}
-              </Text>
-            </View>
-          );
-        }}
-      />
+      >
+        <Text>
+           I am section {section}
+        </Text>
+      </View>
+    );
+  }}
+/>
 ...
 ```
 
-# Usage
+## Usage
 
 ```
 import { LargeList } from "react-native-largelist"
@@ -102,7 +110,7 @@ refreshing | boolean | undefined | refreshing
 onRefresh | () => any | undefined | callback of pulling to refresh,if not undefined ,a default RefreshControl is add to LargeList
 onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Callback when scrolling.
 
-# Principle
+## Principle
 Before we learn advanced usage, we must first understand the basic principles:
 
 Every Cell/Item is reused just like UITableView/RecyclerView. The top Cell/Item which is Slided to the outside of the visible region does not need to show. So, I move it bottom, render it with the new datasource.
@@ -113,7 +121,7 @@ Look up the design of react-native-largelist:
 
 ![](./readme_resources/largelist_advanced_usage.png)
 
-# Advanced Usage
+## Advanced Usage
 ### safeMargin
 * type: number
 * default: 600
@@ -196,7 +204,7 @@ Notice:
 * The render of custom Loading Completed View.
 
 
-# Method
+## Method
 ### scrollTo(offset:Offset, animated:boolean=true)
 Scroll to offset.
 ### scrollToIndexPath(indexPath:IndexPath, animated:boolean = true)
@@ -228,7 +236,7 @@ Notice:
 1. If the numberOfSections ,numberOfRowsInSection,heightForSection,heightForCell change, you must use this method to reload.
 2. Do not use this method often, because it is bad performance.
 
-# Dynamic variable
+## Dynamic variable
 ### size:Size
 Current size of LargeList.   Size：{width:number,height:number}
 ### contentOffset:Offset
@@ -248,12 +256,12 @@ Get LargeList's header height
 ### footerHeight:number
 Get LargeList's footer height
 
-### Goals and plans
+## Goals and plans
 * Fix bug
 * Left and right swipe out to edit cell.
 * Code optimization， support typescript.
 
-# Update Log
+## Update Log
 
 ### Version 1.1.0
 * Add loading more
