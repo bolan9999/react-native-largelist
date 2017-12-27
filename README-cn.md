@@ -1,17 +1,33 @@
 # react-native-largelist
 
-For English readme.md [click here](./README.md)
+For English docs [click here](./README.md)
 
-**react-native-largelist** 是一个为React Native准备的高性能的列表组件，它比官方的SectionList给人以更好的性能体验（兼容iOS和Android）.
+**react-native-largelist** 是一个为React Native准备的高性能的列表组件，它比官方的SectionList给人以更好的性能体验及更完善的功能（兼容iOS和Android）.
 
 ## 特点
-* react-native-largelist 比官网的SectionList性能表现更好
+* react-native-largelist 比官网的SectionList性能表现更好,在最坏的情况下（比如从第一行直接用代码滑动到第1000行），即使出现白板，也是瞬间消失。
+* 支持超大数据源，支持无限列表，支持超快速度滑动。
+* 跨平台，兼容iOS和Android。
+* 支持分组，支持每组头视图自动吸顶，新的Section挂在列表顶部时，支持回调。
+* 行组件进入或离开安全区域时可配置回调事件。
+* 支持单独的头部和尾部组件。
+* 支持下拉刷新和上拉加载更多。
+* 支持上拉加载视图自定义配置，上拉加载完成自定义视图配置。
+* 支持获取当前的动态属性，比如视图大小、当前偏移、当前Section、当前滑动视图总大小、头部或尾部组件高度、当前可视行等。
+* 支持滑动到指定位置或指定行。
+* 支持数据更新。
+* 支持自定义优化属性，可根据实际情况修改优化参数提升性能。
+* 如需要未提供的其他属性或回调事件可以通过提交issue提醒作者添加。
 
 ## 预览
 ![Preview](./readme_resources/sample1.gif)
 ![Preview](./readme_resources/sample2.gif)
 ![Preview](./readme_resources/sample3.gif)
 ![Preview](./readme_resources/sample4.gif)
+![Preview](./readme_resources/sample5.gif)
+![Preview](./readme_resources/sample6.gif)
+![Preview](./readme_resources/sample7.gif)
+![Preview](./readme_resources/sample8.gif)
 
 ## 性能展示
 查看LargeList的性能表现：[优酷](http://v.youku.com/v_show/id_XMzI0ODc4ODkyOA==.html) 或者 [youtube](https://youtu.be/k95G3_QGYHE)
@@ -34,44 +50,42 @@ import { LargeList } from "react-native-largelist";
 //other code
 ...
 <LargeList
-        style={{ flex: 1 }}
-        bounces={true}
-        refreshing={this.state.refreshing}
-        onRefresh={() => {
-          this.setState({ refreshing: true });
-          setTimeout(() => this.setState({ refreshing: false }), 2000);
+  style={{ flex: 1 }}
+  bounces={true}
+  refreshing={this.state.refreshing}
+  onRefresh={() => {
+    this.setState({ refreshing: true });
+    setTimeout(() => this.setState({ refreshing: false }), 2000);
+  }}
+  safeMargin={600}
+  numberOfRowsInSection={section => this.props.numberOfEachSection}
+  numberOfSections={()=>this.props.numberOfSections}
+  heightForCell={(section, row) => row % 2 ? this.minCellHeight : this.maxCellHeight}
+  renderCell={this.renderItem.bind(this)}
+  heightForSection={section =>section % 2 ? this.minSectionHeight : this.maxSectionHeight}
+  renderHeader={this.renderHeader.bind(this)}
+  renderFooter={this.renderFooter.bind(this)}
+  renderSection={section => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: section % 2 ? "grey" : "yellow",
+          justifyContent: "center",
+          alignItems: "center"
         }}
-        safeMargin={600}
-        numberOfRowsInSection={section => this.props.numberOfEachSection}
-        numberOfSections={()=>this.props.numberOfSections}
-        heightForCell={(section, row) =>
-          row % 2 ? this.minCellHeight : this.maxCellHeight}
-        renderCell={this.renderItem.bind(this)}
-        heightForSection={section =>
-          section % 2 ? this.minSectionHeight : this.maxSectionHeight}
-        renderHeader={this.renderHeader.bind(this)}
-        renderFooter={this.renderFooter.bind(this)}
-        renderSection={section => {
-          return (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: section % 2 ? "grey" : "yellow",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
-              <Text>
-                I am section {section}
-              </Text>
-            </View>
-          );
-        }}
-      />
+      >
+        <Text>
+           I am section {section}
+        </Text>
+      </View>
+    );
+  }}
+/>
 ...
 ```
 
-# 基本用法
+## 基本用法
 
 ```
 import { LargeList } from "react-native-largelist"
@@ -95,7 +109,7 @@ refreshing | boolean | undefined | 是否正在刷新
 onRefresh | () => any | undefined | 下拉刷新的回调,如果用户设置了此属性，则添加一个刷新控件
 onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动的回调，同官方ScrollView
 
-# 原理
+## 原理
 在了解高级用法之前，我们先要了解下基本原理：
 
 和UITableView/RecyclerView基本原理一样，每一行的Cell/Item是重用的，当上面的Cell/Item滑离屏幕的时候，它对于我们来说已经不用再展示了，所以，把它挪到底部，用新的数据渲染。这样就不会出现由于数据量过大，造成View的浪费导致加载卡顿。
@@ -108,7 +122,7 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 
 当然，在之后的版本中，我会把iOS原生优化加入其中的选项中，这样，不论你滑动的速度有多快，用户都不会看到白板的情况了。
 
-# 高级属性
+## 高级属性
 
 ### safeMargin
 * type: number
@@ -185,7 +199,7 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 * default: ()=> < Text style={{ marginTop: 20, alignSelf: "center", fontSize: 16 }}>No more data< /Text >
 * 用户自定义上拉时，加载完成的动画视图。
 
-# 方法
+## 方法
 ### scrollTo(offset:Offset, animated:boolean=true)
 滑动到目标偏移Offset:{x:number,y:number},目前x值只支持0
 ### scrollToIndexPath(indexPath:IndexPath, animated:boolean = true)
@@ -217,7 +231,7 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 1. 如果影响列表的全局属性，比如numberOfSections ,numberOfRowsInSection,heightForSection,heightForCell属性改变，必须使用此方法更新
 2. 不要过度使用它，因为它的效率是很低的。
 
-# 动态变量
+## 动态变量
 ### size:Size
 获取LargeList的当前可视Size：{width:number,height:number}
 ### contentOffset:Offset
@@ -243,7 +257,7 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 3. 代码优化，支持TypeScript类型检查
 
 
-# 更新日志
+## 更新日志
 
 ### 版本 1.1.0
 * 添加上拉加载更多
