@@ -18,7 +18,8 @@ import {
   Platform,
   ViewPropTypes,
   ActivityIndicator,
-  PanResponder
+  PanResponder,
+  StyleSheet
 } from "react-native";
 import PropTypes from "prop-types";
 import { LargeListCell } from "./LargeListCell";
@@ -81,7 +82,11 @@ class LargeList extends React.Component {
     heightForLoadMore: PropTypes.func,
     allLoadCompleted: PropTypes.bool,
     renderLoadingMore: PropTypes.func,
-    renderLoadCompleted: PropTypes.func
+    renderLoadCompleted: PropTypes.func,
+
+    numberOfCellPoolSize: PropTypes.number,
+    numberOfSectionPoolSize: PropTypes.number,
+    renderEmpty: PropTypes.func
 
     // onIndexPathDidAppear: PropTypes.func,
     // onIndexPathDidDisappear: PropTypes.func,
@@ -106,9 +111,11 @@ class LargeList extends React.Component {
     speedLevel1: Platform.OS === "ios" ? 4 : 4,
     speedLevel2: Platform.OS === "ios" ? 10 : 10,
     showsVerticalScrollIndicator: true,
+    numberOfSectionPoolSize: 10,
     onSectionDidHangOnTop: () => null,
     heightForLoadMore: () => 70,
     allLoadCompleted: false,
+    renderEmpty: () => null,
     renderLoadingMore: () =>
       <ActivityIndicator
         style={{ marginTop: 10, alignSelf: "center" }}
@@ -154,10 +161,9 @@ class LargeList extends React.Component {
   scrollingAfterDraging = false;
 
   numberOfSections: number;
+  empty: boolean = false;
 
   constructor(props) {
-    let safeProps = { ...props };
-
     super(props);
     this.initVar();
   }
@@ -186,7 +192,7 @@ class LargeList extends React.Component {
     for (let i = 0; i < this.numberOfSections(); ++i) {
       if (
         this.minSectionHeight > this.props.heightForSection(i) &&
-        this.props.heightForSection(i) > 10
+        this.props.heightForSection(i) > 20
       ) {
         this.minSectionHeight = this.props.heightForSection(i);
       }
@@ -194,73 +200,37 @@ class LargeList extends React.Component {
       for (let j = 0; j < this.props.numberOfRowsInSection(i); ++j) {
         if (
           this.minCellHeight > this.props.heightForCell(i, j) &&
-          this.props.heightForCell(i, j) > 10
+          this.props.heightForCell(i, j) > 20
         ) {
           this.minCellHeight = this.props.heightForCell(i, j);
         }
         this.contentSize.height += this.props.heightForCell(i, j);
       }
     }
+    this.empty =
+      this.numberOfSections() === 0 ||
+      (this.numberOfSections() === 1 &&
+        this.props.numberOfRowsInSection(0) === 0);
+    if (this.cells.length > 0) return;
+    for (let i = 0; i < this.props.numberOfSectionPoolSize; ++i) {
+      this.sections.push(this._createSection(0, 0, this.freeSectionRefs));
+    }
+    let numberOfCellPoolSize = this.props.numberOfCellPoolSize;
+    if (!numberOfCellPoolSize)
+      numberOfCellPoolSize =
+        (Dimensions.get("window").height + 2 * this.props.safeMargin) /
+        this.minCellHeight;
+    for (let i = 0; i < numberOfCellPoolSize; ++i) {
+      this.cells.push(this._createCell(0, 0, 0, this.freeRefs));
+    }
   }
 
   initCells() {
     this.contentSize.height += this.headerHeight;
     this.contentSize.height += this.footerHeight;
-    let sumHeight: number = this.headerHeight;
-    let section;
-    let row = 0;
-    for (
-      section = 0;
-      section < this.numberOfSections() &&
-      sumHeight < this.size.height + this.props.safeMargin;
-      ++section
-    ) {
-      if (row === 0) {
-        this.sections.push(
-          this._createSection(section, sumHeight, this.workSectionRefs)
-        );
-        sumHeight += this.props.heightForSection(section);
-      }
-      if (this.props.numberOfRowsInSection(section) === 0) {
-        this.safeArea.bottom = sumHeight;
-        this.bottomIndexPath = { section: section, row: row };
-        continue;
-      }
-      for (row = 0; row < this.props.numberOfRowsInSection(section); ++row) {
-        if (sumHeight < this.size.height + this.props.safeMargin) {
-          this.cells.push(
-            this._createCell(section, row, sumHeight, this.workRefs)
-          );
-          sumHeight += this.props.heightForCell(section, row);
-          this.safeArea.bottom = sumHeight;
-          this.bottomIndexPath = { section: section, row: row };
-        }
-      }
-      row = 0;
-    }
-    if (sumHeight < this.size.height + this.props.safeMargin) {
-      this.safeArea.bottom = sumHeight;
-      this.bottomIndexPath = { section: section, row: row };
-      return;
-    }
-    for (
-      let i = 0;
-      i < Math.floor(this.props.safeMargin / this.minSectionHeight) + 2;
-      i++
-    ) {
-      this.sections.push(
-        this._createSection(section + i + 1, -10000, this.freeSectionRefs)
-      );
-    }
-    for (
-      let i = 0;
-      i < Math.floor(this.props.safeMargin / this.minCellHeight) + 2;
-      i++
-    ) {
-      this.cells.push(
-        this._createCell(section, row + i, -10000, this.freeRefs)
-      );
-    }
+    this.safeArea.bottom = this.headerHeight;
+    this._onScroll({ nativeEvent: { contentOffset: { x: 0, y: 0 } } });
+    this.forceUpdate();
   }
 
   render() {
@@ -268,26 +238,58 @@ class LargeList extends React.Component {
       return (
         <TableView ref={ref => (this.scrollViewRef = ref)} {...this.props} />
       );
+    let empty = this.empty;
+    let headerStyle = [
+      styles.absoluteStretch,
+      {
+        top: this.sizeConfirmed ? 0 : -10000
+      }
+    ];
+    if (empty) headerStyle = {};
+    let footerStyle = [
+      styles.absoluteStretch,
+      {
+        top: this.sizeConfirmed
+          ? this.contentSize.height - this.footerHeight
+          : -10000
+      }
+    ];
+    if (empty) footerStyle = {};
+    let refreshControl =
+      this.props.onRefresh !== undefined
+        ? <RefreshControl
+            refreshing={this.props.refreshing}
+            onRefresh={this.props.onRefresh}
+          />
+        : null;
+    let contentStyle = {
+      alignSelf: "stretch",
+      height: empty
+        ? null
+        : this.contentSize.height +
+          (this.props.onLoadMore ? this.props.heightForLoadMore() : 0)
+    };
+    let loadMoreStyle = [
+      styles.absoluteStretch,
+      {
+        top: this.contentSize.height,
+        height: this.props.heightForLoadMore()
+      }
+    ];
+    let hangSectionStyle = [
+      styles.absoluteStretch,
+      {
+        top: this.sizeConfirmed && !empty ? 0 : -10000,
+        height: this.props.heightForSection(0)
+      }
+    ];
     return (
       <View {...this.props} removeClippedSubviews={true}>
         <EventScrollView
           ref={ref => (this.scrollViewRef = ref)}
           bounces={this.props.bounces}
-          refreshControl={
-            this.props.onRefresh !== undefined
-              ? <RefreshControl
-                  refreshing={this.props.refreshing}
-                  onRefresh={this.props.onRefresh}
-                />
-              : null
-          }
-          contentContainerStyle={{
-            justifyContent: "flex-end",
-            alignSelf: "stretch",
-            height:
-              this.contentSize.height +
-              (this.props.onLoadMore ? this.props.heightForLoadMore() : 0)
-          }}
+          refreshControl={refreshControl}
+          contentContainerStyle={contentStyle}
           onLayout={this._onLayout.bind(this)}
           style={{ flex: 1 }}
           scrollEventThrottle={this.props.scrollEventThrottle}
@@ -298,55 +300,25 @@ class LargeList extends React.Component {
           llonTouchMove={this._onTouchMove.bind(this)}
           llonTouchEnd={this._onTouchEnd.bind(this)}
         >
-          <View
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: this.sizeConfirmed ? 0 : -10000
-            }}
-            onLayout={this._onHeaderLayout.bind(this)}
-          >
+          <View style={headerStyle} onLayout={this._onHeaderLayout.bind(this)}>
             {this.props.renderHeader()}
           </View>
+          {empty && this.props.renderEmpty()}
           {this.sections.map(item => item)}
           {this.cells.map(item => item)}
-          <View
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: this.sizeConfirmed
-                ? this.contentSize.height - this.footerHeight
-                : -10000
-            }}
-            onLayout={this._onFooterLayout.bind(this)}
-          >
+          <View style={footerStyle} onLayout={this._onFooterLayout.bind(this)}>
             {this.props.renderFooter()}
           </View>
-          {this.props.onLoadMore &&
-            <View
-              style={{
-                position: "absolute",
-                left: 0,
-                right: 0,
-                top: this.contentSize.height,
-                height: this.props.heightForLoadMore()
-              }}
-            >
+          {!empty &&
+            this.props.onLoadMore &&
+            <View style={loadMoreStyle}>
               {this.props.allLoadCompleted
                 ? this.props.renderLoadCompleted()
                 : this.props.renderLoadingMore()}
             </View>}
         </EventScrollView>
         <LargeListSection
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: this.sizeConfirmed ? 0 : -10000,
-            height: this.props.heightForSection(0)
-          }}
+          style={hangSectionStyle}
           section={0}
           renderSection={this.props.renderSection}
           ref={reference => (this.currentSectionRef = reference)}
@@ -361,16 +333,16 @@ class LargeList extends React.Component {
       <LargeListSection
         ref={reference => reference && refs.push(reference)}
         key={this.keyForCreating++}
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: top,
-          height:
-            refs == this.workSectionRefs
-              ? this.props.heightForSection(section)
-              : 0
-        }}
+        style={[
+          styles.absoluteStretch,
+          {
+            top: top,
+            height:
+              refs == this.workSectionRefs
+                ? this.props.heightForSection(section)
+                : 0
+          }
+        ]}
         numberOfSections={this.numberOfSections}
         section={section}
         renderSection={this.props.renderSection}
@@ -390,13 +362,13 @@ class LargeList extends React.Component {
       <LargeListCell
         ref={reference => reference && refs.push(reference)}
         key={this.keyForCreating++}
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: top,
-          height: height
-        }}
+        style={[
+          styles.absoluteStretch,
+          {
+            top: top,
+            height: height
+          }
+        ]}
         renderCell={this.props.renderCell}
         indexPath={{ section: section, row: row }}
         numberOfSections={this.numberOfSections}
@@ -407,6 +379,10 @@ class LargeList extends React.Component {
 
   _onScroll(e) {
     let offset: Offset = e.nativeEvent.contentOffset;
+    if (this.empty) {
+      this.contentOffset = offset;
+      return;
+    }
     let distance = Math.abs(offset.y - this.contentOffset.y);
     let now: number = new Date().getTime();
     let speed: number = 0;
@@ -836,7 +812,6 @@ class LargeList extends React.Component {
     ) {
       this.sizeConfirmed = true;
       this.initCells();
-      this.setState({});
     }
   }
 
@@ -1077,5 +1052,13 @@ class LargeList extends React.Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  absoluteStretch: {
+    position: "absolute",
+    left: 0,
+    right: 0
+  }
+});
 
 export { LargeList };
