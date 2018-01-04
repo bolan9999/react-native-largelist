@@ -242,6 +242,7 @@ class LargeList extends React.Component {
     this.contentSize.height += this.footerHeight;
     this.safeArea.top = this.safeArea.bottom = this.headerHeight;
     this._onScroll({ nativeEvent: { contentOffset: { x: 0, y: 0 } } });
+    this.forceUpdate();
   }
 
   render() {
