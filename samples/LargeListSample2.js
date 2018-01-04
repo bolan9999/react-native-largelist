@@ -71,6 +71,7 @@ class LargeListSample2 extends React.Component {
       <View style={{ flex: 1, flexDirection: "row" }}>
         <View
           style={{ flex: 1, backgroundColor: "blue", justifyContent: "center" }}
+          removeClippedSubviews={true}
         >
           <Text
             style={{ marginLeft: 10, alignSelf: "center" }}
@@ -81,6 +82,7 @@ class LargeListSample2 extends React.Component {
         </View>
         <View
           style={{ flex: 1, backgroundColor: "red", justifyContent: "center" }}
+          removeClippedSubviews={true}
         >
           <Text
             style={{ marginLeft: 10, alignSelf: "center" }}

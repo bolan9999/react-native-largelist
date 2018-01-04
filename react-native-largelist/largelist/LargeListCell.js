@@ -48,17 +48,15 @@ class LargeListCell extends React.Component {
   indexPath: IndexPath;
   waitForRender: boolean;
   locationUpdated: boolean;
-  _panResponder = {};
   _offsetX: number = 0;
   _showRight: boolean = false;
   _showLeft: boolean = false;
   _left;
   _right;
-  _cell;
-  rerendered: boolean = false;
   _shouldScrollToCenter = false;
   _maxRightWidth: number = 250;
   _maxLeftWidth: number = 250;
+  _enableShowEx: boolean = false;
 
   contentUpdate() {
     this.waitForRender = false;
@@ -83,7 +81,7 @@ class LargeListCell extends React.Component {
 
   constructor(props) {
     super(props);
-    this.top = props.style.top;
+    this.top = props.style[1].top;
     this.height = props.style.height;
     this.contentSize = {};
     this.indexPath = {
@@ -98,27 +96,29 @@ class LargeListCell extends React.Component {
       this._maxLeftWidth = this._lWidth();
   }
 
-  componentWillMount() {
-    this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (event, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (event, gestureState) => true,
-      // this.state.openedLeft || this.state.openedRight,
-      onMoveShouldSetPanResponderCapture: (event, gestureState) => true,
-      // Math.abs(gestureState.dx) > this.props.sensitivity &&
-      // Math.abs(gestureState.dy) <= this.props.sensitivity,
-      // onPanResponderGrant: this._handlePanResponderGrant,
-      onPanResponderMove: this._handlePanResponderMove.bind(this),
-      // onPanResponderRelease: this._handlePanResponderEnd,
-      // onPanResponderTerminate: this._handlePanResponderEnd,
-      onShouldBlockNativeResponder: (event, gestureState) => true,
-      onPanResponderTerminationRequest: () => true
-    });
+  componentDidMount(){
+    if (Platform.OS === "ios") {
+      this._enableShowEx = false;
+      this._scrollToOrigin(false)
+    }
   }
 
   componentDidUpdate() {
     if (this._shouldScrollToCenter && this.contentSize.width) {
-      // this._scrollView.scrollTo({x:this._maxRightWidth,y:0,animated:false});
-      setTimeout(() => this._scrollToOrigin(false), 1);
+      this._enableShowEx = false;
+      // if (Platform.OS === "ios") {
+      //   this._scrollToOrigin(false);
+      // } else {
+        setTimeout(() => {
+          if (this._showLeft) {
+            this._scrollToShowLeft(false);
+          } else if (this._showRight) {
+            this._scrollToShowRight(false);
+          } else {
+            this._scrollToOrigin(false);
+          }
+        },1);
+      // }
     }
   }
 
@@ -148,16 +148,17 @@ class LargeListCell extends React.Component {
       ? {
           width:
             this.contentSize.width + this._maxRightWidth + this._maxLeftWidth,
-          paddingHorizontal: this._maxRightWidth,
+          paddingLeft: this._maxLeftWidth,
+          paddingRight: this._maxRightWidth,
           flexDirection: "row"
         }
       : { flex: 1, flexDirection: "row" };
     // let contentStyle = {width:this.contentSize.width+StyleSheet.hairlineWidth};
-    let cellStyle = {
-      flex: 1,
-      marginLeft: this._maxRightWidth,
-      marginRight: this._maxRightWidth
-    };
+    // let cellStyle = {
+    //   flex: 1,
+    //   marginLeft: this._maxRightWidth,
+    //   marginRight: this._maxRightWidth
+    // };
     return (
       <View
         ref={ref => (this._rootView = ref)}
@@ -180,11 +181,8 @@ class LargeListCell extends React.Component {
           llonTouchStart={this._onResponderGrant.bind(this)}
           scrollEventThrottle={20}
           onScroll={this._onScroll.bind(this)}
-          //llonTouchMove={this._handlePanResponderMove.bind(this)}
           onLayout={this._onLayout.bind(this)}
           llonTouchEnd={this._onTouchEnd.bind(this)}
-          // contentOffset={{x:this._maxRightWidth,y:0}}
-          //{...this._panResponder.panHandlers}
         >
           {show &&
             this.props.renderCell(this.indexPath.section, this.indexPath.row)}
@@ -199,7 +197,11 @@ class LargeListCell extends React.Component {
     if (!this.contentSize.width || this._lWidth() <= 0) return null;
     let { section, row } = this.indexPath;
     return (
-      <View style={[styles.ex, { left: 0 }]} ref={ref => (this._left = ref)}>
+      <View
+        style={[styles.ex, { left: -10000 }]}
+        ref={ref => (this._left = ref)}
+        removeClippedSubviews={true}
+      >
         {renderLeftWhenSwipeOut(section, row)}
       </View>
     );
@@ -210,7 +212,11 @@ class LargeListCell extends React.Component {
     if (!this.contentSize.width || this._rWidth() <= 0) return null;
     let { section, row } = this.indexPath;
     return (
-      <View style={[styles.ex, { right: 0 }]} ref={ref => (this._right = ref)}>
+      <View
+        style={[styles.ex, { right: -10000 }]}
+        ref={ref => (this._right = ref)}
+        removeClippedSubviews={true}
+      >
         {renderRightWhenSwipeOut(section, row)}
       </View>
     );
@@ -218,29 +224,20 @@ class LargeListCell extends React.Component {
 
   _onLayout(e) {
     if (this.contentSize.width !== e.nativeEvent.layout.width) {
-      // let width = this.contentSize.width;
       this.contentSize = { ...e.nativeEvent.layout };
       this._shouldScrollToCenter = true;
       this.forceUpdate();
     }
   }
 
-  _onResponderGrant(e) {
-    // console.log("Cell _onResponderGrant");
-    // if (!this.rerendered) {
-    //   this.rerendered = true;
-    //   // this.forceUpdate();
-    // }
-    // this.setState({showRight:true});
+  _onResponderGrant() {
+    this._enableShowEx = true;
     this.props.onCellTouchBegin(this);
-  }
-
-  _handlePanResponderMove(e, g) {
-    console.log("_onMove", e, g);
   }
 
   hideOther(sender) {
     if (this !== sender) {
+      this._enableShowEx = true;
       this._scrollToOrigin();
     }
   }
@@ -248,19 +245,21 @@ class LargeListCell extends React.Component {
   _onScroll(e) {
     let offsetX = e.nativeEvent.contentOffset.x;
     this._offsetX = offsetX;
+    if (!this._enableShowEx) return;
     let width = offsetX - this._maxLeftWidth;
     if (width > this._rWidth()) width = this._rWidth();
-    this._right && this._right.setNativeProps({ style: { width: width } });
+    this._right &&
+      this._right.setNativeProps({
+        style: { right: this._enableShowEx ? 0 : -10000, width: width }
+      });
     width = this._maxLeftWidth - offsetX;
     if (width > this._lWidth()) width = this._lWidth();
-    this._left && this._left.setNativeProps({ style: { width: width } });
-    // if (
-    //   offsetX <= 0 ||
-    //   offsetX >= this.contentSize.width + this._maxRightWidth
-    // ) {
-    //   this._onTouchEnd();
-    // }
+    this._left &&
+      this._left.setNativeProps({
+        style: { left: this._enableShowEx ? 0 : -10000, width: width }
+      });
   }
+
   _onTouchEnd() {
     let rightWidth = this._rWidth();
     if (this._offsetX > this._maxLeftWidth + rightWidth / 2) {
@@ -276,10 +275,10 @@ class LargeListCell extends React.Component {
 
   _scrollToShowLeft(animated: boolean = true) {
     this._showLeft = true;
-    this._offsetX !== this._maxRightWidth - this._lWidth() &&
+    this._offsetX !== this._maxLeftWidth - this._lWidth() &&
       this._scrollView &&
       this._scrollView.scrollTo({
-        x: this._maxRightWidth - this._rWidth(),
+        x: this._maxLeftWidth - this._rWidth(),
         y: 0,
         animated: animated
       });
@@ -288,10 +287,10 @@ class LargeListCell extends React.Component {
   _scrollToShowRight(animated: boolean = true) {
     this._showRight = true;
     let rWidth = this._rWidth();
-    this._offsetX !== this._maxRightWidth + rWidth &&
+    this._offsetX !== this._maxLeftWidth + rWidth &&
       this._scrollView &&
       this._scrollView.scrollTo({
-        x: this._maxRightWidth + rWidth,
+        x: this._maxLeftWidth + rWidth,
         y: 0,
         animated: animated
       });
@@ -300,7 +299,7 @@ class LargeListCell extends React.Component {
   _scrollToOrigin(animated: boolean = true) {
     this._showRight = false;
     this._showLeft = false;
-    this._offsetX !== this._maxRightWidth &&
+    this._offsetX !== this._maxLeftWidth &&
       this._scrollView &&
       this._scrollView.scrollTo({
         x: this._maxLeftWidth,

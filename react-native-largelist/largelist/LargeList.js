@@ -92,7 +92,7 @@ class LargeList extends React.Component {
     renderRightWhenSwipeOut: PropTypes.func,
     widthForLeftWhenSwipeOut: PropTypes.func,
     renderLeftWhenSwipeOut: PropTypes.func,
-    colorForSwipeOutBgColor: PropTypes.func,
+    colorForSwipeOutBgColor: PropTypes.func
 
     // onIndexPathDidAppear: PropTypes.func,
     // onIndexPathDidDisappear: PropTypes.func,
@@ -133,9 +133,9 @@ class LargeList extends React.Component {
       </Text>,
     widthForRightWhenSwipeOut: () => 0,
     renderRightWhenSwipeOut: () => null,
-    widthForLeftWhenSwipeOut: ()=>0,
-    renderLeftWhenSwipeOut: ()=>null,
-    colorForSwipeOutBgColor: ()=>"rgb(236,236,236)",
+    widthForLeftWhenSwipeOut: () => 0,
+    renderLeftWhenSwipeOut: () => null,
+    colorForSwipeOutBgColor: () => "rgb(236,236,236)"
   };
 
   sections: Element[] = [];
@@ -230,7 +230,8 @@ class LargeList extends React.Component {
     if (!numberOfCellPoolSize)
       numberOfCellPoolSize =
         (Dimensions.get("window").height + 2 * this.props.safeMargin) /
-        this.minCellHeight+0.5;
+          this.minCellHeight +
+        0.5;
     for (let i = 0; i < numberOfCellPoolSize; ++i) {
       this.cells.push(this._createCell(0, 0, -10000, this.freeRefs));
     }
@@ -286,16 +287,19 @@ class LargeList extends React.Component {
         height: this.props.heightForLoadMore()
       }
     ];
-    let hangSectionStyle = {
-      position: "absolute",
-      left: 0,
-      right: 0,
-      top: this.sizeConfirmed && !empty ? 0 : -10000,
-      height: this.props.heightForSection(this.currentSection)
-    };
+    let hangSectionStyle = [styles.absoluteStretch,
+    {top: this.sizeConfirmed && !empty ? 0 : -10000,
+      height: this.props.heightForSection(this.currentSection)}];
+    this.cells.forEach(item=>{
+      console.log("top=",item.top);
+    })
     return (
       <View {...this.props}>
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }} bounces={false}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flex: 1 }}
+          bounces={false}
+        >
           <EventScrollView
             ref={ref => (this.scrollViewRef = ref)}
             bounces={this.props.bounces}
@@ -386,13 +390,13 @@ class LargeList extends React.Component {
     );
   }
 
-  _onCellTouchBegin(sender){
-    this.workRefs.forEach(item=>{
+  _onCellTouchBegin(sender) {
+    this.workRefs.forEach(item => {
       item.hideOther(sender);
     });
   }
 
-  _onScroll(e) {
+  _onScroll(e, withoutReload) {
     let offset: Offset = e.nativeEvent.contentOffset;
     if (this.empty) {
       this.contentOffset = offset;
@@ -660,14 +664,15 @@ class LargeList extends React.Component {
         section.updateToSection(section.section, -10000, section.height, false);
     });
 
-    switch (reloadType) {
-      case 0:
-        this._forceUpdate();
-        break;
-      default:
-        this._positionUpdate();
-        break;
-    }
+    if (!withoutReload)
+      switch (reloadType) {
+        case 0:
+          this._forceUpdate();
+          break;
+        default:
+          this._positionUpdate();
+          break;
+      }
     this.contentOffset = offset;
     this.props.onScroll && this.props.onScroll(e);
     //解决冲量结束无法回调的问题
@@ -832,7 +837,7 @@ class LargeList extends React.Component {
     ) {
       this.sizeConfirmed = true;
       this.initCells();
-      // setTimeout( ()=>this.forceUpdate(),2000);
+      // setTimeout( ()=>this._forceUpdate(),2000);
     }
   }
 

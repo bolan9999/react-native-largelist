@@ -65,7 +65,7 @@ class LargeListSection extends React.Component {
 
   constructor(props) {
     super(props);
-    this.top = props.style.top;
+    this.top = props.style[1].top;
     this.height = props.style.height;
     this.section = props.section;
   }
