@@ -287,15 +287,19 @@ class LargeList extends React.Component {
         height: this.props.heightForLoadMore()
       }
     ];
-    let hangSectionStyle = [styles.absoluteStretch,
-    {top: this.sizeConfirmed && !empty ? 0 : -10000,
-      height: this.props.heightForSection(this.currentSection)}];
-    this.freeRefs.forEach(item=>{
-      console.log("top=",item.top);
+    let hangSectionStyle = [
+      styles.absoluteStretch,
+      {
+        top: this.sizeConfirmed && !empty ? 0 : -10000,
+        height: this.props.heightForSection(this.currentSection)
+      }
+    ];
+    this.freeRefs.forEach(item => {
+      console.log("top=", item.top);
     });
-    this.workRefs.forEach(item=>{
-      console.log("top=",item.top);
-    })
+    this.workRefs.forEach(item => {
+      console.log("top=", item.top);
+    });
     return (
       <View {...this.props}>
         <ScrollView
@@ -681,11 +685,12 @@ class LargeList extends React.Component {
     this.props.onScroll && this.props.onScroll(e);
     //解决冲量结束无法回调的问题
     if (
+      this.props.onLoadMore &&
       this.contentOffset.y >=
-      this.contentSize.height -
-        this.size.height +
-        this.props.heightForLoadMore() -
-        1
+        this.contentSize.height -
+          this.size.height +
+          this.props.heightForLoadMore() -
+          1
     ) {
       if (this.props.onLoadMore && !this.props.allLoadCompleted)
         this.enoughLoadMore = true;
@@ -693,6 +698,7 @@ class LargeList extends React.Component {
     }
     //禁止手动滑动到最下面
     if (
+      this.props.onLoadMore &&
       !this.draging &&
       this.scrollingAfterDraging &&
       offset.y > this.contentSize.height - this.size.height &&
@@ -1030,12 +1036,14 @@ class LargeList extends React.Component {
   }
 
   _onTouchStart() {
+    if(!this.props.onLoadMore)return;
     this.draging = true;
   }
 
   _onTouchMove(offset) {}
 
   _onTouchEnd() {
+    if(!this.props.onLoadMore)return;
     this.draging = false;
     if (
       this.contentOffset.y > this.contentSize.height - this.size.height &&

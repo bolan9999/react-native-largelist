@@ -153,12 +153,6 @@ class LargeListCell extends React.Component {
           flexDirection: "row"
         }
       : { flex: 1, flexDirection: "row" };
-    // let contentStyle = {width:this.contentSize.width+StyleSheet.hairlineWidth};
-    // let cellStyle = {
-    //   flex: 1,
-    //   marginLeft: this._maxRightWidth,
-    //   marginRight: this._maxRightWidth
-    // };
     return (
       <View
         ref={ref => (this._rootView = ref)}
@@ -278,7 +272,7 @@ class LargeListCell extends React.Component {
     this._offsetX !== this._maxLeftWidth - this._lWidth() &&
       this._scrollView &&
       this._scrollView.scrollTo({
-        x: this._maxLeftWidth - this._rWidth(),
+        x: this._maxLeftWidth - this._lWidth(),
         y: 0,
         animated: animated
       });

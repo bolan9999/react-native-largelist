@@ -31,10 +31,10 @@ class LargeListSample2 extends React.Component {
         ref={ref=>this.largeList = ref}
         numberOfRowsInSection={() => this.messages.length}
         heightForCell={() => 88}
-        onRefresh={() => {
-          this.setState({ refreshing: true });
-          setTimeout(() => this.setState({ refreshing: false }), 2000);
-        }}
+        // onRefresh={() => {
+        //   this.setState({ refreshing: true });
+        //   setTimeout(() => this.setState({ refreshing: false }), 2000);
+        // }}
         refreshing={this.state.refreshing}
         renderCell={this.renderItem.bind(this)}
         widthForRightWhenSwipeOut={() => 150}
