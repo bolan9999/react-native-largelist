@@ -8,22 +8,28 @@
  */
 
 import React from "react";
-import { View, Image, Text, ScrollView } from "react-native";
+import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import { LargeList } from "../react-native-largelist";
 import { messages } from "./DataSource";
 import Swipeout from "react-native-swipeout";
 
 class LargeListSample2 extends React.Component {
+
+  messages;
+  largeList;
+
   constructor(props) {
     super(props);
     this.state = { refreshing: false };
+    this.messages = [...messages];
   }
 
   render() {
     return (
       <LargeList
         style={this.props.style}
-        numberOfRowsInSection={() => messages.length}
+        ref={ref=>this.largeList = ref}
+        numberOfRowsInSection={() => this.messages.length}
         heightForCell={() => 88}
         onRefresh={() => {
           this.setState({ refreshing: true });
@@ -41,7 +47,7 @@ class LargeListSample2 extends React.Component {
   }
 
   renderItem(section: number, row: number) {
-    let msg = messages[row];
+    let msg = this.messages[row];
     return (
       <View style={{ flex: 1, backgroundColor: "#FFF" }}>
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
@@ -58,7 +64,7 @@ class LargeListSample2 extends React.Component {
             </Text>
           </View>
         </View>
-        {row < messages.length - 1 &&
+        {row < this.messages.length - 1 &&
           <View
             style={{ backgroundColor: "#EEE", height: 1, marginLeft: 16 }}
           />}
@@ -80,9 +86,13 @@ class LargeListSample2 extends React.Component {
             More
           </Text>
         </View>
-        <View
+        <TouchableOpacity
           style={{ flex: 1, backgroundColor: "red", justifyContent: "center" }}
           removeClippedSubviews={true}
+          onPress={()=>{
+            this.messages.splice(row,1);
+            this.largeList.reloadData();
+          }}
         >
           <Text
             style={{ marginLeft: 10, alignSelf: "center" }}
@@ -90,7 +100,7 @@ class LargeListSample2 extends React.Component {
           >
             Delete
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
     );
   }

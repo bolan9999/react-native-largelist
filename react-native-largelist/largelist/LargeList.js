@@ -290,7 +290,10 @@ class LargeList extends React.Component {
     let hangSectionStyle = [styles.absoluteStretch,
     {top: this.sizeConfirmed && !empty ? 0 : -10000,
       height: this.props.heightForSection(this.currentSection)}];
-    this.cells.forEach(item=>{
+    this.freeRefs.forEach(item=>{
+      console.log("top=",item.top);
+    });
+    this.workRefs.forEach(item=>{
       console.log("top=",item.top);
     })
     return (
@@ -400,6 +403,7 @@ class LargeList extends React.Component {
     let offset: Offset = e.nativeEvent.contentOffset;
     if (this.empty) {
       this.contentOffset = offset;
+      this._positionUpdate();
       return;
     }
     let distance = Math.abs(offset.y - this.contentOffset.y);
@@ -960,6 +964,7 @@ class LargeList extends React.Component {
   }
 
   reloadData() {
+    this._onCellTouchBegin();
     let offset = this.contentOffset;
     this.initVar();
     this.safeArea = { top: this.headerHeight, bottom: this.headerHeight };
