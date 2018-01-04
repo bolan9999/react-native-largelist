@@ -35,13 +35,15 @@ class EventScrollView extends ScrollView {
     ...ViewPropTypes,
     llonTouchStart: PropTypes.func,
     llonTouchMove: PropTypes.func,
-    llonTouchEnd: PropTypes.func
+    llonTouchEnd: PropTypes.func,
+    llonResponderGrant: PropTypes.func,
   };
 
   static defaultProps = {
     llonTouchStart: () => {},
     llonTouchMove: () => {},
-    llonTouchEnd: () => {}
+    llonTouchEnd: () => {},
+    llonResponderGrant: ()=>{}
   };
 
   orgOnTouchStart;
@@ -51,6 +53,9 @@ class EventScrollView extends ScrollView {
   orgOnScrollEndDrag;
   orgOnResponderRelease;
   orgOnMomentumScrollEnd;
+  orgOnStartShouldSetResponderCapture;
+  orgOnResponderGrant;
+  orgOnScrollEvent;
 
   constructor(props) {
     super(props);
@@ -62,6 +67,15 @@ class EventScrollView extends ScrollView {
 
     this.orgOnScrollEndDrag = this.scrollResponderHandleScrollEndDrag;
     this.scrollResponderHandleScrollEndDrag = this.onScrollEndDrag.bind(this);
+
+    // this.orgOnStartShouldSetResponderCapture = this.scrollResponderHandleScrollShouldSetResponder;
+    // this.scrollResponderHandleScrollShouldSetResponder = this.onStartShouldSetResponderCapture.bind(this);
+
+    this.orgOnResponderGrant = this.scrollResponderHandleResponderGrant;
+    this.scrollResponderHandleResponderGrant = this.onResponderGrant.bind(this);
+
+    // this.orgOnScrollEvent = this._handleScroll;
+    // this._handleScroll = this.onScrollEvent.bind(this);
   }
   onTouchStart(e) {
     this.orgOnTouchStart(e);
@@ -84,6 +98,20 @@ class EventScrollView extends ScrollView {
       y: e.nativeEvent.locationY
     });
   }
+
+  // onStartShouldSetResponderCapture(){
+  //   return false;
+  // }
+
+  onResponderGrant(e){
+    this.orgOnResponderGrant(e);
+    this.props.llonResponderGrant(e);
+  }
+
+  // onScrollEvent(e) {
+  //   this.orgOnScrollEvent(e);
+  //   console.log("scrolling");
+  // }
 
 }
 

@@ -8,14 +8,15 @@
  */
 
 import React from "react";
-import { View, Image, Text } from "react-native";
+import { View, Image, Text, ScrollView } from "react-native";
 import { LargeList } from "../react-native-largelist";
 import { messages } from "./DataSource";
+import Swipeout from "react-native-swipeout";
 
 class LargeListSample2 extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {refreshing:false};
+    this.state = { refreshing: false };
   }
 
   render() {
@@ -24,12 +25,17 @@ class LargeListSample2 extends React.Component {
         style={this.props.style}
         numberOfRowsInSection={() => messages.length}
         heightForCell={() => 88}
-        onRefresh={()=>{
-          this.setState({refreshing:true});
-          setTimeout(()=>this.setState({refreshing:false}),2000);
+        onRefresh={() => {
+          this.setState({ refreshing: true });
+          setTimeout(() => this.setState({ refreshing: false }), 2000);
         }}
         refreshing={this.state.refreshing}
         renderCell={this.renderItem.bind(this)}
+        widthForRightWhenSwipeOut={() => 150}
+        renderRightWhenSwipeOut={this.renderRight.bind(this)}
+        widthForLeftWhenSwipeOut={()=>220}
+        renderLeftWhenSwipeOut={this.renderRight.bind(this)}
+        colorForSwipeOutBgColor={()=>"#999"}
       />
     );
   }
@@ -37,13 +43,13 @@ class LargeListSample2 extends React.Component {
   renderItem(section: number, row: number) {
     let msg = messages[row];
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "#FFF" }}>
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
           <Image
             source={msg.icon}
             style={{ marginLeft: 16, width: 44, height: 44 }}
           />
-          <View style={{marginLeft:4}}>
+          <View style={{ marginLeft: 4 }}>
             <Text style={{ fontSize: 18 }}>
               {msg.title}
             </Text>
@@ -53,7 +59,36 @@ class LargeListSample2 extends React.Component {
           </View>
         </View>
         {row < messages.length - 1 &&
-          <View style={{ backgroundColor: "#EEE", height: 1, marginLeft:16 }} />}
+          <View
+            style={{ backgroundColor: "#EEE", height: 1, marginLeft: 16 }}
+          />}
+      </View>
+    );
+  }
+
+  renderRight(section: number, row: number) {
+    return (
+      <View style={{ flex: 1, flexDirection: "row" }}>
+        <View
+          style={{ flex: 1, backgroundColor: "blue", justifyContent: "center" }}
+        >
+          <Text
+            style={{ marginLeft: 10, alignSelf: "center" }}
+            numberOfLines={1}
+          >
+            More
+          </Text>
+        </View>
+        <View
+          style={{ flex: 1, backgroundColor: "red", justifyContent: "center" }}
+        >
+          <Text
+            style={{ marginLeft: 10, alignSelf: "center" }}
+            numberOfLines={1}
+          >
+            Delete
+          </Text>
+        </View>
       </View>
     );
   }
