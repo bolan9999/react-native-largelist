@@ -38,7 +38,7 @@ let message = [
 ];
 
 let messages = [];
-for (let i = 0; i < 7; ++i) {
+for (let i = 0; i < 70; ++i) {
   messages.push(message[Math.floor(Math.random() * 5)]);
 }
 

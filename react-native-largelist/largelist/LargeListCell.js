@@ -36,7 +36,8 @@ class LargeListCell extends React.Component {
     onCellTouchBegin: PropTypes.func,
     widthForLeftWhenSwipeOut: PropTypes.func,
     renderLeftWhenSwipeOut: PropTypes.func,
-    colorForSwipeOutBgColor: PropTypes.func
+    colorForSwipeOutBgColor: PropTypes.func,
+    itemSeparator: PropTypes.func
   };
 
   _rootView;
@@ -96,10 +97,10 @@ class LargeListCell extends React.Component {
       this._maxLeftWidth = this._lWidth();
   }
 
-  componentDidMount(){
+  componentDidMount() {
     if (Platform.OS === "ios") {
       this._enableShowEx = false;
-      this._scrollToOrigin(false)
+      this._scrollToOrigin(false);
     }
   }
 
@@ -109,15 +110,15 @@ class LargeListCell extends React.Component {
       // if (Platform.OS === "ios") {
       //   this._scrollToOrigin(false);
       // } else {
-        setTimeout(() => {
-          if (this._showLeft) {
-            this._scrollToShowLeft(false);
-          } else if (this._showRight) {
-            this._scrollToShowRight(false);
-          } else {
-            this._scrollToOrigin(false);
-          }
-        },1);
+      setTimeout(() => {
+        if (this._showLeft) {
+          this._scrollToShowLeft(false);
+        } else if (this._showRight) {
+          this._scrollToShowRight(false);
+        } else {
+          this._scrollToOrigin(false);
+        }
+      }, 1);
       // }
     }
   }
@@ -183,9 +184,25 @@ class LargeListCell extends React.Component {
         </EventScrollView>
         {show && this._renderLeft()}
         {show && this._renderRight()}
+        {show && this._renderItemSeparator()}
       </View>
     );
   }
+
+  _renderItemSeparator() {
+    if (
+      this.indexPath.row < 0 ||
+      this.indexPath.row + 1 >=
+        this.props.numberOfRowsInSection(this.indexPath.section)
+    )
+      return null;
+    return (
+      <View style={{ position: "absolute", left: 0, right: 0, bottom: 0 }}>
+        {this.props.itemSeparator(this.indexPath.section, this.indexPath.row)}
+      </View>
+    );
+  }
+
   _renderLeft() {
     let { renderLeftWhenSwipeOut } = this.props;
     if (!this.contentSize.width || this._lWidth() <= 0) return null;

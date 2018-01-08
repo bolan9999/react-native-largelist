@@ -14,7 +14,6 @@ import { messages } from "./DataSource";
 import Swipeout from "react-native-swipeout";
 
 class LargeListSample2 extends React.Component {
-
   messages;
   largeList;
 
@@ -28,20 +27,30 @@ class LargeListSample2 extends React.Component {
     return (
       <LargeList
         style={this.props.style}
-        ref={ref=>this.largeList = ref}
+        ref={ref => (this.largeList = ref)}
         numberOfRowsInSection={() => this.messages.length}
         heightForCell={() => 88}
-        // onRefresh={() => {
-        //   this.setState({ refreshing: true });
-        //   setTimeout(() => this.setState({ refreshing: false }), 2000);
-        // }}
         refreshing={this.state.refreshing}
         renderCell={this.renderItem.bind(this)}
         widthForRightWhenSwipeOut={() => 150}
         renderRightWhenSwipeOut={this.renderRight.bind(this)}
-        widthForLeftWhenSwipeOut={()=>220}
+        widthForLeftWhenSwipeOut={() => 180}
         renderLeftWhenSwipeOut={this.renderRight.bind(this)}
-        colorForSwipeOutBgColor={()=>"#999"}
+        colorForSwipeOutBgColor={() => "#999"}
+        renderEmpty={() =>
+          <View
+            style={{
+              height: 667,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Text>Empty</Text>
+          </View>}
+        renderItemSeparator={() =>
+          <View
+            style={{ backgroundColor: "#EEE", height: 1, marginLeft: 16 }}
+          />}
       />
     );
   }
@@ -64,10 +73,6 @@ class LargeListSample2 extends React.Component {
             </Text>
           </View>
         </View>
-        {row < this.messages.length - 1 &&
-          <View
-            style={{ backgroundColor: "#EEE", height: 1, marginLeft: 16 }}
-          />}
       </View>
     );
   }
@@ -89,8 +94,8 @@ class LargeListSample2 extends React.Component {
         <TouchableOpacity
           style={{ flex: 1, backgroundColor: "red", justifyContent: "center" }}
           removeClippedSubviews={true}
-          onPress={()=>{
-            this.messages.splice(row,1);
+          onPress={() => {
+            this.messages.splice(row, 1);
             this.largeList.reloadData();
           }}
         >

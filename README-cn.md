@@ -10,7 +10,8 @@ For English docs [click here](./README.md)
 * 跨平台，兼容iOS和Android。
 * 支持分组，支持每组头视图自动吸顶，新的Section挂在列表顶部时，支持回调。
 * 行组件进入或离开安全区域时可配置回调事件。
-* 支持单独的头部和尾部组件。
+* 支持单独的头部、尾部和空视图。
+* 支持左右滑动编辑Cell。
 * 支持下拉刷新和上拉加载更多。
 * 支持上拉加载视图自定义配置，上拉加载完成自定义视图配置。
 * 支持获取当前的动态属性，比如视图大小、当前偏移、当前Section、当前滑动视图总大小、头部或尾部组件高度、当前可视行等。
@@ -95,15 +96,15 @@ import { LargeList } from "react-native-largelist"
 
 属性  |  类型  |  默认  |  作用  
 ------ | ------ | --------- | --------
-（ViewPropTypes） | （ViewPropTypes） |  | View的所有属性
+（ViewProps） | （ViewPropTypes） |  | View的所有属性
 numberOfSections | ()=>number | ()=>1 | 总的Section数量
 numberOfRowsInSection | (section:number) => number | section=>0 | 函数：根据section索引返回当前section的Cell数量
-renderCell | (section:number,row:number) => React.Element | 必须 | 函数:根据当前Section和Row，返回当前Cell的render
+renderCell | (section:number,row:number) => React.Element | 必须 | 函数:根据当前Section和Row，返回当前Cell的render,此视图父视图是固定宽高的，子元素可以使用flex=1
 heightForCell | (section:number,row:number) => number | 必须 | 函数：根据Section和row index，返回当前Cell的高度
-renderSection | (section:number) => React.Element | section=>null | 函数：当前Section的render函数
+renderSection | (section:number) => React.Element | section=>null | 函数：当前Section的render函数,,此视图父视图是固定宽高的，子元素可以使用flex=1
 heightForSection | (section:number) => number | ()=>0 | 函数：返回当前section的高度
-renderHeader | () => React.Element | ()=>null | 函数：列表的头部组件的render函数
-renderFooter | () => React.Element | ()=>null | 函数：列表的尾部组件的render函数
+renderHeader | () => React.Element | ()=>null | 函数：列表的头部组件的render函数,此视图必须撑起父视图
+renderFooter | () => React.Element | ()=>null | 函数：列表的尾部组件的render函数,此视图必须撑起父视图
 bounces | boolean | true | 组件滑动到边缘是否可以继续滑动，松开后弹回
 refreshing | boolean | undefined | 是否正在刷新
 onRefresh | () => any | undefined | 下拉刷新的回调,如果用户设置了此属性，则添加一个刷新控件
@@ -192,12 +193,84 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 ### renderLoadingMore
 * type: ()=>React.Element
 * default: ()=> < ActivityIndicator style={{ marginTop: 10, alignSelf: "center" }} size={"large"}/ >
-* 用户自定义上拉加载更多的动画视图，目前暂不支持事件驱动动画
+* 用户自定义上拉加载更多的动画视图，目前暂不支持事件驱动动画,此视图父视图是固定宽高的，子元素可以使用flex=1
 
 ### renderLoadCompleted
 * type: ()=>React.Element
 * default: ()=> < Text style={{ marginTop: 20, alignSelf: "center", fontSize: 16 }}>No more data< /Text >
-* 用户自定义上拉时，加载完成的动画视图。
+* 用户自定义上拉时，加载完成的动画视图,此视图父视图是固定宽高的，子元素可以使用flex=1
+
+### numberOfCellPoolSize
+* type: number
+* default: (ScreenHeight + 2 * SafeMargin)/minCellHeight+0.5
+* 设置Cell池最大可用数量
+
+请注意：
+
+1. 在滑动过程中，LargeList不会创建新的Cell，只会在Cell池中选择一个来复用，如果池中Cell数量不够，则会将相反方向上的最后一个挪用过来复用
+
+2. 如果数量过大，则初始化及reloadData时性能将下降
+
+3. 如果数量过小，则可能出现滑动过程中相反方向出现空白
+
+4. 设置成当前可视区域加上下两个safeMargin区域在最坏情况下Cell的数量是最好的。
+
+### numberOfSectionPoolSize
+* type: number
+* default: 6
+* 设置Section池最大可用数量,注意事项参照numberOfCellPoolSize
+
+### renderEmpty
+* type: ()=>React.Element
+* default: ()=>null
+* 数据源为空时的默认视图
+
+请注意：
+
+1. 此视图应当由子元素撑起高度
+2. numberOfSections为1且numberOfRowsInSection为0时也被视为数据源为空
+
+### widthForRightWhenSwipeOut
+* type: (section,row)=>number
+* default: ()=>0
+* 手指左滑，Cell右边显示的宽度
+
+### renderRightWhenSwipeOut
+* type: (section,row)=>React.Element
+* default: ()=>null
+* 手指左滑，Cell右边的视图，请注意，此视图宽度是渐进的，注意保持视图的排布
+
+### widthForLeftWhenSwipeOut
+* type: (section,row)=>number
+* default: ()=>0
+* 手指右滑，Cell左边显示的宽度
+
+### renderLeftWhenSwipeOut
+* type: (section,row)=>number
+* default: ()=>null
+* 手指右滑，Cell左边的视图，请注意，此视图宽度是渐进的，注意保持视图的排布
+
+请注意：左边的额外视图现在不建议使用，在初始化和旋转的过程中会出现短暂的闪烁现象
+
+### colorForSwipeOutBgColor
+* type: (section,row)=>Color
+* default: ()=>"#AAA"
+* 左右滑动的时候，如果用户过度滑动，能看到的背景色
+
+### initialOffsetY
+* type: number
+* default: 0
+* 组件初始化的偏移位置
+
+### renderItemSeparator
+* type: (section,row)=>React.Element
+* default: ()=>< View style={{height:1,backgroundColor:"#EEE",marginLeft: 16}} / >
+* Cell分隔符, 最后一个Cell不会添加该视图，请注意，renderItemSeparator的高度是被包含在heightForCell当中的
+
+### onLargeListDidUpdate
+* type: ()=>any
+* default: ()=>null
+* LargeList在渲染完成或reloadData 完成后的回调，请注意，在您的视图中componentDidUpdate是不准确的，因为LargeList需要先测量头部、尾部、空视图宽高，再更新，每次更新LargeList都需要render两次
 
 ## 方法
 ### scrollTo(offset:Offset, animated:boolean=true)
@@ -253,11 +326,23 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 
 ## 目标计划
 1. 修正细节问题
-2. 提供左右滑动编辑功能
+2. 优化左右滑动编辑功能
 3. 代码优化，支持TypeScript类型检查
 
 
 ## 更新日志
+
+### 版本 1.2.0
+* 添加左右滑动编辑功能
+* 添加空视图
+* 修复reloadData在头部和尾部视图高度改变时出现的问题
+* 修复安卓在没有头视图时，刷新被Section挡住的问题
+* 添加初始化Y偏移设置：initialOffsetY
+* 添加Cell分隔视图设置：renderItemSeparator
+* 添加Cell和Section池最大数量自定义优化设置
+* 添加回调onLargeListDidUpdate
+
+
 
 ### 版本 1.1.0
 * 添加上拉加载更多
@@ -266,7 +351,7 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 * 将 "visiableIndexPaths" 修改为 "visibleIndexPaths", "visiableIndexPaths" 将在2.0.0版本后完全不支持
 * "numberOfSections"的类型由number改变为function, number 将在2.0.0版本后完全不支持
 
-### Version 1.0.0
+### 版本 1.0.0
 * release
 
 

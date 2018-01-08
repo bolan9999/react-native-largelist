@@ -92,7 +92,11 @@ class LargeList extends React.Component {
     renderRightWhenSwipeOut: PropTypes.func,
     widthForLeftWhenSwipeOut: PropTypes.func,
     renderLeftWhenSwipeOut: PropTypes.func,
-    colorForSwipeOutBgColor: PropTypes.func
+    colorForSwipeOutBgColor: PropTypes.func,
+    initialOffsetY: PropTypes.number,
+    renderItemSeparator: PropTypes.func,
+
+    onLargeListDidUpdate: PropTypes.func,
 
     // onIndexPathDidAppear: PropTypes.func,
     // onIndexPathDidDisappear: PropTypes.func,
@@ -117,7 +121,7 @@ class LargeList extends React.Component {
     speedLevel1: Platform.OS === "ios" ? 4 : 4,
     speedLevel2: Platform.OS === "ios" ? 10 : 10,
     showsVerticalScrollIndicator: true,
-    numberOfSectionPoolSize: 10,
+    numberOfSectionPoolSize: 6,
     onSectionDidHangOnTop: () => null,
     heightForLoadMore: () => 70,
     allLoadCompleted: false,
@@ -135,7 +139,10 @@ class LargeList extends React.Component {
     renderRightWhenSwipeOut: () => null,
     widthForLeftWhenSwipeOut: () => 0,
     renderLeftWhenSwipeOut: () => null,
-    colorForSwipeOutBgColor: () => "rgb(236,236,236)"
+    colorForSwipeOutBgColor: () => "#AAA",
+    initialOffsetY: 0,
+    renderItemSeparator: ()=><View style={{height:1, backgroundColor:"#EEE",marginLeft: 16}}/>,
+    onLargeListDidUpdate: ()=>null,
   };
 
   sections: Element[] = [];
@@ -173,14 +180,21 @@ class LargeList extends React.Component {
 
   numberOfSections: number;
   empty: boolean = false;
+  initialOffsetY: number = 0;
+  reloading: boolean = false;
+
+  headerRef;
+  footerRef;
 
   constructor(props) {
     super(props);
+    this.initialOffsetY = props.initialOffsetY;
     this.initVar();
   }
 
   initVar() {
     this.numberOfSections = this.props.numberOfSections;
+    this.reloading = true;
     if (typeof this.numberOfSections !== "function") {
       console.warn(
         "LargeList warning: numberOfSections's prop type has changed to function, use 'numberOfSections={()=>100}' instead of 'numberOfSections={100}, number will not support after 2.0'."
@@ -198,6 +212,9 @@ class LargeList extends React.Component {
     this.currentSection = 0;
     this.minCellHeight = 100;
     this.minSectionHeight = 100;
+    this.sizeConfirmed = false;
+    this.headerHeight = null;
+    this.footerHeight = null;
     this.native =
       Platform.OS === "ios" && this.props.nativeOptimize && TableView;
     for (let i = 0; i < this.numberOfSections(); ++i) {
@@ -241,8 +258,25 @@ class LargeList extends React.Component {
     this.contentSize.height += this.headerHeight;
     this.contentSize.height += this.footerHeight;
     this.safeArea.top = this.safeArea.bottom = this.headerHeight;
-    this._onScroll({ nativeEvent: { contentOffset: { x: 0, y: 0 } } });
+    this._onScroll({ nativeEvent: { contentOffset: this.contentOffset } });
     this.forceUpdate();
+  }
+
+  componentDidUpdate(){
+    if (this.sizeConfirmed) {
+      if (this.initialOffsetY>0) this.scrollTo({x:0,y:this.initialOffsetY},false);
+      this.initialOffsetY = 0;
+      if (this.reloading) this.props.onLargeListDidUpdate();
+      return;
+    }
+    setTimeout(()=>{
+      this.headerRef.measure((x,y,w,h)=>{
+        this._onHeaderLayout({nativeEvent:{layout:{height:h}}});
+      });
+      this.footerRef.measure((x,y,w,h)=>{
+        this._onFooterLayout({nativeEvent:{layout:{height:h}}});
+      });
+    },10);
   }
 
   render() {
@@ -295,12 +329,6 @@ class LargeList extends React.Component {
         height: this.props.heightForSection(this.currentSection)
       }
     ];
-    this.freeRefs.forEach(item => {
-      console.log("top=", item.top);
-    });
-    this.workRefs.forEach(item => {
-      console.log("top=", item.top);
-    });
     return (
       <View {...this.props}>
         <ScrollView
@@ -328,6 +356,7 @@ class LargeList extends React.Component {
             <View
               style={headerStyle}
               onLayout={this._onHeaderLayout.bind(this)}
+              ref={ref=>this.headerRef=ref}
             >
               {this.props.renderHeader()}
             </View>
@@ -337,6 +366,7 @@ class LargeList extends React.Component {
             <View
               style={footerStyle}
               onLayout={this._onFooterLayout.bind(this)}
+              ref={ref=>this.footerRef=ref}
             >
               {this.props.renderFooter()}
             </View>
@@ -394,6 +424,7 @@ class LargeList extends React.Component {
         renderLeftWhenSwipeOut={this.props.renderLeftWhenSwipeOut}
         onCellTouchBegin={this._onCellTouchBegin.bind(this)}
         colorForSwipeOutBgColor={this.props.colorForSwipeOutBgColor}
+        itemSeparator={this.props.renderItemSeparator}
       />
     );
   }
@@ -406,7 +437,7 @@ class LargeList extends React.Component {
 
   _onScroll(e, withoutReload) {
     let offset: Offset = e.nativeEvent.contentOffset;
-    if (this.empty) {
+    if (this.empty || !this.sizeConfirmed) {
       this.contentOffset = offset;
       this._positionUpdate();
       return;
@@ -718,8 +749,8 @@ class LargeList extends React.Component {
     this.workSectionRefs.forEach(item => {
       if (
         this.currentSection === item.section - 1 &&
-        offset.y <= item.top &&
-        item.top <= this.currentSectionRef.height + offset.y
+        offset.y < item.top &&
+        item.top < this.currentSectionRef.height + offset.y
       ) {
         exchanging = true;
         this.currentSectionRef.updateToSection(
@@ -734,8 +765,8 @@ class LargeList extends React.Component {
       this.workSectionRefs.forEach(item => {
         if (
           this.currentSection != item.section &&
-          item.top <= offset.y &&
-          item.top + item.height >= offset.y
+          item.top < offset.y &&
+          item.top + item.height > offset.y
         ) {
           this.currentSection = item.section;
           this.currentSectionRef.updateToSection(
@@ -750,8 +781,8 @@ class LargeList extends React.Component {
       this.workRefs.forEach(item => {
         if (
           this.currentSection != item.indexPath.section &&
-          item.top <= offset.y &&
-          item.top + item.height >= offset.y
+          item.top < offset.y &&
+          item.top + item.height > offset.y
         ) {
           this.currentSection = item.indexPath.section;
           this.currentSectionRef.updateToSection(
@@ -777,8 +808,8 @@ class LargeList extends React.Component {
       }
     }
     if (
-      offset.y < this.headerHeight ||
-      offset.y > this.contentSize.height - this.footerHeight
+      offset.y <= this.headerHeight ||
+      offset.y >= this.contentSize.height - this.footerHeight
     ) {
       if (this.currentSectionRef.top !== -10000)
         this.currentSectionRef.updateToSection(
@@ -974,9 +1005,10 @@ class LargeList extends React.Component {
     this._onCellTouchBegin();
     let offset = this.contentOffset;
     this.initVar();
-    this.safeArea = { top: this.headerHeight, bottom: this.headerHeight };
-    this.contentSize.height += this.headerHeight;
-    this.contentSize.height += this.footerHeight;
+    this.safeArea = {top:0,bottom:0};
+    // this.safeArea = { top: this.headerHeight, bottom: this.headerHeight };
+    // this.contentSize.height += this.headerHeight;
+    // this.contentSize.height += this.footerHeight;
     this.workRefs.forEach(cell => {
       this.freeRefs.splice(0, 0, cell);
     });
@@ -994,7 +1026,7 @@ class LargeList extends React.Component {
       this.workSectionRefs.splice(index, index > -1 ? 1 : 0);
       section.updateToSection(section.section, -10000, section.height, false);
     });
-    this._onScroll({ nativeEvent: { contentOffset: offset } });
+    // this._onScroll({ nativeEvent: { contentOffset: offset } });
     this.forceUpdate();
   }
 

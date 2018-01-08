@@ -49,13 +49,14 @@ class LargeListSample3 extends React.Component {
         onLoadMore={() => {
           setTimeout(() => {
             this.contacts = this.contacts.concat(orgContracts);
+            if (!this.loadComplete) this.loadComplete = true;
             this.forceUpdate();
             this.root.reloadData();
-            if (!this.loadComplete) this.loadComplete = true;
           }, 2000);
         }}
         allLoadCompleted={this.loadComplete}
-        renderEmpty={()=><Text style={{fontSize:20,alignSelf:"center"}}>Empty</Text>}
+        renderEmpty={() =>
+          <Text style={{ fontSize: 20, alignSelf: "center" }}>Empty</Text>}
       />
     );
   }
@@ -112,7 +113,7 @@ class LargeListSample3 extends React.Component {
     return (
       <View
         style={{
-          height: 80,
+          height: this.loadComplete ? 200 : 80,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center"
