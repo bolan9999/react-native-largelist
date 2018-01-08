@@ -107,10 +107,7 @@ class LargeListCell extends React.Component {
   componentDidUpdate() {
     if (this._shouldScrollToCenter && this.contentSize.width) {
       this._enableShowEx = false;
-      // if (Platform.OS === "ios") {
-      //   this._scrollToOrigin(false);
-      // } else {
-      setTimeout(() => {
+      let timer = setTimeout(() => {
         if (this._showLeft) {
           this._scrollToShowLeft(false);
         } else if (this._showRight) {
@@ -118,8 +115,8 @@ class LargeListCell extends React.Component {
         } else {
           this._scrollToOrigin(false);
         }
+        clearTimeout(timer);
       }, 1);
-      // }
     }
   }
 
@@ -250,7 +247,9 @@ class LargeListCell extends React.Component {
     if (this !== sender) {
       this._enableShowEx = true;
       this._scrollToOrigin();
+      return true;
     }
+    return false;
   }
 
   _onScroll(e) {
