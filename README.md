@@ -6,7 +6,7 @@
 
 ## Features
 
-* The performance of react-native-largelist is much better than FlatList and SectionList.
+* The performance of react-native-largelist is much better than FlatList and SectionList.And lower CPU/Memory usage.
 * Large data source supported, infinite data supported, super fast sliding support.
 * Full cross-platform.
 * Sticky Section support.

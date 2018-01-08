@@ -5,7 +5,7 @@ For English docs [click here](./README.md)
 **react-native-largelist** 是一个为React Native准备的高性能的列表组件，它比官方的SectionList给人以更好的性能体验及更完善的功能（兼容iOS和Android）.
 
 ## 特点
-* react-native-largelist 比官网的SectionList性能表现更好,在最坏的情况下（比如从第一行直接用代码滑动到第1000行），即使出现白板，也是瞬间消失。
+* react-native-largelist 比官网的SectionList CPU和内存占用更少，性能表现更好,在最坏的情况下（比如从第一行直接用代码滑动到第1000行），即使出现白板，也是瞬间消失。
 * 支持超大数据源，支持无限列表，支持超快速度滑动。
 * 跨平台，兼容iOS和Android。
 * 支持分组，支持每组头视图自动吸顶，新的Section挂在列表顶部时，支持回调。
