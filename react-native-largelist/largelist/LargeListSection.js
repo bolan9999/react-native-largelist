@@ -30,14 +30,14 @@ class LargeListSection extends React.Component {
   section: IndexPath;
   waitForRender: boolean;
 
-  forceUpdate() {
+  contentUpdate() {
     if (this.waitForRender)
       this.rootView.setNativeProps({
         style: { top: this.top, height: this.height }
       });
     this.waitForRender = false;
 
-    this.setState({});
+    this.forceUpdate();
   }
 
   updateToSection(
@@ -60,12 +60,12 @@ class LargeListSection extends React.Component {
       });
       return;
     }
-    this.forceUpdate();
+    this.contentUpdate();
   }
 
   constructor(props) {
     super(props);
-    this.top = props.style.top;
+    this.top = props.style[1].top;
     this.height = props.style.height;
     this.section = props.section;
   }

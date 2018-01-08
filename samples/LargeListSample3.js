@@ -15,11 +15,11 @@ import { iconObject } from "./icons";
 
 class LargeListSample3 extends React.Component {
   contracts;
-  loadComplete =false;
+  loadComplete = false;
 
   constructor(props) {
     super(props);
-    this.contacts = orgContracts;
+    this.contacts = [];
     this.state = { refreshing: false, loadingMore: false };
   }
 
@@ -28,7 +28,7 @@ class LargeListSample3 extends React.Component {
       <LargeList
         ref={ref => (this.root = ref)}
         style={this.props.style}
-        numberOfSections={()=>this.contacts.length}
+        numberOfSections={() => this.contacts.length}
         numberOfRowsInSection={section => this.contacts[section].info.length}
         renderSection={this.renderSection.bind(this)}
         renderCell={this.renderItem.bind(this)}
@@ -38,18 +38,25 @@ class LargeListSample3 extends React.Component {
         renderFooter={this.renderFooter.bind(this)}
         onRefresh={() => {
           this.setState({ refreshing: true });
-          setTimeout(() => this.setState({ refreshing: false }), 2000);
+          setTimeout(() => {
+            this.contacts = [...orgContracts];
+            // this.contacts = this.contacts.concat(orgContracts);
+            this.setState({ refreshing: false });
+            this.root.reloadData();
+          }, 2000);
         }}
         refreshing={this.state.refreshing}
         onLoadMore={() => {
           setTimeout(() => {
             this.contacts = this.contacts.concat(orgContracts);
-            this.loadComplete = true;
+            if (!this.loadComplete) this.loadComplete = true;
             this.forceUpdate();
             this.root.reloadData();
           }, 2000);
         }}
         allLoadCompleted={this.loadComplete}
+        renderEmpty={() =>
+          <Text style={{ fontSize: 20, alignSelf: "center" }}>Empty</Text>}
       />
     );
   }
@@ -106,7 +113,7 @@ class LargeListSample3 extends React.Component {
     return (
       <View
         style={{
-          height: 80,
+          height: this.loadComplete ? 200 : 80,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center"

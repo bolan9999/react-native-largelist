@@ -9,9 +9,10 @@
 * The performance of react-native-largelist is much better than FlatList and SectionList.
 * Large data source supported, infinite data supported, super fast sliding support.
 * Full cross-platform.
-* Section support.
+* Sticky Section support.
 * Callback when Cell/Item enter/leave the safeArea support.
-* List header/footer support.
+* List header/footer/empty support.
+* Swipe out to edit Cell.
 * Pull to Refresh and Scroll loading more.
 * Scroll loading more custom view support, all data source load completed custom view support.
 * Dynamic variable support, for example: size, contentOffset, currentSection, contentSize, height of Header/Footer, visibleIndexPaths and so on.
@@ -96,15 +97,15 @@ Props:
 
 Props  |  type  |  default  |  effect  
 ------ | ------ | --------- | --------
-（ViewPropTypes） | （ViewPropTypes） |  | All props of View
+（ViewProps） | （ViewPropTypes） |  | All props of View
 numberOfSections | ()=>number | ()=>1 | number of sections in tableview
 numberOfRowsInSection | (section:number) => number | section=>0 | function：return the number of rows in section
-renderCell | (section:number,row:number) => React.Element | required | function: render of cell with section and row index
+renderCell | (section:number,row:number) => React.Element | required | function: render of cell with section and row index.The parent is fixed,you can use flex=1
 heightForCell | (section:number,row:number) => number | required | function：return height for cell with section and row index 
-renderSection | (section:number) => React.Element | section=>null | function：render of section with section index
+renderSection | (section:number) => React.Element | section=>null | function：render of section with section index.The parent is fixed,you can use flex=1
 heightForSection | (section:number) => number | ()=>0 | function：return height of section with section index
-renderHeader | () => React.Element | ()=>null | function：render of header in the tableview
-renderFooter | () => React.Element | ()=>null | function：render of footer in tableview
+renderHeader | () => React.Element | ()=>null | function：render of header in LargeList. it must have a bounded height in order to work
+renderFooter | () => React.Element | ()=>null | function：render of footer in LargeList. it must have a bounded height in order to work
 bounces | boolean | true | bounces
 refreshing | boolean | undefined | refreshing
 onRefresh | () => any | undefined | callback of pulling to refresh,if not undefined ,a default RefreshControl is add to LargeList
@@ -196,13 +197,82 @@ Notice:
 ### renderLoadingMore
 * type: ()=>React.Element
 * default: ()=> < ActivityIndicator style={{ marginTop: 10, alignSelf: "center" }} size={"large"}/ >
-* The render of custom Loading More View
+* The render of custom Loading More View,The parent is fixed,you can use flex=1
 
 ### renderLoadCompleted
 * type: ()=>React.Element
 * default: ()=> < Text style={{ marginTop: 20, alignSelf: "center", fontSize: 16 }}>No more data< /Text >
-* The render of custom Loading Completed View.
+* The render of custom Loading Completed View.The parent is fixed,you can use flex=1
 
+### numberOfCellPoolSize
+* type: number
+* default: (ScreenHeight + 2 * SafeMargin)/minCellHeight+0.5
+* Max size of Cell pool
+
+Notice：
+
+1. LargeList does not create cell when sliding, they are reused.
+
+2. If numberOfCellPoolSize is too large, it takes more time when initialing and reloadData.
+
+3. If it is too small, LargeList will not work  well.
+
+### numberOfSectionPoolSize
+* type: number
+* default: 6
+* Max size of Section pool, Refer to numberOfCellPoolSize as a matter of attention.
+
+### renderEmpty
+* type: ()=>React.Element
+* default: ()=>null
+* The empty view render
+
+Notice：
+
+1. It must have a bounded height in order to work
+2. It is empty when numberOfSections===0 || (numberOfSections===1 && numberOfRowsInSection===0)
+
+### widthForRightWhenSwipeOut
+* type: (section,row)=>number
+* default: ()=>0
+* Swipe left, the width of right View. To swipe out to delete/config cell, you must set this prop.
+
+### renderRightWhenSwipeOut
+* type: (section,row)=>React.Element
+* default: ()=>null
+* Swipe left, the render of right View. To swipe out to delete/config cell, you must set this prop.
+
+### widthForLeftWhenSwipeOut
+* type: (section,row)=>number
+* default: ()=>0
+* Swipe right, the width of left View. To swipe out to config cell, you can set this prop.
+
+### renderLeftWhenSwipeOut
+* type: (section,row)=>number
+* default: ()=>null
+* Swipe right, the render of left View. To swipe out to config cell, you can set this prop.
+
+Notice: It is not recommended to use widthForLeftWhenSwipeOut and renderLeftWhenSwipeOut, it will shake sometimes when rotating screen.
+
+### colorForSwipeOutBgColor
+* type: (section,row)=>Color
+* default: ()=>"#AAA"
+* Background color for swipe out.
+
+### initialOffsetY
+* type: number
+* default: 0
+* Initial offset. It works only on init.
+
+### renderItemSeparator
+* type: (section,row)=>React.Element
+* default: ()=>< View style={{height:1,backgroundColor:"#EEE",marginLeft: 16}} / >
+* The render of item separator. It will not work on the last cell of any sections.And notice that the heightForCell contains its height.
+
+### onLargeListDidUpdate
+* type: ()=>any
+* default: ()=>null
+* Callback when LargeList render completed and reloadData completed.
 
 ## Method
 ### scrollTo(offset:Offset, animated:boolean=true)
@@ -258,10 +328,16 @@ Get LargeList's footer height
 
 ## Goals and plans
 * Fix bug
-* Left and right swipe out to edit cell.
 * Code optimization， support typescript.
 
 ## Update Log
+
+### Version 1.2.0
+* Add swiping left and right to edit cell
+* Add empty view
+* Fix bug on reloadData when changing the height of header or footer.
+* Fix bug when refreshing on Android
+* Add initialOffsetY,renderItemSeparator,numberOfCellPoolSize,numberOfSectionPoolSize and onLargeListDidUpdate, reread the docs to learn more.
 
 ### Version 1.1.0
 * Add loading more
