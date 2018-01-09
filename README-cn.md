@@ -354,4 +354,7 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 ### 版本 1.0.0
 * release
 
+## 许可证
+react-native-largelist是MIT许可证，详细信息请阅读LICENSE
+
 
