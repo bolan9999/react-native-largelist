@@ -349,3 +349,8 @@ Get LargeList's footer height
 ### Version 1.0.0
 * release
 
+
+## License
+
+react-native-largelist is released under the MIT license. See LICENSE for details.
+
