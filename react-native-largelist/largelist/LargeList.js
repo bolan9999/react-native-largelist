@@ -269,15 +269,17 @@ class LargeList extends React.Component {
         this.scrollTo({ x: 0, y: this.initialOffsetY }, false);
       this.initialOffsetY = 0;
       if (this.reloading) this.props.onLargeListDidUpdate();
+      this.reloading = false;
       return;
     }
-    setTimeout(() => {
+    let timer = setTimeout(() => {
       this.headerRef.measure((x, y, w, h) => {
         this._onHeaderLayout({ nativeEvent: { layout: { height: h } } });
       });
       this.footerRef.measure((x, y, w, h) => {
         this._onFooterLayout({ nativeEvent: { layout: { height: h } } });
       });
+      clearTimeout(timer);
     }, 10);
   }
 
