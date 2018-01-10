@@ -8,7 +8,7 @@
 
 * The performance of react-native-largelist is much better than FlatList and SectionList.And lower CPU/Memory usage.
 * Large data source supported, infinite data supported, super fast sliding support.
-* Full cross-platform.
+* Full cross-platform，Optimize from ScrollView, better version compatibility.
 * Sticky Section support.
 * Callback when Cell/Item enter/leave the safeArea support.
 * List header/footer/empty support.
@@ -110,6 +110,10 @@ bounces | boolean | true | bounces
 refreshing | boolean | undefined | refreshing
 onRefresh | () => any | undefined | callback of pulling to refresh,if not undefined ,a default RefreshControl is add to LargeList
 onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Callback when scrolling.
+
+Notice:
+
+* If your data source change and it affects the number of sections or the number of cells in section, or the height of any sections or cells, you must call [reloadData](#reloaddata)
 
 ## Principle
 Before we learn advanced usage, we must first understand the basic principles:
@@ -331,6 +335,13 @@ Get LargeList's footer height
 * Code optimization， support typescript.
 
 ## Update Log
+
+### Version 1.2.2
+* Fix bug on onLargeListDidUpdate
+* Support TypeScript
+
+### Version 1.2.1
+* Fix bug when swipe out.
 
 ### Version 1.2.0
 * Add swiping left and right to edit cell
