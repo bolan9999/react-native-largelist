@@ -302,8 +302,6 @@ Notice:
 
 1. reloadIndexPath, reloadIndexPaths, reloadAll work partially. They do not work well when the numberOfSections ,numberOfRowsInSection,heightForSection,heightForCell change.Use reloadData instead.
 
-<span id="reloadData"></span>
-
 ### reloadData()
 Reload all datasource globally.
 
