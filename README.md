@@ -113,7 +113,7 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Callba
 
 Notice:
 
-* If your data source change and it affects the number of sections or the number of cells in section, or the height of any sections or cells, you must call [reloadData](#Features)
+* If your data source change and it affects the number of sections or the number of cells in section, or the height of any sections or cells, you must call [reloadData](#reloaddata)
 
 ## Principle
 Before we learn advanced usage, we must first understand the basic principles:
