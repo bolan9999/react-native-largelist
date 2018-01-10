@@ -112,7 +112,7 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 
 注意：
 
-* 不同于FlatList，LargeList是惰性的，不会立即重新计算布局，当您的数据源改变的时候，影响到以下因素时，必须调用[reloadData](#reloadData)重新布局
+* 不同于FlatList，LargeList是惰性的，不会立即重新计算布局，当您的数据源改变的时候，影响到以下因素时，必须调用[reloadData](#reloaddata)重新布局
 
 1. 头部和尾部高度变化
 
@@ -307,8 +307,6 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 注意:
 
 1. reloadIndexPath, reloadIndexPaths, reloadAll 都是局部重新加载，因此影响列表的全局属性，比如numberOfSections ,numberOfRowsInSection,heightForSection,heightForCell属性改变，则会导致错乱，请使用reloadData。
-
-<span id="reloadData"></span>
 
 ### reloadData()
 全局重新加载所有数据
