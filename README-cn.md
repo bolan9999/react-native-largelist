@@ -7,7 +7,7 @@ For English docs [click here](./README.md)
 ## 特点
 * react-native-largelist 比官网的SectionList CPU和内存占用更少，性能表现更好,在最坏的情况下（比如从第一行直接用代码滑动到第1000行），即使出现白板，也是瞬间消失。
 * 支持超大数据源，支持无限列表，支持超快速度滑动。
-* 跨平台，兼容iOS和Android。
+* 跨平台，兼容iOS和Android。优化自ScrollView，对RN版本兼容性好。
 * 支持分组，支持每组头视图自动吸顶，新的Section挂在列表顶部时，支持回调。
 * 行组件进入或离开安全区域时可配置回调事件。
 * 支持单独的头部、尾部和空视图。
@@ -109,6 +109,18 @@ bounces | boolean | true | 组件滑动到边缘是否可以继续滑动，松�
 refreshing | boolean | undefined | 是否正在刷新
 onRefresh | () => any | undefined | 下拉刷新的回调,如果用户设置了此属性，则添加一个刷新控件
 onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动的回调，同官方ScrollView
+
+注意：
+
+* 不同于FlatList，LargeList是惰性的，不会立即重新计算布局，当您的数据源改变的时候，影响到以下因素时，必须调用[reloadData](#reloadData)重新布局
+
+1. 头部和尾部高度变化
+
+2. 任何一行Cell或Section高度变化
+
+3. 任何一组Section下的Cell数量变化
+
+4. Section数量变化
 
 ## 原理
 在了解高级用法之前，我们先要了解下基本原理：
@@ -296,6 +308,8 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 
 1. reloadIndexPath, reloadIndexPaths, reloadAll 都是局部重新加载，因此影响列表的全局属性，比如numberOfSections ,numberOfRowsInSection,heightForSection,heightForCell属性改变，则会导致错乱，请使用reloadData。
 
+<span id="reloadData"></span>
+
 ### reloadData()
 全局重新加载所有数据
 
@@ -331,6 +345,13 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 
 
 ## 更新日志
+
+### 版本 1.2.2
+* 修复onLargeListDidUpdate的回调时机问题
+* 支持TypeScript
+
+### 版本 1.2.1
+* 修复左右滑动编辑过程中，上下滑动的问题
 
 ### 版本 1.2.0
 * 添加左右滑动编辑功能
