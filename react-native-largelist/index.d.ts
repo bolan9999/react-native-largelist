@@ -38,12 +38,12 @@ declare module "react-native-largelist" {
   export interface LargeListPropTypes extends ViewProperties {
     numberOfSections?: () => number;
     numberOfRowsInSection?: (section: number) => number;
-    renderCell: (section: number, row: number) => React.Element<any>|null;
+    renderCell: (section: number, row: number) => React.ReactElement<any>|null;
     heightForCell: (section: number, row: number) => number;
-    renderSection?: (section: number) => React.Element<any>|null;
+    renderSection?: (section: number) => React.ReactElement<any>|null;
     heightForSection?: (section: number) => number;
-    renderHeader?: () => React.Element<any>|null;
-    renderFooter?: () => React.Element<any>|null;
+    renderHeader?: () => React.ReactElement<any>|null;
+    renderFooter?: () => React.ReactElement<any>|null;
     bounces?: boolean;
     refreshing?: boolean;
     onRefresh?: (() => any) | null;
@@ -61,24 +61,24 @@ declare module "react-native-largelist" {
     onLoadMore?: () => any;
     heightForLoadMore?: () => number;
     allLoadCompleted?: boolean;
-    renderLoadingMore?: () => React.Element<any>|null;
-    renderLoadCompleted?: () => React.Element<any>|null;
+    renderLoadingMore?: () => React.ReactElement<any>|null;
+    renderLoadCompleted?: () => React.ReactElement<any>|null;
     numberOfCellPoolSize?: number;
     numberOfSectionPoolSize?: number;
-    renderEmpty?: () => React.Element<any>|null;
+    renderEmpty?: () => React.ReactElement<any>|null;
     widthForRightWhenSwipeOut?: (section: number, row: number) => number;
     renderRightWhenSwipeOut?: (
       section: number,
       row: number
-    ) => React.Element<any>|null;
+    ) => React.ReactElement<any>|null;
     widthForLeftWhenSwipeOut?: (section: number, row: number) => number;
     renderLeftWhenSwipeOut?: (
       section: number,
       row: number
-    ) => React.Element<any>|null;
+    ) => React.ReactElement<any>|null;
     colorForSwipeOutBgColor?: (section: number, row: number) => string;
     initialOffsetY?: number;
-    renderItemSeparator?: (section: number, row: number) => React.Element<any>|null;
+    renderItemSeparator?: (section: number, row: number) => React.ReactElement<any>|null;
     onLargeListDidUpdate?: () => any;
   }
 
@@ -93,9 +93,9 @@ declare module "react-native-largelist" {
     headerHeight: number;
     footerHeight: number;
 
-    scrollTo(offset: Offset, animated: boolean = true): void;
-    scrollToIndexPath(indexPath: IndexPath, animated: boolean = true): void;
-    scrollToEnd(animated: boolean = true): void;
+    scrollTo(offset: Offset, animated?: boolean): void;
+    scrollToIndexPath(indexPath: IndexPath, animated?: boolean): void;
+    scrollToEnd(animated?: boolean): void;
     visibleIndexPaths(): IndexPath[];
     renderedIndexPaths(): IndexPath[];
     freeCount(): number;
