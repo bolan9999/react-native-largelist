@@ -344,6 +344,9 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 
 ## 更新日志
 
+### 版本 1.2.3
+* 修复TypeScript类型声明错误
+
 ### 版本 1.2.2
 * 修复onLargeListDidUpdate的回调时机问题
 * 支持TypeScript

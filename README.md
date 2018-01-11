@@ -336,6 +336,9 @@ Get LargeList's footer height
 
 ## Update Log
 
+### Version 1.2.3
+* Fix typescript type define.
+
 ### Version 1.2.2
 * Fix bug on onLargeListDidUpdate
 * Support TypeScript
