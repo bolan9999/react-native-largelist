@@ -44,9 +44,9 @@ export default class App extends React.Component {
           />
         );
       case 3:
-        return <LargeListSample2 style={{ flex: 1 }} />;
+        return <LargeListSample2 style={{ flex: 1, marginTop:40 }} />;
       case 4:
-        return <LargeListSample3 style={{ flex: 1 }} />;
+        return <LargeListSample3 style={{ flex: 1, marginTop:40 }} />;
       case 5:
         return <LargeListSample4/>
     }

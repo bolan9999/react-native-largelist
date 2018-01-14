@@ -100,11 +100,11 @@ class LargeListSample3 extends React.Component {
             {this.contacts[section].info[row].phone}
           </Text>
         </View>
-        {(row < this.contacts[section].info.length - 1 ||
-          section === this.contacts.length - 1) &&
-          <View
-            style={{ backgroundColor: "#CCC", height: 1, marginLeft: 16 }}
-          />}
+        {/*{(row < this.contacts[section].info.length - 1 ||*/}
+          {/*section === this.contacts.length - 1) &&*/}
+          {/*<View*/}
+            {/*style={{ backgroundColor: "#CCC", height: 1, marginLeft: 16 }}*/}
+          {/*/>}*/}
       </View>
     );
   }
@@ -113,7 +113,7 @@ class LargeListSample3 extends React.Component {
     return (
       <View
         style={{
-          height: this.loadComplete ? 200 : 80,
+          height: 80,
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center"

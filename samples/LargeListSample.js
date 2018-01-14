@@ -63,7 +63,7 @@ class LargeListSample extends React.Component {
             setTimeout(() => this.setState({ refreshing: false }), 2000);
           }}
           numberOfRowsInSection={section => this.props.numberOfEachSection}
-          numberOfSections={this.props.numberOfSections}
+          numberOfSections={()=>this.props.numberOfSections}
           heightForCell={(section, row) =>
             row % 2 ? this.minCellHeight : this.maxCellHeight}
           renderCell={this.renderItem.bind(this)}

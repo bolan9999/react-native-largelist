@@ -336,6 +336,9 @@ Get LargeList's footer height
 
 ## Update Log
 
+### Version 1.2.4
+* Fix default numberOfCellPoolSize error when empty.
+
 ### Version 1.2.3
 * Fix typescript type define.
 

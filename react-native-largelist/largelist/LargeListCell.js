@@ -127,7 +127,7 @@ class LargeListCell extends React.Component {
   render() {
     let { section, row } = this.indexPath;
     let show =
-      this.top !== -10000 &&
+      // this.top !== -10000 &&
       section >= 0 &&
       section < this.props.numberOfSections() &&
       row >= 0 &&
@@ -140,6 +140,7 @@ class LargeListCell extends React.Component {
         >
           {show &&
             this.props.renderCell(this.indexPath.section, this.indexPath.row)}
+          {show && this._renderItemSeparator()}
         </View>
       );
     let contentStyle = this.contentSize.width
