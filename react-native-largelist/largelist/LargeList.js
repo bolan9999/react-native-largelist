@@ -211,8 +211,8 @@ class LargeList extends React.Component {
     this.contentSize = { width: 0, height: 0 };
     this.lastScrollTime = 0;
     this.currentSection = 0;
-    this.minCellHeight = 100;
-    this.minSectionHeight = 100;
+    this.minCellHeight = 40;
+    this.minSectionHeight = 40;
     this.sizeConfirmed = false;
     this.headerHeight = null;
     this.footerHeight = null;
@@ -513,7 +513,8 @@ class LargeList extends React.Component {
       });
       this.workRefs.forEach(item => {
         if (this._compareIndexPath(item.indexPath, this.topIndexPath) < 0) {
-          this.freeRefs.splice(0, 0, item);
+          // this.freeRefs.splice(0, 0, item);
+          this.freeRefs.push(item);
         }
       });
       this.freeRefs.forEach(cell => {
@@ -627,7 +628,8 @@ class LargeList extends React.Component {
 
       this.workRefs.forEach(item => {
         if (this._compareIndexPath(item.indexPath, this.bottomIndexPath) > 0) {
-          this.freeRefs.splice(0, 0, item);
+          // this.freeRefs.splice(0, 0, item);
+          this.freeRefs.push(item);
         }
       });
       this.freeRefs.forEach(cell => {
@@ -1017,7 +1019,8 @@ class LargeList extends React.Component {
       this.initVar();
       this.safeArea = { top: 0, bottom: 0 };
       this.workRefs.forEach(cell => {
-        this.freeRefs.splice(0, 0, cell);
+        // this.freeRefs.splice(0, 0, cell);
+        this.freeRefs.push(cell);
       });
       this.freeRefs.forEach(cell => {
         cell.waitForRender = true;

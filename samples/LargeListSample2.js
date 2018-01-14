@@ -11,7 +11,6 @@ import React from "react";
 import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import { LargeList } from "../react-native-largelist";
 import { messages } from "./DataSource";
-import Swipeout from "react-native-swipeout";
 
 class LargeListSample2 extends React.Component {
   messages;
