@@ -259,8 +259,11 @@ class LargeList extends React.Component {
     this.contentSize.height += this.headerHeight;
     this.contentSize.height += this.footerHeight;
     this.safeArea.top = this.safeArea.bottom = this.headerHeight;
-    this._onScroll({ nativeEvent: { contentOffset: this.contentOffset } });
     this.forceUpdate();
+    this._onScroll(
+      { nativeEvent: { contentOffset: this.contentOffset } },
+      true
+    );
   }
 
   componentDidUpdate() {
@@ -388,6 +391,7 @@ class LargeList extends React.Component {
             renderSection={this.props.renderSection}
             ref={reference => (this.currentSectionRef = reference)}
             numberOfSections={this.numberOfSections}
+            heightForSection={this.props.heightForSection}
           />
         </ScrollView>
       </View>
@@ -395,14 +399,16 @@ class LargeList extends React.Component {
   }
 
   _createSection(section: number, top: number, refs: LargeListSection[]) {
+    let height = section>=0 && section< this.numberOfSections() ? this.props.heightForSection(section):0;
     return (
       <LargeListSection
         ref={reference => reference && refs.push(reference)}
         key={this.keyForCreating++}
-        style={[styles.absoluteStretch, { top: top }]}
+        style={[styles.absoluteStretch, { top: top, height:height }]}
         numberOfSections={this.numberOfSections}
         section={section}
         renderSection={this.props.renderSection}
+        heightForSection={this.props.heightForSection}
       />
     );
   }
@@ -436,13 +442,13 @@ class LargeList extends React.Component {
   _onCellTouchBegin(sender) {
     let hide = false;
     this.workRefs.forEach(item => {
-      let res  = item.hideOther(sender);
+      let res = item.hideOther(sender);
       if (!hide) hide = res;
     });
     return hide;
   }
 
-  _onScroll(e, withoutReload) {
+  _onScroll(e, forceUpdate) {
     let offset: Offset = e.nativeEvent.contentOffset;
     if (this.empty || !this.sizeConfirmed) {
       this.contentOffset = offset;
@@ -462,6 +468,7 @@ class LargeList extends React.Component {
     this.lastScrollTime = now;
     let reloadType: number = 0;
     if (
+      forceUpdate ||
       offset.y < topMargin ||
       offset.y + this.size.height + bottomMargin > this.contentSize.height ||
       speed < this.props.speedLevel1
@@ -712,16 +719,14 @@ class LargeList extends React.Component {
       if (section.top !== -10000)
         section.updateToSection(section.section, -10000, section.height, false);
     });
-
-    if (!withoutReload)
-      switch (reloadType) {
-        case 0:
-          this._forceUpdate();
-          break;
-        default:
-          this._positionUpdate();
-          break;
-      }
+    switch (reloadType) {
+      case 0:
+        this._forceUpdate();
+        break;
+      default:
+        this._positionUpdate();
+        break;
+    }
     this.contentOffset = offset;
     this.props.onScroll && this.props.onScroll(e);
     //解决冲量结束无法回调的问题
@@ -948,8 +953,7 @@ class LargeList extends React.Component {
     if (offset.y > this.contentSize.height - this.size.height)
       offset.y = this.contentSize.height - this.size.height;
     if (!animated) {
-      this._onScroll({ nativeEvent: { contentOffset: offset } });
-      this._forceUpdate();
+      this._onScroll({ nativeEvent: { contentOffset: offset } }, true);
     }
     this.scrollViewRef.scrollTo(offset);
   }

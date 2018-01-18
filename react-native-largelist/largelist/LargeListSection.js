@@ -20,7 +20,8 @@ class LargeListSection extends React.Component {
   static propTypes = {
     numberOfSections: PropTypes.func,
     renderSection: PropTypes.func,
-    section: PropTypes.number
+    section: PropTypes.number,
+    heightForSection: PropTypes.func,
   };
 
   rootView: View;
@@ -36,7 +37,6 @@ class LargeListSection extends React.Component {
         style: { top: this.top, height: this.height }
       });
     this.waitForRender = false;
-
     this.forceUpdate();
   }
 
@@ -71,8 +71,8 @@ class LargeListSection extends React.Component {
   }
 
   render() {
-    // let show = this.section>=0 && this.top !== -10000;
-    let show = this.section>=0 && this.section<this.props.numberOfSections() && this.top !== -10000;
+    let show = this.section>=0 && this.section<this.props.numberOfSections();// && this.top !== -10000;
+    if (show && !this.height) this.height = this.props.heightForSection(this.section);
     return (
       <View
         ref={ref => (this.rootView = ref)}
