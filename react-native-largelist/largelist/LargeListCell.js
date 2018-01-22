@@ -107,6 +107,7 @@ class LargeListCell extends React.Component {
   componentDidUpdate() {
     if (this._shouldScrollToCenter && this.contentSize.width) {
       this._enableShowEx = false;
+      this._shouldScrollToCenter = false;
       let timer = setTimeout(() => {
         if (this._showLeft) {
           this._scrollToShowLeft(false);
@@ -126,9 +127,7 @@ class LargeListCell extends React.Component {
 
   render() {
     let { section, row } = this.indexPath;
-    let show =
-      // this.top !== -10000 &&
-      section >= 0 &&
+    let show = section >= 0 &&
       section < this.props.numberOfSections() &&
       row >= 0 &&
       row < this.props.numberOfRowsInSection(section);
@@ -234,8 +233,10 @@ class LargeListCell extends React.Component {
   _onLayout(e) {
     if (this.contentSize.width !== e.nativeEvent.layout.width) {
       this.contentSize = { ...e.nativeEvent.layout };
-      this._shouldScrollToCenter = true;
-      this.forceUpdate();
+      if (this._lWidth()>0) {
+        this._shouldScrollToCenter = true;
+        this.forceUpdate();
+      }
     }
   }
 

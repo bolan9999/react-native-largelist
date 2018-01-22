@@ -344,6 +344,9 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 
 ## 更新日志
 
+### 版本 1.2.5
+* 修复reloadData有时Section样式不正确的问题
+
 ### 版本 1.2.4
 * 修复初始化时是空视图，numberOfCellPoolSize默认值过小的问题
 
