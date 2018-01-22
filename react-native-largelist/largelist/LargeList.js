@@ -893,7 +893,6 @@ class LargeList extends React.Component {
     ) {
       this.sizeConfirmed = true;
       this.initCells();
-      // setTimeout( ()=>this._forceUpdate(),2000);
     }
   }
 
@@ -1023,7 +1022,6 @@ class LargeList extends React.Component {
       this.initVar();
       this.safeArea = { top: 0, bottom: 0 };
       this.workRefs.forEach(cell => {
-        // this.freeRefs.splice(0, 0, cell);
         this.freeRefs.push(cell);
       });
       this.freeRefs.forEach(cell => {
