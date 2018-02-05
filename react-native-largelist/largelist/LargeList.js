@@ -96,7 +96,14 @@ class LargeList extends React.Component {
     initialOffsetY: PropTypes.number,
     renderItemSeparator: PropTypes.func,
 
-    onLargeListDidUpdate: PropTypes.func
+    onLargeListDidUpdate: PropTypes.func,
+    keyboardShouldPersistTaps: PropTypes.oneOf([
+      "always",
+      "never",
+      "handled",
+      false,
+      true
+    ])
 
     // onIndexPathDidAppear: PropTypes.func,
     // onIndexPathDidDisappear: PropTypes.func,
@@ -143,7 +150,8 @@ class LargeList extends React.Component {
     initialOffsetY: 0,
     renderItemSeparator: () =>
       <View style={{ height: 1, backgroundColor: "#EEE", marginLeft: 16 }} />,
-    onLargeListDidUpdate: () => null
+    onLargeListDidUpdate: () => null,
+    keyboardShouldPersistTaps: "never"
   };
 
   sections: Element[] = [];
@@ -348,6 +356,7 @@ class LargeList extends React.Component {
             bounces={this.props.bounces}
             refreshControl={refreshControl}
             contentContainerStyle={contentStyle}
+            keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
             onLayout={this._onLayout.bind(this)}
             style={{ flex: 1 }}
             scrollEventThrottle={this.props.scrollEventThrottle}
@@ -399,12 +408,15 @@ class LargeList extends React.Component {
   }
 
   _createSection(section: number, top: number, refs: LargeListSection[]) {
-    let height = section>=0 && section< this.numberOfSections() ? this.props.heightForSection(section):0;
+    let height =
+      section >= 0 && section < this.numberOfSections()
+        ? this.props.heightForSection(section)
+        : 0;
     return (
       <LargeListSection
         ref={reference => reference && refs.push(reference)}
         key={this.keyForCreating++}
-        style={[styles.absoluteStretch, { top: top, height:height }]}
+        style={[styles.absoluteStretch, { top: top, height: height }]}
         numberOfSections={this.numberOfSections}
         section={section}
         renderSection={this.props.renderSection}

@@ -284,6 +284,11 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 * default: ()=>null
 * LargeList在渲染完成或reloadData 完成后的回调，请注意，在您的视图中componentDidUpdate是不准确的，因为LargeList需要先测量头部、尾部、空视图宽高，再更新，每次更新LargeList都需要render两次
 
+### keyboardShouldPersistTaps
+* type: enum('always', 'never', 'handled', false, true)
+* default: 'never'
+* 与ScrollView的keyboardShouldPersistTaps相同
+
 ## 方法
 ### scrollTo(offset:Offset, animated:boolean=true)
 滑动到目标偏移Offset:{x:number,y:number},目前x值只支持0
@@ -343,6 +348,9 @@ onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | 滑动
 
 
 ## 更新日志
+
+### 版本 1.2.6
+* 添加属性keyboardShouldPersistTaps
 
 ### 版本 1.2.5
 * 修复reloadData有时Section样式不正确的问题

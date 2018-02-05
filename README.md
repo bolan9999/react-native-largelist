@@ -278,6 +278,11 @@ Notice: It is not recommended to use widthForLeftWhenSwipeOut and renderLeftWhen
 * default: ()=>null
 * Callback when LargeList render completed and reloadData completed.
 
+### keyboardShouldPersistTaps
+* type: enum('always', 'never', 'handled', false, true)
+* default: 'never'
+* Same as keyboardShouldPersistTaps on ScrollView
+
 ## Method
 ### scrollTo(offset:Offset, animated:boolean=true)
 Scroll to offset.
@@ -335,6 +340,9 @@ Get LargeList's footer height
 * Code optimization， support typescript.
 
 ## Update Log
+
+### Version 1.2.6
+* Add prop "keyboardShouldPersistTaps"
 
 ### Version 1.2.5
 * Fix section error when reloadData
