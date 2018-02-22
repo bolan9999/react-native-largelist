@@ -10,7 +10,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-native": "^0.50.4",
-    "react-native-largelist": "^1.0.0",
+    "react-native-largelist": "1.2.6",
     "react-native-swipeout": "^2.3.3"
   },
   "devDependencies": {

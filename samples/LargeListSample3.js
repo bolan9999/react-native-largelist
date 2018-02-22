@@ -8,8 +8,9 @@
  */
 
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
 import { LargeList } from "../react-native-largelist";
+// import {LargeList} from "react-native-largelist";
 import { contacts as orgContracts } from "./DataSource";
 import { iconObject } from "./icons";
 
@@ -34,6 +35,7 @@ class LargeListSample3 extends React.Component {
         renderCell={this.renderItem.bind(this)}
         heightForSection={() => 40}
         heightForCell={() => 60}
+        keyboardShouldPersistTaps={'handled'}
         renderHeader={this.renderHeader.bind(this)}
         renderFooter={this.renderFooter.bind(this)}
         onRefresh={() => {
@@ -92,19 +94,16 @@ class LargeListSample3 extends React.Component {
               style={{ marginLeft: 16, width: 40, height: 40 }}
               source={this.contacts[section].info[row].icon}
             />
+            <TouchableOpacity onPress={()=>{}}>
             <Text style={{ fontSize: 16, marginLeft: 10 }}>
               {this.contacts[section].info[row].name}
             </Text>
+            </TouchableOpacity>
           </View>
-          <Text style={{ fontSize: 16, marginRight: 16 }}>
-            {this.contacts[section].info[row].phone}
-          </Text>
+          <TextInput style={{ fontSize: 16, marginRight: 16,width:100 }} defaultValue={this.contacts[section].info[row].phone}>
+
+          </TextInput>
         </View>
-        {/*{(row < this.contacts[section].info.length - 1 ||*/}
-          {/*section === this.contacts.length - 1) &&*/}
-          {/*<View*/}
-            {/*style={{ backgroundColor: "#CCC", height: 1, marginLeft: 16 }}*/}
-          {/*/>}*/}
       </View>
     );
   }

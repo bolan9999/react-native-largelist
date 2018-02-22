@@ -350,6 +350,7 @@ class LargeList extends React.Component {
           style={{ flex: 1 }}
           contentContainerStyle={{ flex: 1 }}
           bounces={false}
+          keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
         >
           <EventScrollView
             ref={ref => (this.scrollViewRef = ref)}
