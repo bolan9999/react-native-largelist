@@ -106,6 +106,7 @@ renderSection | (section:number) => React.Element | section=>null | function：r
 heightForSection | (section:number) => number | ()=>0 | function：return height of section with section index
 renderHeader | () => React.Element | ()=>null | function：render of header in LargeList. it must have a bounded height in order to work
 renderFooter | () => React.Element | ()=>null | function：render of footer in LargeList. it must have a bounded height in order to work
+scrollEnabled | boolean | true | enables scrolling
 bounces | boolean | true | bounces
 refreshing | boolean | undefined | refreshing
 onRefresh | () => any | undefined | callback of pulling to refresh,if not undefined ,a default RefreshControl is add to LargeList
