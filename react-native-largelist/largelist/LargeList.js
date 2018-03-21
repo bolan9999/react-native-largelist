@@ -64,7 +64,6 @@ class LargeList extends React.Component {
 
     safeMargin: PropTypes.number,
     refreshing: PropTypes.bool,
-    onRefresh: PropTypes.func,
     dynamicMargin: PropTypes.number,
     scrollEventThrottle: PropTypes.number,
     onScroll: PropTypes.func,
