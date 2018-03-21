@@ -58,6 +58,7 @@ class LargeList extends React.Component {
     heightForSection: PropTypes.func,
     renderHeader: PropTypes.func,
     renderFooter: PropTypes.func,
+    scrollEnabled: PropTypes.bool,
     bounces: PropTypes.bool,
     onRefresh: PropTypes.func,
 
@@ -117,6 +118,7 @@ class LargeList extends React.Component {
     heightForSection: section => 0,
     renderHeader: () => null,
     renderFooter: () => null,
+    scrollEnabled: true,
     bounces: true,
     nativeOptimize: false,
     onIndexPathDidEnterSafeArea: () => null,
@@ -354,6 +356,7 @@ class LargeList extends React.Component {
         >
           <EventScrollView
             ref={ref => (this.scrollViewRef = ref)}
+            scrollEnabled={this.props.scrollEnabled}
             bounces={this.props.bounces}
             refreshControl={refreshControl}
             contentContainerStyle={contentStyle}
