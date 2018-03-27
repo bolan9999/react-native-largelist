@@ -1132,6 +1132,7 @@ class LargeList extends React.Component {
     if (
       this.scrollingAfterDraging &&
       this.props.allLoadCompleted &&
+      this.contentSize.height > this.size.height &&
       this.contentOffset.y > this.contentSize.height - this.size.height
     ) {
       this.scrollToEnd();
