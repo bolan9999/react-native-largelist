@@ -69,9 +69,9 @@ class LargeListSample extends React.Component {
           renderCell={this.renderItem.bind(this)}
           heightForSection={section =>
             section % 2 ? this.minSectionHeight : this.maxSectionHeight}
-          // renderHeader={this.renderHeader.bind(this)}
-          // renderFooter={this.renderFooter.bind(this)}
-          initialOffsetY={800}
+          renderHeader={this.renderHeader.bind(this)}
+          renderFooter={this.renderFooter.bind(this)}
+          // initialOffsetY={800}
           renderSection={section => {
             return (
               <View

@@ -301,12 +301,7 @@ class LargeList extends React.Component {
         <TableView ref={ref => (this.scrollViewRef = ref)} {...this.props} />
       );
     let empty = this.empty;
-    let headerStyle = [
-      styles.absoluteStretch,
-      {
-        top: this.sizeConfirmed ? 0 : -10000
-      }
-    ];
+    let headerStyle = [styles.absoluteStretch, { top: 0 }];
     if (empty) headerStyle = {};
     let footerStyle = [
       styles.absoluteStretch,
@@ -1044,6 +1039,7 @@ class LargeList extends React.Component {
         let index = this.workRefs.indexOf(cell);
         this.workRefs.splice(index, index > -1 ? 1 : 0);
         cell.updateToIndexPath(cell.indexPath, -10000, cell.height);
+        // cell.positionUpdate();
       });
       this.workSectionRefs.forEach(section => {
         this.freeSectionRefs.splice(0, 0, section);
@@ -1051,7 +1047,7 @@ class LargeList extends React.Component {
       this.freeSectionRefs.forEach(section => {
         let index = this.workSectionRefs.indexOf(section);
         this.workSectionRefs.splice(index, index > -1 ? 1 : 0);
-        section.updateToSection(section.section, -10000, section.height, false);
+        // section.updateToSection(section.section, -10000, section.height, true);
       });
       this.forceUpdate();
       clearTimeout(timer);
