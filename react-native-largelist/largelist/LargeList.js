@@ -285,12 +285,16 @@ class LargeList extends React.Component {
       return;
     }
     let timer = setTimeout(() => {
-      this.headerRef.measure((x, y, w, h) => {
-        this._onHeaderLayout({ nativeEvent: { layout: { height: h } } });
-      });
-      this.footerRef.measure((x, y, w, h) => {
-        this._onFooterLayout({ nativeEvent: { layout: { height: h } } });
-      });
+      if (this.headerRef) {
+        this.headerRef.measure((x, y, w, h) => {
+          this._onHeaderLayout({ nativeEvent: { layout: { height: h } } });
+        });
+      }
+      if (this.footerRef) {
+        this.footerRef.measure((x, y, w, h) => {
+          this._onFooterLayout({ nativeEvent: { layout: { height: h } } });
+        });
+      }
       clearTimeout(timer);
     }, 10);
   }
