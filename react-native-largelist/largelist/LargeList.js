@@ -72,6 +72,7 @@ class LargeList extends React.Component {
     speedLevel2: PropTypes.number,
     nativeOptimize: PropTypes.bool,
     showsVerticalScrollIndicator: PropTypes.bool,
+    scrollsToTop: PropTypes.bool,
 
     onIndexPathDidEnterSafeArea: PropTypes.func,
     onIndexPathDidLeaveSafeArea: PropTypes.func,
@@ -152,7 +153,8 @@ class LargeList extends React.Component {
     renderItemSeparator: () =>
       <View style={{ height: 1, backgroundColor: "#EEE", marginLeft: 16 }} />,
     onLargeListDidUpdate: () => null,
-    keyboardShouldPersistTaps: "never"
+    keyboardShouldPersistTaps: "never",
+    scrollsToTop: true
   };
 
   sections: Element[] = [];
@@ -366,6 +368,9 @@ class LargeList extends React.Component {
             onMomentumScrollEnd={this._onScrollEnd.bind(this)}
             showsVerticalScrollIndicator={
               this.props.showsVerticalScrollIndicator
+            }
+            scrollsToTop={
+              this.props.scrollsToTop
             }
             llonTouchStart={this._onTouchStart.bind(this)}
             llonTouchMove={this._onTouchMove.bind(this)}
