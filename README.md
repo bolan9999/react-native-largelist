@@ -164,6 +164,11 @@ Notice:
 * default: true
 * Show vertical scroll indicator.
 
+### scrollsToTop
+* type: bool
+* default: true
+* Scroll to top on status bar touch. Only for iOS.
+
 ### onSectionDidHangOnTop
 * type: section=>any
 * default: ()=>null

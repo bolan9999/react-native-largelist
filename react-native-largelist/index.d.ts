@@ -54,6 +54,7 @@ declare module "react-native-largelist" {
     onIndexPathDidEnterSafeArea?: (indexPath: IndexPath) => any;
     onIndexPathDidLeaveSafeArea?: (indexPath: IndexPath) => any;
     showsVerticalScrollIndicator?: boolean;
+    scrollsToTop?: boolean;
     onSectionDidHangOnTop?: (section: number) => any;
     speedLevel1?: number;
     speedLevel2?: number;
