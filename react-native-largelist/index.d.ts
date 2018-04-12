@@ -44,6 +44,7 @@ declare module "react-native-largelist" {
     heightForSection?: (section: number) => number;
     renderHeader?: () => React.ReactElement<any>|null;
     renderFooter?: () => React.ReactElement<any>|null;
+    scrollEnabled: boolean;
     bounces?: boolean;
     refreshing?: boolean;
     onRefresh?: (() => any) | null;
