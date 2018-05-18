@@ -841,6 +841,7 @@ class LargeList extends React.Component {
       }
     }
     if (
+      this.currentSectionRef &&
       offset.y <= this.headerHeight ||
       offset.y >= this.contentSize.height - this.footerHeight
     ) {
@@ -851,7 +852,10 @@ class LargeList extends React.Component {
           this.props.heightForSection(this.currentSection),
           false
         );
-    } else if (this.currentSectionRef.top === -10000) {
+    } else if (
+      this.currentSectionRef &&
+      this.currentSectionRef.top === -10000
+    ) {
       this.currentSectionRef.updateToSection(
         this.currentSection,
         0,
