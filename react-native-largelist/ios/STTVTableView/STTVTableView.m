@@ -31,7 +31,7 @@
 @property (nonatomic, assign) BOOL bounces;
 @property (nonatomic, assign) BOOL refreshable;
 @property (nonatomic, copy) RCTBubblingEventBlock onTopRefresh;
-
+@property (nonatomic, copy) RCTDirectEventBlock onTableViewPress;
 
 @end
 
@@ -160,6 +160,26 @@
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
     self.cellContainer.scrolling = NO;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+
+    NSDictionary *newValue = @{
+                               @"target":self.reactTag,
+                               @"selectedIndex":[NSNumber numberWithInteger:indexPath.item],
+                               @"selectedSection":[NSNumber numberWithInteger:indexPath.section]
+                               };
+
+
+    if (!_onTableViewPress) {
+        // When onPress, `self.tableView.delegate` may be set before `onScroll` is passed in.
+        NSLog(@"onPress not working : %@", self.onTableViewPress);
+        return;
+    }
+
+    // NSLog(@"onPress working : %@", newValue);
+    _onTableViewPress(newValue);
 }
 
 -(void)onRefreshBegin:(UIRefreshControl *)sender{

@@ -67,5 +67,6 @@ RCT_EXPORT_VIEW_PROPERTY(tag, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(bounces, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(refreshable, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onTopRefresh, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onTableViewPress, RCTBubblingEventBlock)
 
 @end

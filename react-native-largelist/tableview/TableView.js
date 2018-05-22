@@ -63,7 +63,8 @@ class TableView extends React.Component {
     renderFooter: null,
     bounces: true,
     refreshable: false,
-    onTopRefresh: () => {}
+    onTopRefresh: () => {},
+    onPress: () => {}
   };
 
   indexesOfSections: number[] = [];
@@ -97,6 +98,11 @@ class TableView extends React.Component {
         this.numberOfMaxCell = rows.length;
     }
   }
+  _onPress(event) {
+    const data = event.nativeEvent;
+    this.props.onPress(data);
+    event.stopPropagation();
+  };
 
   render() {
     return (
@@ -108,6 +114,7 @@ class TableView extends React.Component {
         refreshable={this.props.refreshable}
         bounces={this.props.bounces}
         onTopRefresh={this.props.onTopRefresh}
+        onTableViewPress={(...args) => this._onPress(...args)}
       >
         {this.props.renderHeader &&
           <NativeHeader>
