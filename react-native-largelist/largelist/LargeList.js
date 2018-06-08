@@ -66,7 +66,11 @@ class LargeList extends React.Component {
     refreshing: PropTypes.bool,
     dynamicMargin: PropTypes.number,
     scrollEventThrottle: PropTypes.number,
+    onMomentumScrollBegin: PropTypes.func,
+    onMomentumScrollEnd: PropTypes.func,
     onScroll: PropTypes.func,
+    onScrollBeginDrag: PropTypes.func,
+    onScrollEndDrag: PropTypes.func,
 
     speedLevel1: PropTypes.number,
     speedLevel2: PropTypes.number,
@@ -364,8 +368,11 @@ class LargeList extends React.Component {
             onLayout={this._onLayout.bind(this)}
             style={{ flex: 1 }}
             scrollEventThrottle={this.props.scrollEventThrottle}
-            onScroll={this._onScroll.bind(this)}
+            onMomentumScrollBegin={this.props.onMomentumScrollBegin}
             onMomentumScrollEnd={this._onScrollEnd.bind(this)}
+            onScroll={this._onScroll.bind(this)}
+            onScrollBeginDrag={this.props.onScrollBeginDrag}
+            onScrollEndDrag={this.props.onScrollEndDrag}
             showsVerticalScrollIndicator={
               this.props.showsVerticalScrollIndicator
             }
@@ -1136,7 +1143,8 @@ class LargeList extends React.Component {
     this.scrollingAfterDraging = true;
   }
 
-  _onScrollEnd() {
+  _onScrollEnd(e) {
+    this.props.onMomentumScrollEnd && this.props.onMomentumScrollEnd(e);
     this.lastScrollTime = 0;
     if (
       this.scrollingAfterDraging &&
