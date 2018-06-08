@@ -110,7 +110,11 @@ scrollEnabled | boolean | true | enables scrolling
 bounces | boolean | true | bounces
 refreshing | boolean | undefined | refreshing
 onRefresh | () => any | undefined | callback of pulling to refresh,if not undefined ,a default RefreshControl is add to LargeList
-onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Callback when scrolling.
+onMomentumScrollBegin | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Called when the momentum scroll starts (scroll which occurs as the ScrollView glides to a stop).
+onMomentumScrollEnd | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Called when the momentum scroll ends (scroll which occurs as the ScrollView glides to a stop).
+onScroll | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Fires at most once per frame during scrolling. The frequency of the events can be controlled using the scrollEventThrottle prop.
+onScrollBeginDrag | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Called when the user begins to drag the scroll view.
+onScrollEndDrag | ({nativeEvent:{contentOffset:{x:number,y:number}}})=> any |  | Called when the user stops dragging the scroll view and it either stops or begins to glide.
 
 Notice:
 
