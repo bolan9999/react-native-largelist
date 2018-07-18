@@ -9,7 +9,7 @@
 
 import React from "react";
 import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
-import { LargeList } from "../react-native-largelist";
+import { LargeList } from "../src";
 // import {LargeList} from "react-native-largelist";
 import { contacts as orgContracts } from "./DataSource";
 import { iconObject } from "./icons";

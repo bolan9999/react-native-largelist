@@ -16,7 +16,7 @@ import {
   StyleSheet,
   Platform
 } from "react-native";
-import { LargeList } from "../react-native-largelist";
+import { LargeList } from "../src";
 import { foods } from "./DataSource";
 
 foods[0].selected = true;

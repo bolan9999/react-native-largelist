@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import { LargeList } from "../react-native-largelist";
+import { LargeList } from "../src";
 // import { LargeList } from "react-native-largelist";
 import {
   View,
@@ -34,7 +34,7 @@ class LargeListSample extends React.Component {
   render() {
     return (
       <View style={{ flex: 1}}>
-        {true &&<View style={{height:50, flexDirection:"row"}}>
+        <View style={{height:50, flexDirection:"row"}}>
         <TouchableOpacity
           style={{ flex:1, alignItems: "center", justifyContent: "center" }}
           onPress={() => {
@@ -51,7 +51,7 @@ class LargeListSample extends React.Component {
         >
           <Text>ScrollToEnd</Text>
         </TouchableOpacity>
-        </View>}
+        </View>
         <LargeList
           style={{ flex: 1 }}
           ref={ref => (this.largeList = ref)}

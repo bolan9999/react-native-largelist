@@ -8,14 +8,14 @@
   },
   "dependencies": {
     "prop-types": "^15.6.0",
-    "react": "^16.0.0",
-    "react-native": "^0.50.4",
-    "react-native-largelist": "1.2.6",
-    "react-native-swipeout": "^2.3.3"
+    "react": "^16.4.1",
+    "react-native": "^0.56.0",
+    "react-native-gesture-handler": "^1.0.6",
+    "react-native-spring-scrollview": "^0.0.2"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",
-    "babel-preset-react-native": "4.0.0",
+    "babel-preset-react-native": "5.0.2",
     "jest": "21.2.1",
     "react-test-renderer": "16.0.0"
   },

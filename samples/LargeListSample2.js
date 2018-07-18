@@ -9,7 +9,7 @@
 
 import React from "react";
 import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
-import { LargeList } from "../react-native-largelist";
+import { LargeList } from "../src";
 import { messages } from "./DataSource";
 
 class LargeListSample2 extends React.Component {

@@ -1,6 +1,6 @@
 {
 	"name": "react-native-largelist",
-	"version": "1.2.12",
+	"version": "2.0.0",
 	"private": false,
 	"description": "The best performance large list component which is much better than SectionList for React Native.",
 	"author": "bolan9999 <bolan999999@gmail.com>",
@@ -31,7 +31,7 @@
 		"babel-jest": "21.2.0",
 		"babel-preset-react-native": "4.0.0",
 		"jest": "21.2.1",
-		"react-test-renderer": "16.0.0-beta.5"
+		"react-test-renderer": "16.0.0"
 	},
 	"jest": {
 		"preset": "react-native"

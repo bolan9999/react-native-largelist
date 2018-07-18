@@ -12,7 +12,7 @@ import {
   SectionListSample,
   LargeListSample2,
   LargeListSample3,
-  LargeListSample4
+  LargeListSample4, ComplexExample
 } from "./samples";
 
 export default class App extends React.Component {
@@ -49,6 +49,8 @@ export default class App extends React.Component {
         return <LargeListSample3 style={{ flex: 1, marginTop:40 }} />;
       case 5:
         return <LargeListSample4/>
+      case 6:
+        return <ComplexExample/>
     }
     return this.renderChoose();
   }
@@ -118,6 +120,12 @@ export default class App extends React.Component {
           onPress={() => this.setState({ type: 5 })}
         >
           <Text style={styles.text}>LargeListSample3</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={() => this.setState({ type: 6 })}
+        >
+          <Text style={styles.text}>ComplexExample</Text>
         </TouchableOpacity>
       </ScrollView>
     );
