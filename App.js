@@ -58,69 +58,6 @@ export default class App extends React.Component {
   renderChoose() {
     return (
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
-        <View style={{ flexDirection: "row", marginTop: 50, marginLeft: 50 }}>
-          <Text style={{ width: 80 }}>sections</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType={"numeric"}
-            defaultValue={this.state.numberOfSections.toString()}
-            onChangeText={text =>
-              this.setState({ numberOfSections: parseInt(text) })}
-          />
-        </View>
-        <View style={{ flexDirection: "row", marginTop: 20, marginLeft: 50 }}>
-          <Text style={{ width: 80 }}>rows</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType={"numeric"}
-            defaultValue={this.state.numberOfEachSection.toString()}
-            onChangeText={text =>
-              this.setState({ numberOfEachSection: parseInt(text) })}
-          />
-        </View>
-        <View style={{ flexDirection: "row", marginTop: 20, marginLeft: 50 }}>
-          <Text style={{ width: 80 }}>nativeOptimize</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType={"numeric"}
-            defaultValue={this.state.nativeOptimize.toString()}
-            onChangeText={text =>
-              text.length > 0 &&
-              this.setState({ nativeOptimize: parseInt(text) })}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginTop: 50,
-            justifyContent: "space-around"
-          }}
-        >
-          <TouchableOpacity onPress={() => this.setState({ type: 1 })}>
-            <Text style={styles.text}>SectionList</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.setState({ type: 2 })}>
-            <Text style={styles.text}>LargeList</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          style={{ alignItems: "center" }}
-          onPress={() => this.setState({ type: 3 })}
-        >
-          <Text style={styles.text}>LargeListSample2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ alignItems: "center" }}
-          onPress={() => this.setState({ type: 4 })}
-        >
-          <Text style={styles.text}>LargeListSample3</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ alignItems: "center" }}
-          onPress={() => this.setState({ type: 5 })}
-        >
-          <Text style={styles.text}>LargeListSample3</Text>
-        </TouchableOpacity>
         <TouchableOpacity
           style={{ alignItems: "center" }}
           onPress={() => this.setState({ type: 6 })}
