@@ -10,23 +10,26 @@
 export type LargeListDataType = { items: any[] }[];
 
 export interface IndexPath {
-  section:number;
-  row:number;
+  section: number,
+  row: number
 }
 
 export interface LargeListPropType {
   data: LargeListDataType,
   heightForSection?: (section: number) => number,
-  heightForIndexPath: (indexPath: IndexPath)=>number,
-  renderSection?:(section:number)=>React.Node<any>,
-  renderIndexPath: (indexPath:IndexPath)=>React.Node<any>,
+  heightForIndexPath: (indexPath: IndexPath) => number,
+  renderSection?: (section: number) => React.Node<any>,
+  renderIndexPath: (indexPath: IndexPath) => React.Node<any>
 }
 
 export interface GroupPropType {
-  indexes: IndexPath[];
+  indexes: IndexPath[],
+  criticalPoint: number[],
+  input: number[],
+  output: number[],
   data: LargeListDataType,
   heightForSection?: (section: number) => number,
-  heightForIndexPath: (indexPath: IndexPath)=>number,
-  renderSection?:(section:number)=>React.Node<any>,
-  renderIndexPath: (indexPath:IndexPath)=>React.Node<any>,
+  heightForIndexPath: (indexPath: IndexPath) => number,
+  renderSection?: (section: number) => React.Node<any>,
+  renderIndexPath: (indexPath: IndexPath) => React.Node<any>
 }

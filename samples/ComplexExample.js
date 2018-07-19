@@ -19,7 +19,7 @@ export class ComplexExample extends React.Component {
 
   render() {
     const data = [];
-    for (let section = 0; section < 50; ++section) {
+    for (let section = 0; section < 3; ++section) {
       const sContent = { items: [] };
       for (let row = 0; row < 10; ++row) {
         sContent.items.push(row);

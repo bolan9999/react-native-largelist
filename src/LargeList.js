@@ -29,22 +29,29 @@ export class LargeList extends React.Component<LargeListPropType> {
     const { style, data } = this.props;
     let sum = 0;
     let sumHeight = 0;
-    const groupIndexes = [];
+    const groupIndexes = [[], [], [], []];
     let indexes = [];
+    let currentIndex = 0;
     for (let section = 0; section < data.length; ++section) {
       for (let row = 0; row < data[section].items.length; ++row) {
         const height = this.props.heightForIndexPath(section, row);
         sumHeight += height;
-        if (groupIndexes.length >= 4) continue;
         sum += height;
         indexes.push({ section: section, row: row });
-        if (sum >= groupMinHeight) {
+        if (
+          sum >= groupMinHeight ||
+          (section === data.length - 1 &&
+            row === data[section].items.length - 1)
+        ) {
           sum = 0;
-          groupIndexes.push(indexes);
+          groupIndexes[currentIndex].push(indexes);
           indexes = [];
+          currentIndex++;
+          currentIndex %= 4;
         }
       }
     }
+
     let currentGroupHeight = 0;
     let currentGroupIndex = 0;
     let inputs = [[Number.MIN_SAFE_INTEGER], [], [], []];
@@ -78,6 +85,11 @@ export class LargeList extends React.Component<LargeListPropType> {
     }
     inputs.forEach(range => range.push(Number.MAX_SAFE_INTEGER));
     outputs.forEach(range => range.push(range[range.length - 1]));
+    // if (this._offset) {
+    //   console.log("inputs=====>", JSON.stringify(inputs));
+    //   console.log("outputs=====>", JSON.stringify(outputs));
+    //   console.log("=====>", JSON.stringify(groupIndexes));
+    // }
     const scrollStyle = StyleSheet.flatten([styles.container, style]);
     return (
       <VerticalScrollView
@@ -90,7 +102,7 @@ export class LargeList extends React.Component<LargeListPropType> {
         }}
         onScroll={this._onScroll}
       >
-        {groupIndexes.map((indexes, index) => {
+        {this._offset && groupIndexes.map((indexes, index) => {
           const style = StyleSheet.flatten([
             StyleSheet.absoluteFill,
             {
@@ -124,6 +136,8 @@ export class LargeList extends React.Component<LargeListPropType> {
                 index={index}
                 ref={this._groupRefs[index]}
                 indexes={indexes}
+                input={inputs[index]}
+                output={outputs[index]}
               />
             </Animated.View>
           );
@@ -133,7 +147,7 @@ export class LargeList extends React.Component<LargeListPropType> {
   }
 
   _onScroll = (offset: { x: number, y: number }) => {
-
-    this.props.onScroll&&this.props.onScroll(offset);
+    this._groupRefs.forEach(group => group.current.contentConversion(offset.y));
+    this.props.onScroll && this.props.onScroll(offset);
   };
 }
