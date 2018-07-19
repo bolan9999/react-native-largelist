@@ -26,15 +26,18 @@ export class LargeList extends React.Component<LargeListPropType> {
   }
 
   render() {
-    const { style, data } = this.props;
+    const { style, data, heightForSection, heightForIndexPath } = this.props;
     let sum = 0;
     let sumHeight = 0;
     const groupIndexes = [[], [], [], []];
     let indexes = [];
     let currentIndex = 0;
     for (let section = 0; section < data.length; ++section) {
-      for (let row = 0; row < data[section].items.length; ++row) {
-        const height = this.props.heightForIndexPath(section, row);
+      for (let row = -1; row < data[section].items.length; ++row) {
+        const height =
+          row === -1
+            ? heightForSection(section)
+            : heightForIndexPath({ section: section, row: row });
         sumHeight += height;
         sum += height;
         indexes.push({ section: section, row: row });
@@ -59,8 +62,10 @@ export class LargeList extends React.Component<LargeListPropType> {
     let lastOffset = [0, 0, 0, 0];
     sumHeight = 0;
     for (let section = 0; section < data.length; ++section) {
-      for (let row = 0; row < data[section].items.length; ++row) {
-        const height = this.props.heightForIndexPath(section, row);
+      for (let row = -1; row < data[section].items.length; ++row) {
+        const height = row === -1
+          ? heightForSection(section)
+          : heightForIndexPath({ section: section, row: row });
         currentGroupHeight += height;
         sumHeight += height;
         if (currentGroupHeight >= groupMinHeight) {
@@ -102,46 +107,47 @@ export class LargeList extends React.Component<LargeListPropType> {
         }}
         onScroll={this._onScroll}
       >
-        {this._offset && groupIndexes.map((indexes, index) => {
-          const style = StyleSheet.flatten([
-            StyleSheet.absoluteFill,
-            {
-              transform: [
-                {
-                  translateY: this._offset
-                    ? this._offset
-                        .interpolate({
-                          inputRange: [
-                            Number.MIN_SAFE_INTEGER,
-                            Number.MAX_SAFE_INTEGER
-                          ],
-                          outputRange: [
-                            Number.MAX_SAFE_INTEGER,
-                            Number.MIN_SAFE_INTEGER
-                          ]
-                        })
-                        .interpolate({
-                          inputRange: inputs[index],
-                          outputRange: outputs[index]
-                        })
-                    : 0
-                }
-              ]
-            }
-          ]);
-          return (
-            <Animated.View key={index} style={style}>
-              <Group
-                {...this.props}
-                index={index}
-                ref={this._groupRefs[index]}
-                indexes={indexes}
-                input={inputs[index]}
-                output={outputs[index]}
-              />
-            </Animated.View>
-          );
-        })}
+        {this._offset &&
+          groupIndexes.map((indexes, index) => {
+            const style = StyleSheet.flatten([
+              StyleSheet.absoluteFill,
+              {
+                transform: [
+                  {
+                    translateY: this._offset
+                      ? this._offset
+                          .interpolate({
+                            inputRange: [
+                              Number.MIN_SAFE_INTEGER,
+                              Number.MAX_SAFE_INTEGER
+                            ],
+                            outputRange: [
+                              Number.MAX_SAFE_INTEGER,
+                              Number.MIN_SAFE_INTEGER
+                            ]
+                          })
+                          .interpolate({
+                            inputRange: inputs[index],
+                            outputRange: outputs[index]
+                          })
+                      : 0
+                  }
+                ]
+              }
+            ]);
+            return (
+              <Animated.View key={index} style={style}>
+                <Group
+                  {...this.props}
+                  index={index}
+                  ref={this._groupRefs[index]}
+                  indexes={indexes}
+                  input={inputs[index]}
+                  output={outputs[index]}
+                />
+              </Animated.View>
+            );
+          })}
       </VerticalScrollView>
     );
   }

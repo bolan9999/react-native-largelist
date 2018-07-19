@@ -29,6 +29,7 @@ export class Group extends React.Component<GroupPropType> {
 
   update(index: number) {
     if (
+      index < 0 ||
       index >= this.props.indexes.length ||
       (!this._dirty && this._currentIndex === index)
     )
@@ -44,23 +45,32 @@ export class Group extends React.Component<GroupPropType> {
     }
   }
 
-  render() {
+  render2() {
     return (
       <View style={styles.container}>
         {this._renderCells()}
-        {/*<Text style={styles.text}>{this.props.index}</Text>*/}
       </View>
     );
   }
 
-  _renderCells() {
-    return this.props.indexes[this._currentIndex].map((indexPath, index) => {
+  render() {
+    const {
+      indexes,
+      heightForSection,
+      heightForIndexPath,
+      renderSection,
+      renderIndexPath
+    } = this.props;
+    return indexes[this._currentIndex].map((indexPath, index) => {
+      const height =
+        indexPath.row === -1
+          ? heightForSection(indexPath.section)
+          : heightForIndexPath(indexPath);
       return (
-        <View
-          key={index}
-          style={{ height: this.props.heightForIndexPath(indexPath) }}
-        >
-          {this.props.renderIndexPath(indexPath)}
+        <View key={index} style={{ height: height }}>
+          {indexPath.row === -1
+            ? renderSection(indexPath.section)
+            : renderIndexPath(indexPath)}
         </View>
       );
     });
@@ -69,12 +79,11 @@ export class Group extends React.Component<GroupPropType> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center"
+    flex: 1
   },
-  text:{
-    position:"absolute",
-    left:0,
-    top:0
+  text: {
+    position: "absolute",
+    left: 0,
+    top: 0
   }
 });

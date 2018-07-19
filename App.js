@@ -7,63 +7,41 @@ import {
   ScrollView,
   TextInput
 } from "react-native";
-import {
-  LargeListSample,
-  SectionListSample,
-  LargeListSample2,
-  LargeListSample3,
-  LargeListSample4, ComplexExample
-} from "./samples";
+import { HeightUnequalExample, HeightEqualExample } from "./samples";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: 0,
-      numberOfSections: 10,
-      numberOfEachSection: 100,
-      nativeOptimize: 0
+      type: -1
     };
   }
 
   render() {
     switch (this.state.type) {
+      case 0:
+        return <HeightEqualExample />;
       case 1:
-        return (
-          <SectionListSample
-            numberOfSections={this.state.numberOfSections}
-            numberOfEachSection={this.state.numberOfEachSection}
-          />
-        );
-      case 2:
-        return (
-          <LargeListSample
-            numberOfSections={this.state.numberOfSections}
-            numberOfEachSection={this.state.numberOfEachSection}
-            nativeOptimize={this.state.nativeOptimize == 1}
-          />
-        );
-      case 3:
-        return <LargeListSample2 style={{ flex: 1, marginTop:40 }} />;
-      case 4:
-        return <LargeListSample3 style={{ flex: 1, marginTop:40 }} />;
-      case 5:
-        return <LargeListSample4/>
-      case 6:
-        return <ComplexExample/>
+        return <HeightUnequalExample />;
     }
     return this.renderChoose();
   }
 
   renderChoose() {
+    const examples = ["HeightEqualExample", "HeightUnequalExample"];
     return (
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
-        <TouchableOpacity
-          style={{ alignItems: "center" }}
-          onPress={() => this.setState({ type: 6 })}
-        >
-          <Text style={styles.text}>ComplexExample</Text>
-        </TouchableOpacity>
+        {examples.map((str, index) =>
+          <TouchableOpacity
+            key={index}
+            style={styles.button}
+            onPress={() => this.setState({ type: index })}
+          >
+            <Text style={styles.text}>
+              {str}
+            </Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     );
   }
@@ -83,5 +61,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginTop: 20
-  }
+  },
+  button: { alignItems: "center" }
 });
