@@ -13,12 +13,14 @@ import { styles } from "./styles";
 import { VerticalScrollView } from "react-native-spring-scrollview";
 import type { LargeListPropType } from "./Types";
 import { Group } from "./Group";
+import { SectionContainer } from "./SectionContainer";
 
 const groupMinHeight = Dimensions.get("window").height / 2;
 
 export class LargeList extends React.Component<LargeListPropType> {
   _groupRefs = [];
   _offset: Animated.Value;
+  _sectionContainer = React.createRef();
 
   constructor(props) {
     super(props);
@@ -32,12 +34,16 @@ export class LargeList extends React.Component<LargeListPropType> {
     const groupIndexes = [[], [], [], []];
     let indexes = [];
     let currentIndex = 0;
+    const sectionTops = [];
     for (let section = 0; section < data.length; ++section) {
       for (let row = -1; row < data[section].items.length; ++row) {
-        const height =
-          row === -1
-            ? heightForSection(section)
-            : heightForIndexPath({ section: section, row: row });
+        let height;
+        if (row === -1) {
+          height = heightForSection(section);
+          sectionTops[section] = sumHeight;
+        } else {
+          height = heightForIndexPath({ section: section, row: row });
+        }
         sumHeight += height;
         sum += height;
         indexes.push({ section: section, row: row });
@@ -63,9 +69,10 @@ export class LargeList extends React.Component<LargeListPropType> {
     sumHeight = 0;
     for (let section = 0; section < data.length; ++section) {
       for (let row = -1; row < data[section].items.length; ++row) {
-        const height = row === -1
-          ? heightForSection(section)
-          : heightForIndexPath({ section: section, row: row });
+        const height =
+          row === -1
+            ? heightForSection(section)
+            : heightForIndexPath({ section: section, row: row });
         currentGroupHeight += height;
         sumHeight += height;
         if (currentGroupHeight >= groupMinHeight) {
@@ -102,7 +109,10 @@ export class LargeList extends React.Component<LargeListPropType> {
         style={scrollStyle}
         contentStyle={{ height: sumHeight }}
         getNativeOffset={offset => {
-          this._offset = offset;
+          this._offset = offset.interpolate({
+            inputRange: [-1,0, 1],
+            outputRange: [1,0, -1]
+          });
           this.forceUpdate();
         }}
         onScroll={this._onScroll}
@@ -115,21 +125,10 @@ export class LargeList extends React.Component<LargeListPropType> {
                 transform: [
                   {
                     translateY: this._offset
-                      ? this._offset
-                          .interpolate({
-                            inputRange: [
-                              Number.MIN_SAFE_INTEGER,
-                              Number.MAX_SAFE_INTEGER
-                            ],
-                            outputRange: [
-                              Number.MAX_SAFE_INTEGER,
-                              Number.MIN_SAFE_INTEGER
-                            ]
-                          })
-                          .interpolate({
-                            inputRange: inputs[index],
-                            outputRange: outputs[index]
-                          })
+                      ? this._offset.interpolate({
+                          inputRange: inputs[index],
+                          outputRange: outputs[index]
+                        })
                       : 0
                   }
                 ]
@@ -148,12 +147,20 @@ export class LargeList extends React.Component<LargeListPropType> {
               </Animated.View>
             );
           })}
+        {this._offset &&
+          <SectionContainer
+            {...this.props}
+            tops={sectionTops}
+            ref={this._sectionContainer}
+            nativeOffset={this._offset}
+          />}
       </VerticalScrollView>
     );
   }
 
   _onScroll = (offset: { x: number, y: number }) => {
     this._groupRefs.forEach(group => group.current.contentConversion(offset.y));
+    this._sectionContainer.current.updateOffset(offset.y);
     this.props.onScroll && this.props.onScroll(offset);
   };
 }

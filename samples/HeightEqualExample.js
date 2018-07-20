@@ -13,7 +13,7 @@ import { LargeList } from "../src";
 
 export class HeightEqualExample extends React.Component {
   _sectionCount = 10;
-  _rowCount = 10;
+  _rowCount = 20;
 
   constructor(props) {
     super(props);

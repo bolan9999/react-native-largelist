@@ -33,3 +33,11 @@ export interface GroupPropType {
   renderSection?: (section: number) => React.Node<any>,
   renderIndexPath: (indexPath: IndexPath) => React.Node<any>
 }
+
+export interface SectionContainerPropType {
+  tops:number[];
+  nativeOffset:Animation.Value;
+  data: LargeListDataType,
+  heightForSection?: (section: number) => number,
+  renderSection?: (section: number) => React.Node<any>,
+}

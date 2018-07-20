@@ -12,6 +12,9 @@ import { StyleSheet, Text, View } from "react-native";
 import { LargeList } from "../src/LargeList";
 
 export class HeightUnequalExample extends React.Component {
+  _sectionCount = 10;
+  _rowCount = 20;
+
   constructor(props) {
     super(props);
     this.state = { select: 0 };
@@ -19,9 +22,9 @@ export class HeightUnequalExample extends React.Component {
 
   render() {
     const data = [];
-    for (let section = 0; section < 10; ++section) {
+    for (let section = 0; section < this._sectionCount; ++section) {
       const sContent = { items: [] };
-      for (let row = 0; row < 100; ++row) {
+      for (let row = 0; row < this._rowCount; ++row) {
         sContent.items.push(row);
       }
       data.push(sContent);

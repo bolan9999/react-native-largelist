@@ -69,7 +69,7 @@ export class Group extends React.Component<GroupPropType> {
       return (
         <View key={index} style={{ height: height }}>
           {indexPath.row === -1
-            ? renderSection(indexPath.section)
+            ? null//renderSection(indexPath.section)
             : renderIndexPath(indexPath)}
         </View>
       );
