@@ -52,6 +52,7 @@ export class Group extends React.Component<GroupPropType> {
       heightForIndexPath,
       renderIndexPath
     } = this.props;
+    if (this._currentIndex>=indexes.length) return null;
     return indexes[this._currentIndex].map((indexPath, index) => {
       const height =
         indexPath.row === -1

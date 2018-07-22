@@ -132,7 +132,7 @@ export class LargeList extends React.Component<LargeListPropType> {
                 top: 0,
                 transform: [
                   {
-                    translateY: this._offset
+                    translateY: this._offset && outputs[index].length>1
                       ? this._offset.interpolate({
                           inputRange: inputs[index],
                           outputRange: outputs[index]
@@ -167,8 +167,9 @@ export class LargeList extends React.Component<LargeListPropType> {
   }
 
   _onScroll = (offset: { x: number, y: number }) => {
-    this._groupRefs.forEach(group => group.current.contentConversion(offset.y));
+    this._groupRefs.forEach(group => idx(()=>group.current.contentConversion(offset.y)));
     idx(() => this._sectionContainer.current.updateOffset(offset.y));
+
     this.props.onScroll && this.props.onScroll(offset);
   };
 
