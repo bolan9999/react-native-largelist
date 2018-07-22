@@ -7,7 +7,13 @@ import {
   ScrollView,
   TextInput
 } from "react-native";
-import { HeightUnequalExample, HeightEqualExample } from "./samples";
+import {
+  HeightUnequalExample,
+  HeightEqualExample,
+  MessageExample,
+  ContactExample,
+  MenuListExample
+} from "./samples";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -23,12 +29,24 @@ export default class App extends React.Component {
         return <HeightEqualExample />;
       case 1:
         return <HeightUnequalExample />;
+      case 2:
+        return <MessageExample />;
+      case 3:
+        return <ContactExample />;
+      case 4:
+        return <MenuListExample />;
     }
     return this.renderChoose();
   }
 
   renderChoose() {
-    const examples = ["HeightEqualExample", "HeightUnequalExample"];
+    const examples = [
+      "HeightEqualExample",
+      "HeightUnequalExample",
+      "MessageExample",
+      "ContactExample",
+      "MenuListExample"
+    ];
     return (
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
         {examples.map((str, index) =>

@@ -37,15 +37,15 @@ let message = [
   }
 ];
 
-let messages = [];
+let messages = [{items:[]}];
 for (let i = 0; i < 1000; ++i) {
-  messages.push(message[Math.floor(Math.random() * 5)]);
+  messages[0].items.push(message[Math.floor(Math.random() * 5)]);
 }
 
 let contacts = [
   {
     header: "A",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Apple",
@@ -100,7 +100,7 @@ let contacts = [
   },
   {
     header: "B",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Bpple",
@@ -155,7 +155,7 @@ let contacts = [
   },
   {
     header: "C",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Cpple",
@@ -210,7 +210,7 @@ let contacts = [
   },
   {
     header: "D",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Dpple",
@@ -265,7 +265,7 @@ let contacts = [
   },
   {
     header: "E",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Epple",
@@ -320,7 +320,7 @@ let contacts = [
   },
   {
     header: "F",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Fpple",
@@ -375,7 +375,7 @@ let contacts = [
   },
   {
     header: "G",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Gpple",
@@ -430,7 +430,7 @@ let contacts = [
   },
   {
     header: "H",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Hpple",
@@ -485,7 +485,7 @@ let contacts = [
   },
   {
     header: "I",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Ipple",
@@ -540,7 +540,7 @@ let contacts = [
   },
   {
     header: "J",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Jpple",
@@ -595,7 +595,7 @@ let contacts = [
   },
   {
     header: "K",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Kpple",
@@ -650,7 +650,7 @@ let contacts = [
   },
   {
     header: "L",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Lpple",
@@ -705,7 +705,7 @@ let contacts = [
   },
   {
     header: "M",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Mpple",
@@ -760,7 +760,7 @@ let contacts = [
   },
   {
     header: "N",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Npple",
@@ -815,7 +815,7 @@ let contacts = [
   },
   {
     header: "O",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Opple",
@@ -870,7 +870,7 @@ let contacts = [
   },
   {
     header: "P",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Ppple",
@@ -925,7 +925,7 @@ let contacts = [
   },
   {
     header: "Q",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Qpple",
@@ -980,7 +980,7 @@ let contacts = [
   },
   {
     header: "R",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Rpple",
@@ -1035,7 +1035,7 @@ let contacts = [
   },
   {
     header: "S",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Spple",
@@ -1090,7 +1090,7 @@ let contacts = [
   },
   {
     header: "T",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Tpple",
@@ -1145,7 +1145,7 @@ let contacts = [
   },
   {
     header: "U",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Upple",
@@ -1200,7 +1200,7 @@ let contacts = [
   },
   {
     header: "V",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Vpple",
@@ -1255,7 +1255,7 @@ let contacts = [
   },
   {
     header: "W",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Wpple",
@@ -1310,7 +1310,7 @@ let contacts = [
   },
   {
     header: "X",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Xpple",
@@ -1365,7 +1365,7 @@ let contacts = [
   },
   {
     header: "Y",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Ypple",
@@ -1420,7 +1420,7 @@ let contacts = [
   },
   {
     header: "Z",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "Zpple",
@@ -1475,7 +1475,7 @@ let contacts = [
   },
   {
     header: "#",
-    info: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         name: "#pple",
@@ -1533,7 +1533,7 @@ let contacts = [
 let foods = [
   {
     header: "热销",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -1583,7 +1583,7 @@ let foods = [
   },
   {
     header: "加菜",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "泡菜",
@@ -1632,7 +1632,7 @@ let foods = [
     ]
   },
   {
-    "header": "米饭", list:[
+    "header": "米饭", items:[
     {
       icon: iconArray[Math.floor(Math.random() * 11)],
       title: "米饭",
@@ -1645,7 +1645,7 @@ let foods = [
   ]},
   {
     header: "砂锅黄焖鸡套餐",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡小份加豆皮",
@@ -1695,7 +1695,7 @@ let foods = [
   },
   {
     header: "砂锅黄焖猪脚套餐",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖猪脚小份加香菇",
@@ -1745,7 +1745,7 @@ let foods = [
   },
   {
     header: "砂锅黄焖排骨套餐",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖排骨小份加百事可乐",
@@ -1795,7 +1795,7 @@ let foods = [
   },
   {
     header: "招牌菜",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "铁山坪麻辣跑山鸡",
@@ -1845,7 +1845,7 @@ let foods = [
   },
   {
     header: "热销1",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -1895,7 +1895,7 @@ let foods = [
   },
   {
     header: "热销2",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -1945,7 +1945,7 @@ let foods = [
   },
   {
     header: "热销3",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -1995,7 +1995,7 @@ let foods = [
   },
   {
     header: "热销4",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -2045,7 +2045,7 @@ let foods = [
   },
   {
     header: "热销5",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -2095,7 +2095,7 @@ let foods = [
   },
   {
     header: "热销6",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -2145,7 +2145,7 @@ let foods = [
   },
   {
     header: "热销7",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -2195,7 +2195,7 @@ let foods = [
   },
   {
     header: "热销8",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -2245,7 +2245,7 @@ let foods = [
   },
   {
     header: "热销9",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -2295,7 +2295,7 @@ let foods = [
   },
   {
     header: "热销10",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -2345,7 +2345,7 @@ let foods = [
   },
   {
     header: "热销11",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",
@@ -2395,7 +2395,7 @@ let foods = [
   },
   {
     header: "热销12",
-    list: [
+    items: [
       {
         icon: iconArray[Math.floor(Math.random() * 11)],
         title: "黄焖鸡米饭",

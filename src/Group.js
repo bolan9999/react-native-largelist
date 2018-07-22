@@ -58,7 +58,6 @@ export class Group extends React.Component<GroupPropType> {
       indexes,
       heightForSection,
       heightForIndexPath,
-      renderSection,
       renderIndexPath
     } = this.props;
     return indexes[this._currentIndex].map((indexPath, index) => {
@@ -68,12 +67,11 @@ export class Group extends React.Component<GroupPropType> {
           : heightForIndexPath(indexPath);
       return (
         <View key={index} style={{ height: height }}>
-          {indexPath.row === -1
-            ? null//renderSection(indexPath.section)
-            : renderIndexPath(indexPath)}
+          {indexPath.row === -1 ? null : renderIndexPath(indexPath)}
         </View>
       );
     });
+    //.concat(<Text key={1000} style={styles.showIndex}>{this.props.index}</Text>);
   }
 }
 
@@ -81,7 +79,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  text: {
+  showIndex: {
     position: "absolute",
     left: 0,
     top: 0

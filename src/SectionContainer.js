@@ -29,49 +29,45 @@ export class SectionContainer extends React.Component<
   render() {
     const { heightForSection, tops, renderSection, nativeOffset } = this.props;
     const { offset } = this.state;
-    return (
-      <View style={StyleSheet.absoluteFill}>
-        {tops.map((top, index) => {
-          if (
-            top > offset - largelistHeight*3 &&
-            top < offset + largelistHeight * 3
-          ) {
-            const inputRange = [-1,top];
-            const outputRange = [0,0];
-            if (tops[index + 1]) {
-              const lastOffset = tops[index + 1]-heightForSection(index);
-              inputRange.push(lastOffset);
-              outputRange.push(lastOffset-top);
-              inputRange.push(lastOffset+1);
-              outputRange.push(lastOffset-top);
-            } else {
-              inputRange.push(top+1);
-              outputRange.push(1);
-            }
-            const style = StyleSheet.flatten([
-              styles.section,
+    return tops.map((top, index) => {
+      if (
+        top > offset - largelistHeight * 3 &&
+        top < offset + largelistHeight * 3
+      ) {
+        const inputRange = [-1, top];
+        const outputRange = [0, 0];
+        if (tops[index + 1]) {
+          const lastOffset = tops[index + 1] - heightForSection(index);
+          inputRange.push(lastOffset);
+          outputRange.push(lastOffset - top);
+          inputRange.push(lastOffset + 1);
+          outputRange.push(lastOffset - top);
+        } else {
+          inputRange.push(top + 1);
+          outputRange.push(1);
+        }
+        const style = StyleSheet.flatten([
+          styles.section,
+          {
+            top: top,
+            height: heightForSection(index),
+            transform: [
               {
-                top: top,
-                height: heightForSection(index),
-                transform: [
-                  {
-                    translateY: nativeOffset.interpolate({
-                      inputRange: inputRange,
-                      outputRange: outputRange
-                    })
-                  }
-                ]
+                translateY: nativeOffset.interpolate({
+                  inputRange: inputRange,
+                  outputRange: outputRange
+                })
               }
-            ]);
-            return (
-              <Animated.View key={top} style={style}>
-                {renderSection(index)}
-              </Animated.View>
-            );
+            ]
           }
-        })}
-      </View>
-    );
+        ]);
+        return (
+          <Animated.View key={top} style={style}>
+            {renderSection(index)}
+          </Animated.View>
+        );
+      }
+    });
   }
 }
 
