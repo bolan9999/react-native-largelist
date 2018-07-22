@@ -108,6 +108,10 @@ export class LargeList extends React.Component<LargeListPropType> {
     //   console.log("=====>", JSON.stringify(groupIndexes));
     // }
     const scrollStyle = StyleSheet.flatten([styles.container, style]);
+    // console.log("render LargeList");
+    const wrapperHeight = idx(
+      () => this._scrollView.current._wrapperLayout.height
+    );
     return (
       <VerticalScrollView
         {...this.props}
@@ -119,6 +123,7 @@ export class LargeList extends React.Component<LargeListPropType> {
             inputRange: [-1, 0, 1],
             outputRange: [1, 0, -1]
           });
+          // console.log("getNativeOffset");
           this.forceUpdate();
         }}
         onScroll={this._onScroll}
@@ -169,14 +174,16 @@ export class LargeList extends React.Component<LargeListPropType> {
   }
 
   _onScroll = (offset: { x: number, y: number }) => {
-    this._shouldUpdateContent && this._groupRefs.forEach(group =>
-      idx(() => group.current.contentConversion(offset.y))
-    );
-    this._shouldUpdateContent && idx(() => this._sectionContainer.current.updateOffset(offset.y));
+    this._shouldUpdateContent &&
+      this._groupRefs.forEach(group =>
+        idx(() => group.current.contentConversion(offset.y))
+      );
+    this._shouldUpdateContent &&
+      idx(() => this._sectionContainer.current.updateOffset(offset.y));
     this.props.onScroll && this.props.onScroll(offset);
   };
 
-  scrollTo(offset: Offset, animated: boolean = true):Promise<void> {
+  scrollTo(offset: Offset, animated: boolean = true): Promise<void> {
     if (!this._scrollView.current)
       return Promise.reject("LargeList has not been initialized yet!");
     this._shouldUpdateContent = false;
@@ -184,13 +191,16 @@ export class LargeList extends React.Component<LargeListPropType> {
       idx(() => group.current.contentConversion(offset.y, true))
     );
     idx(() => this._sectionContainer.current.updateOffset(offset.y, true));
-    return this._scrollView.current.scrollTo(offset, animated).then(()=>{
+    return this._scrollView.current.scrollTo(offset, animated).then(() => {
       this._shouldUpdateContent = true;
       return Promise.resolve();
     });
   }
 
-  scrollToIndexPath(indexPath: IndexPath, animated: boolean = true):Promise<void> {
+  scrollToIndexPath(
+    indexPath: IndexPath,
+    animated: boolean = true
+  ): Promise<void> {
     const { data, heightForSection, heightForIndexPath } = this.props;
     let ht = 0;
     for (let s = 0; s < data.length && s <= indexPath.section; ++s) {

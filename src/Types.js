@@ -32,6 +32,7 @@ export interface GroupPropType {
   criticalPoint: number[],
   input: number[],
   output: number[],
+  // offset:number,
   data: LargeListDataType,
   heightForSection?: (section: number) => number,
   heightForIndexPath: (indexPath: IndexPath) => number,
@@ -41,6 +42,7 @@ export interface GroupPropType {
 
 export interface SectionContainerPropType {
   tops:number[];
+  // offset: number;
   nativeOffset:Animation.Value;
   data: LargeListDataType,
   heightForSection?: (section: number) => number,

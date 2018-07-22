@@ -14,7 +14,8 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  TextInput
 } from "react-native";
 import { LargeList } from "../src/LargeList";
 import { contacts } from "./DataSource";
@@ -24,24 +25,32 @@ export class ContactExample extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { refreshing: false };
+    this.state = { data: contacts };
   }
 
   render() {
     return (
-      <LargeList
-        style={styles.container}
-        heightForSection={() => 40}
-        renderSection={this._renderSection}
-        heightForIndexPath={() => 60}
-        renderIndexPath={this._renderItem}
-        data={contacts}
-      />
+      <View style={styles.container}>
+        <TextInput
+          style={styles.search}
+          placeholder="Please type first letter to search"
+          onSubmitEditing={this._search}
+          returnKeyType="done"
+        />
+        <LargeList
+          style={styles.container}
+          heightForSection={() => 40}
+          renderSection={this._renderSection}
+          heightForIndexPath={() => 60}
+          renderIndexPath={this._renderItem}
+          data={this.state.data}
+        />
+      </View>
     );
   }
 
   _renderSection = (section: number) => {
-    const contact = contacts[section];
+    const contact = this.state.data[section];
     return (
       <TouchableOpacity style={styles.section}>
         <Text style={styles.sectionText}>
@@ -52,7 +61,7 @@ export class ContactExample extends React.Component {
   };
 
   _renderItem = ({ section: section, row: row }) => {
-    const contact = contacts[section].items[row];
+    const contact = this.state.data[section].items[row];
     return (
       <TouchableOpacity style={styles.row}>
         <Image source={contact.icon} style={styles.image} />
@@ -67,13 +76,29 @@ export class ContactExample extends React.Component {
       </TouchableOpacity>
     );
   };
+
+  _search = ({ nativeEvent: { text: text } }) => {
+    const notFound = contacts.every(contract => {
+      if (contract.header === text) {
+        this.setState({ data: [contract] });
+        return false;
+      }
+      return true;
+    });
+    if (notFound) {
+      this.setState({ data: [] });
+    }
+  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-
+  search: {
+    marginTop: 20,
+    fontSize: 18
+  },
   section: {
     flex: 1,
     backgroundColor: "#EEE",

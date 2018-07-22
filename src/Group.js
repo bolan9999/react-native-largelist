@@ -9,6 +9,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import type { GroupPropType, IndexPath } from "./Types";
+import {SectionContainerPropType} from "./Types";
 
 let lastUpdate = 0;
 
