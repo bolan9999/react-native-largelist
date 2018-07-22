@@ -23,6 +23,7 @@ export class LargeList extends React.Component<LargeListPropType> {
   _offset: Animated.Value;
   _sectionContainer = React.createRef();
   _scrollView = React.createRef();
+  _shouldUpdateContent = true;
 
   constructor(props) {
     super(props);
@@ -132,12 +133,13 @@ export class LargeList extends React.Component<LargeListPropType> {
                 top: 0,
                 transform: [
                   {
-                    translateY: this._offset && outputs[index].length>1
-                      ? this._offset.interpolate({
-                          inputRange: inputs[index],
-                          outputRange: outputs[index]
-                        })
-                      : 0
+                    translateY:
+                      this._offset && outputs[index].length > 1
+                        ? this._offset.interpolate({
+                            inputRange: inputs[index],
+                            outputRange: outputs[index]
+                          })
+                        : 0
                   }
                 ]
               }
@@ -167,18 +169,28 @@ export class LargeList extends React.Component<LargeListPropType> {
   }
 
   _onScroll = (offset: { x: number, y: number }) => {
-    this._groupRefs.forEach(group => idx(()=>group.current.contentConversion(offset.y)));
-    idx(() => this._sectionContainer.current.updateOffset(offset.y));
-
+    this._shouldUpdateContent && this._groupRefs.forEach(group =>
+      idx(() => group.current.contentConversion(offset.y))
+    );
+    this._shouldUpdateContent && idx(() => this._sectionContainer.current.updateOffset(offset.y));
     this.props.onScroll && this.props.onScroll(offset);
   };
 
-  scrollTo(offset: Offset, animated: boolean = true) {
-    this._scrollView.current &&
-      this._scrollView.current.scrollTo(offset, animated);
+  scrollTo(offset: Offset, animated: boolean = true):Promise<void> {
+    if (!this._scrollView.current)
+      return Promise.reject("LargeList has not been initialized yet!");
+    this._shouldUpdateContent = false;
+    this._groupRefs.forEach(group =>
+      idx(() => group.current.contentConversion(offset.y, true))
+    );
+    idx(() => this._sectionContainer.current.updateOffset(offset.y, true));
+    return this._scrollView.current.scrollTo(offset, animated).then(()=>{
+      this._shouldUpdateContent = true;
+      return Promise.resolve();
+    });
   }
 
-  scrollToIndexPath(indexPath: IndexPath, animated: boolean = true) {
+  scrollToIndexPath(indexPath: IndexPath, animated: boolean = true):Promise<void> {
     const { data, heightForSection, heightForIndexPath } = this.props;
     let ht = 0;
     for (let s = 0; s < data.length && s <= indexPath.section; ++s) {
@@ -189,6 +201,6 @@ export class LargeList extends React.Component<LargeListPropType> {
         ht += heightForIndexPath({ section: s, row: r });
       }
     }
-    this.scrollTo({ x: 0, y: ht }, animated);
+    return this.scrollTo({ x: 0, y: ht }, animated);
   }
 }

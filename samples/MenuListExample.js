@@ -76,7 +76,7 @@ export class MenuListExample extends React.Component {
         ref={this._buttonRefs[section][row]}
         style={styles.indexes}
         onPress={() => {
-          this._listRef.scrollToIndexPath({section:row,row:-1});
+          this._listRef.scrollToIndexPath({section:row,row:-1}, false).then();
         }}
       >
         <Text style={{ fontSize: 18 }} fontWeight={300}>
@@ -152,30 +152,7 @@ export class MenuListExample extends React.Component {
     );
   };
 
-  onSectionChange(section: number) {
-    foods[this.selectedIndex].selected = false;
-    foods[section].selected = true;
-    // 使用局部更新
-    // this.indexes.reloadIndexPaths([
-    //   { section: 0, row: this.selectedIndex },
-    //   { section: 0, row: section }
-    // ]);
-    this.selectedIndex = section;
-    // 使用更新所有数据源
-    this.indexes.reloadData();
-
-    let bFind = false;
-    this.indexes.visibleIndexPaths().forEach(indexPath => {
-      if (indexPath.row === section) {
-        bFind = true;
-      }
-    });
-    if (!bFind) {
-      this.indexes.scrollToIndexPath({ section: 0, row: section });
-    }
-  }
-
-  onBuy(food) {
+  onBuy = () => {
     console.log("buy");
   }
 }

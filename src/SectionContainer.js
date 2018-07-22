@@ -16,7 +16,8 @@ const largelistHeight = 667;
 export class SectionContainer extends React.Component<
   SectionContainerPropType
 > {
-  updateOffset(offset: number) {
+  updateOffset(offset: number, force: boolean = false) {
+    if (force) return this.setState({ offset: offset });
     if (Math.abs(offset - this.state.offset) > largelistHeight / 3)
       this.setState({ offset: offset });
   }
