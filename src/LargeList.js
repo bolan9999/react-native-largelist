@@ -8,14 +8,13 @@
  */
 
 import React from "react";
-import {Animated, StyleSheet, Text, View, Dimensions, TouchableOpacity} from "react-native";
+import { Animated, StyleSheet, Dimensions } from "react-native";
 import { styles } from "./styles";
 import { VerticalScrollView } from "react-native-spring-scrollview";
-import type { LargeListPropType } from "./Types";
+import type { IndexPath, LargeListPropType, Offset } from "./Types";
 import { Group } from "./Group";
 import { SectionContainer } from "./SectionContainer";
-import {NativeViewGestureHandler as NativeHandler} from "react-native-gesture-handler"
-import {idx} from "react-native-spring-scrollview/idx";
+import { idx } from "react-native-spring-scrollview/idx";
 
 const groupMinHeight = Dimensions.get("window").height / 2;
 
@@ -23,14 +22,12 @@ export class LargeList extends React.Component<LargeListPropType> {
   _groupRefs = [];
   _offset: Animated.Value;
   _sectionContainer = React.createRef();
-  _groupHandlerRefs = [];
-  _sectionContainerNativeHandler = React.createRef();
+  _scrollView = React.createRef();
 
   constructor(props) {
     super(props);
     [0, 1, 2, 3].forEach(() => {
       this._groupRefs.push(React.createRef());
-      this._groupHandlerRefs.push(React.createRef());
     });
   }
 
@@ -113,12 +110,13 @@ export class LargeList extends React.Component<LargeListPropType> {
     return (
       <VerticalScrollView
         {...this.props}
+        ref={this._scrollView}
         style={scrollStyle}
         contentStyle={{ height: sumHeight }}
         getNativeOffset={offset => {
           this._offset = offset.interpolate({
-            inputRange: [-1,0, 1],
-            outputRange: [1,0, -1]
+            inputRange: [-1, 0, 1],
+            outputRange: [1, 0, -1]
           });
           this.forceUpdate();
         }}
@@ -127,12 +125,11 @@ export class LargeList extends React.Component<LargeListPropType> {
         {this._offset &&
           groupIndexes.map((indexes, index) => {
             const style = StyleSheet.flatten([
-              // StyleSheet.absoluteFill,
               {
-                position:"absolute",
-                left:0,
-                right:0,
-                top:0,
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: 0,
                 transform: [
                   {
                     translateY: this._offset
@@ -158,7 +155,7 @@ export class LargeList extends React.Component<LargeListPropType> {
               </Animated.View>
             );
           })}
-        {true && this._offset &&
+        {this._offset &&
           <SectionContainer
             {...this.props}
             tops={sectionTops}
@@ -171,7 +168,26 @@ export class LargeList extends React.Component<LargeListPropType> {
 
   _onScroll = (offset: { x: number, y: number }) => {
     this._groupRefs.forEach(group => group.current.contentConversion(offset.y));
-    idx(()=>this._sectionContainer.current.updateOffset(offset.y));
+    idx(() => this._sectionContainer.current.updateOffset(offset.y));
     this.props.onScroll && this.props.onScroll(offset);
   };
+
+  scrollTo(offset: Offset, animated: boolean = true) {
+    this._scrollView.current &&
+      this._scrollView.current.scrollTo(offset, animated);
+  }
+
+  scrollToIndexPath(indexPath: IndexPath, animated: boolean = true) {
+    const { data, heightForSection, heightForIndexPath } = this.props;
+    let ht = 0;
+    for (let s = 0; s < data.length && s <= indexPath.section; ++s) {
+      if (indexPath.section === s && indexPath.row === -1) break;
+      ht += heightForSection(s);
+      for (let r = 0; r < data[s].items.length; ++r) {
+        if (indexPath.section === s && indexPath.row === r) break;
+        ht += heightForIndexPath({ section: s, row: r });
+      }
+    }
+    this.scrollTo({ x: 0, y: ht }, animated);
+  }
 }

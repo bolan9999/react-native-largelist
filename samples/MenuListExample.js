@@ -24,7 +24,7 @@ const leftData = [{ items: foods }];
 
 export class MenuListExample extends React.Component {
   selectedIndex: number = 0;
-  listRef: LargeList;
+  _listRef: LargeList;
   indexes: LargeList;
   _buttonRefs:[] = [];
 
@@ -57,7 +57,7 @@ export class MenuListExample extends React.Component {
           renderIndexPath={this.renderIndexes}
         />
         <LargeList
-          ref={ref => (this.listRef = ref)}
+          ref={ref => (this._listRef = ref)}
           style={styles.rc}
           data={foods}
           heightForSection={() => 36}
@@ -70,18 +70,13 @@ export class MenuListExample extends React.Component {
   }
 
   renderIndexes = ({ section: section, row: row }) => {
-    // let selected = foods[row].selected;
     const food = leftData[section].items[row];
     return (
       <TouchableOpacity
         ref={this._buttonRefs[section][row]}
         style={styles.indexes}
         onPress={() => {
-          // this.listRef.scrollToIndexPath({ section: row, row: 0 });
-          // foods[row].selected = true;
-          // foods[this.selectedIndex].selected = false;
-          // this.selectedIndex = row;
-          // this.indexes.reloadData();
+          this._listRef.scrollToIndexPath({section:row,row:-1});
         }}
       >
         <Text style={{ fontSize: 18 }} fontWeight={300}>

@@ -14,6 +14,11 @@ export interface IndexPath {
   row: number
 }
 
+export interface Offset {
+  x:number;
+  y:number;
+}
+
 export interface LargeListPropType {
   data: LargeListDataType,
   heightForSection?: (section: number) => number,

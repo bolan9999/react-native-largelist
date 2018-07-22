@@ -45,14 +45,6 @@ export class Group extends React.Component<GroupPropType> {
     }
   }
 
-  render2() {
-    return (
-      <View style={styles.container}>
-        {this._renderCells()}
-      </View>
-    );
-  }
-
   render() {
     const {
       indexes,
@@ -70,8 +62,8 @@ export class Group extends React.Component<GroupPropType> {
           {indexPath.row === -1 ? null : renderIndexPath(indexPath)}
         </View>
       );
-    });
-    //.concat(<Text key={1000} style={styles.showIndex}>{this.props.index}</Text>);
+    })
+    .concat(<Text key={1000} style={styles.showIndex}>{this.props.index}</Text>);
   }
 }
 
