@@ -72,6 +72,7 @@ export class LargeList extends React.Component<LargeListPropType> {
     let outputs = [[0], [], [], []];
     let lastOffset = [0, 0, 0, 0];
     sumHeight = 0;
+    const wrapperHeight = idx(()=>this._scrollView.current._wrapperLayout.height, 700)
     for (let section = 0; section < data.length; ++section) {
       for (let row = -1; row < data[section].items.length; ++row) {
         const height =
@@ -87,8 +88,8 @@ export class LargeList extends React.Component<LargeListPropType> {
           if (inputs[currentGroupIndex].length === 0) {
             inputs[currentGroupIndex].push(Number.MIN_SAFE_INTEGER);
           }
-          inputs[currentGroupIndex].push(sumHeight - 700);
-          inputs[currentGroupIndex].push(sumHeight + 1 - 700);
+          inputs[currentGroupIndex].push(sumHeight - wrapperHeight);
+          inputs[currentGroupIndex].push(sumHeight + 1 - wrapperHeight);
           if (outputs[currentGroupIndex].length === 0) {
             outputs[currentGroupIndex].push(sumHeight);
             outputs[currentGroupIndex].push(sumHeight);
@@ -109,9 +110,6 @@ export class LargeList extends React.Component<LargeListPropType> {
     // }
     const scrollStyle = StyleSheet.flatten([styles.container, style]);
     // console.log("render LargeList");
-    const wrapperHeight = idx(
-      () => this._scrollView.current._wrapperLayout.height
-    );
     return (
       <VerticalScrollView
         {...this.props}
