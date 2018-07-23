@@ -24,6 +24,7 @@ export class Group extends React.Component<GroupPropType> {
     for (let i = 0; i < input.length; ++i) {
       if (offset >= input[i] && offset <= input[i + 1]) {
         this.update(cc.indexOf(output[i]), force);
+        break;
       }
     }
   }
@@ -32,9 +33,12 @@ export class Group extends React.Component<GroupPropType> {
     const now = new Date().getTime();
     if (force ) {
       lastUpdate = now;
+      if (this._dirty || this._currentIndex !== index) {
+        this._currentIndex = index;
+        this.forceUpdate();
+      }
       this._dirty = false;
       this._currentIndex = index;
-      this.forceUpdate();
       return;
     }
     if (
@@ -45,7 +49,7 @@ export class Group extends React.Component<GroupPropType> {
       return;
     this._currentIndex = index;
 
-    if (now - lastUpdate > 100) {
+    if (now - lastUpdate > this.props.updateTimeInterval) {
       lastUpdate = now;
       this._dirty = false;
       this.forceUpdate();
@@ -73,7 +77,7 @@ export class Group extends React.Component<GroupPropType> {
         </View>
       );
     })
-    // .concat(<Text key={1000} style={styles.showIndex}>{this.props.index}</Text>);
+    .concat(<Text key={1000} style={styles.showIndex}>{this.props.index}</Text>);
   }
 }
 

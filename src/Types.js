@@ -22,9 +22,13 @@ export interface Offset {
 export interface LargeListPropType {
   data: LargeListDataType,
   heightForSection?: (section: number) => number,
-  heightForIndexPath: (indexPath: IndexPath) => number,
   renderSection?: (section: number) => React.Node<any>,
-  renderIndexPath: (indexPath: IndexPath) => React.Node<any>
+  heightForIndexPath: (indexPath: IndexPath) => number,
+  renderIndexPath: (indexPath: IndexPath) => React.Node<any>,
+
+  groupCount?: number,
+  groupMinHeight?: number,
+  updateTimeInterval?: number
 }
 
 export interface GroupPropType {
@@ -37,7 +41,9 @@ export interface GroupPropType {
   heightForSection?: (section: number) => number,
   heightForIndexPath: (indexPath: IndexPath) => number,
   renderSection?: (section: number) => React.Node<any>,
-  renderIndexPath: (indexPath: IndexPath) => React.Node<any>
+  renderIndexPath: (indexPath: IndexPath) => React.Node<any>,
+
+  updateTimeInterval:number
 }
 
 export interface SectionContainerPropType {

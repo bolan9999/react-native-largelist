@@ -16,8 +16,6 @@ import { Group } from "./Group";
 import { SectionContainer } from "./SectionContainer";
 import { idx } from "react-native-spring-scrollview/idx";
 
-const groupMinHeight = Dimensions.get("window").height / 2;
-
 export class LargeList extends React.Component<LargeListPropType> {
   _groupRefs = [];
   _offset: Animated.Value;
@@ -25,18 +23,29 @@ export class LargeList extends React.Component<LargeListPropType> {
   _scrollView = React.createRef();
   _shouldUpdateContent = true;
 
+  static defaultProps = {
+    heightForSection: () => 0,
+    renderSection: () => null,
+    groupCount: 4,
+    groupMinHeight: Dimensions.get("window").height / 2,
+    updateTimeInterval: 150
+  };
+
   constructor(props) {
     super(props);
-    [0, 1, 2, 3].forEach(() => {
+    for (let i=0;i<props.groupCount;++i){
       this._groupRefs.push(React.createRef());
-    });
+    }
   }
 
   render() {
-    const { style, data, heightForSection, heightForIndexPath } = this.props;
+    const { style, data, heightForSection, heightForIndexPath,groupMinHeight,groupCount } = this.props;
     let sum = 0;
     let sumHeight = 0;
-    const groupIndexes = [[], [], [], []];
+    const groupIndexes = [];
+    for (let i=0;i<groupCount;++i){
+      groupIndexes.push([]);
+    }
     let indexes = [];
     let currentIndex = 0;
     const sectionTops = [];
@@ -61,18 +70,26 @@ export class LargeList extends React.Component<LargeListPropType> {
           groupIndexes[currentIndex].push(indexes);
           indexes = [];
           currentIndex++;
-          currentIndex %= 4;
+          currentIndex %= groupCount;
         }
       }
     }
 
     let currentGroupHeight = 0;
     let currentGroupIndex = 0;
-    let inputs = [[Number.MIN_SAFE_INTEGER], [], [], []];
-    let outputs = [[0], [], [], []];
-    let lastOffset = [0, 0, 0, 0];
+    let inputs = [];
+    let outputs = [];
+    let lastOffset = [];
+    for (let i=0;i<groupCount;++i){
+      inputs.push(i===0?[Number.MIN_SAFE_INTEGER]:[]);
+      outputs.push(i===0?[0]:[]);
+      lastOffset.push(0);
+    }
     sumHeight = 0;
-    const wrapperHeight = idx(()=>this._scrollView.current._wrapperLayout.height, 700)
+    const wrapperHeight = idx(
+      () => this._scrollView.current._wrapperLayout.height,
+      700
+    );
     for (let section = 0; section < data.length; ++section) {
       for (let row = -1; row < data[section].items.length; ++row) {
         const height =
@@ -84,7 +101,7 @@ export class LargeList extends React.Component<LargeListPropType> {
         if (currentGroupHeight >= groupMinHeight) {
           currentGroupHeight = 0;
           currentGroupIndex++;
-          currentGroupIndex %= 4;
+          currentGroupIndex %= groupCount;
           if (inputs[currentGroupIndex].length === 0) {
             inputs[currentGroupIndex].push(Number.MIN_SAFE_INTEGER);
           }
