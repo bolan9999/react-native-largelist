@@ -59,6 +59,10 @@ class LargeListCell extends React.Component {
   _maxLeftWidth: number = 250;
   _enableShowEx: boolean = false;
 
+  shouldComponentUpdate() {
+    return false;
+  }
+
   contentUpdate() {
     this.waitForRender = false;
     if (this.locationUpdated) this.positionUpdate();
