@@ -40,41 +40,9 @@ export class LargeList extends React.Component<LargeListPropType> {
 
   render() {
     const { style, data, heightForSection, heightForIndexPath,groupMinHeight,groupCount } = this.props;
-    let sum = 0;
-    let sumHeight = 0;
     const groupIndexes = [];
-    for (let i=0;i<groupCount;++i){
-      groupIndexes.push([]);
-    }
     let indexes = [];
-    let currentIndex = 0;
     const sectionTops = [];
-    for (let section = 0; section < data.length; ++section) {
-      for (let row = -1; row < data[section].items.length; ++row) {
-        let height;
-        if (row === -1) {
-          height = heightForSection(section);
-          sectionTops[section] = sumHeight;
-        } else {
-          height = heightForIndexPath({ section: section, row: row });
-        }
-        sumHeight += height;
-        sum += height;
-        indexes.push({ section: section, row: row });
-        if (
-          sum >= groupMinHeight ||
-          (section === data.length - 1 &&
-            row === data[section].items.length - 1)
-        ) {
-          sum = 0;
-          groupIndexes[currentIndex].push(indexes);
-          indexes = [];
-          currentIndex++;
-          currentIndex %= groupCount;
-        }
-      }
-    }
-
     let currentGroupHeight = 0;
     let currentGroupIndex = 0;
     let inputs = [];
@@ -84,21 +52,30 @@ export class LargeList extends React.Component<LargeListPropType> {
       inputs.push(i===0?[Number.MIN_SAFE_INTEGER]:[]);
       outputs.push(i===0?[0]:[]);
       lastOffset.push(0);
+      groupIndexes.push([]);
     }
-    sumHeight = 0;
+    let sumHeight = 0;
     const wrapperHeight = idx(
       () => this._scrollView.current._wrapperLayout.height,
       700
     );
     for (let section = 0; section < data.length; ++section) {
       for (let row = -1; row < data[section].items.length; ++row) {
-        const height =
-          row === -1
-            ? heightForSection(section)
-            : heightForIndexPath({ section: section, row: row });
+        let height;
+        if (row === -1) {
+          height = heightForSection(section);
+          sectionTops[section] = sumHeight;
+        } else {
+          height = heightForIndexPath({ section: section, row: row });
+        }
         currentGroupHeight += height;
         sumHeight += height;
-        if (currentGroupHeight >= groupMinHeight) {
+        indexes.push({ section: section, row: row });
+        if (currentGroupHeight >= groupMinHeight||
+          (section === data.length - 1 &&
+            row === data[section].items.length - 1)) {
+          groupIndexes[currentGroupIndex].push(indexes);
+          indexes = [];
           currentGroupHeight = 0;
           currentGroupIndex++;
           currentGroupIndex %= groupCount;
@@ -126,7 +103,6 @@ export class LargeList extends React.Component<LargeListPropType> {
     //   console.log("=====>", JSON.stringify(groupIndexes));
     // }
     const scrollStyle = StyleSheet.flatten([styles.container, style]);
-    // console.log("render LargeList");
     return (
       <VerticalScrollView
         {...this.props}
