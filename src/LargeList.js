@@ -33,13 +33,20 @@ export class LargeList extends React.Component<LargeListPropType> {
 
   constructor(props) {
     super(props);
-    for (let i=0;i<props.groupCount;++i){
+    for (let i = 0; i < props.groupCount; ++i) {
       this._groupRefs.push(React.createRef());
     }
   }
 
   render() {
-    const { style, data, heightForSection, heightForIndexPath,groupMinHeight,groupCount } = this.props;
+    const {
+      style,
+      data,
+      heightForSection,
+      heightForIndexPath,
+      groupMinHeight,
+      groupCount
+    } = this.props;
     const groupIndexes = [];
     let indexes = [];
     const sectionTops = [];
@@ -48,9 +55,9 @@ export class LargeList extends React.Component<LargeListPropType> {
     let inputs = [];
     let outputs = [];
     let lastOffset = [];
-    for (let i=0;i<groupCount;++i){
-      inputs.push(i===0?[Number.MIN_SAFE_INTEGER]:[]);
-      outputs.push(i===0?[0]:[]);
+    for (let i = 0; i < groupCount; ++i) {
+      inputs.push(i === 0 ? [Number.MIN_SAFE_INTEGER] : []);
+      outputs.push(i === 0 ? [0] : []);
       lastOffset.push(0);
       groupIndexes.push([]);
     }
@@ -71,9 +78,11 @@ export class LargeList extends React.Component<LargeListPropType> {
         currentGroupHeight += height;
         sumHeight += height;
         indexes.push({ section: section, row: row });
-        if (currentGroupHeight >= groupMinHeight||
+        if (
+          currentGroupHeight >= groupMinHeight ||
           (section === data.length - 1 &&
-            row === data[section].items.length - 1)) {
+            row === data[section].items.length - 1)
+        ) {
           groupIndexes[currentGroupIndex].push(indexes);
           indexes = [];
           currentGroupHeight = 0;
@@ -203,5 +212,21 @@ export class LargeList extends React.Component<LargeListPropType> {
       }
     }
     return this.scrollTo({ x: 0, y: ht }, animated);
+  }
+
+  beginRefresh() {
+    idx(() => this._scrollView.current.beginRefresh());
+  }
+
+  endRefresh() {
+    idx(() => this._scrollView.current.endRefresh());
+  }
+
+  beginLoading() {
+    idx(() => this._scrollView.current.beginLoading());
+  }
+
+  endLoading(rebound: boolean = false) {
+    idx(() => this._scrollView.current.endLoading(rebound));
   }
 }
