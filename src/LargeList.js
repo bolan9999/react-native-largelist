@@ -108,11 +108,6 @@ export class LargeList extends React.Component<LargeListPropType> {
     }
     inputs.forEach(range => range.push(Number.MAX_SAFE_INTEGER));
     outputs.forEach(range => range.push(range[range.length - 1]));
-    // if (this._offset) {
-    //   console.log("inputs=====>", JSON.stringify(inputs));
-    //   console.log("outputs=====>", JSON.stringify(outputs));
-    //   console.log("=====>", JSON.stringify(groupIndexes));
-    // }
     const scrollStyle = StyleSheet.flatten([styles.container, style]);
     return (
       <VerticalScrollView
@@ -125,7 +120,6 @@ export class LargeList extends React.Component<LargeListPropType> {
             inputRange: [-1, 0, 1],
             outputRange: [1, 0, -1]
           });
-          // console.log("getNativeOffset");
           this.forceUpdate();
         }}
         onScroll={this._onScroll}
@@ -186,7 +180,7 @@ export class LargeList extends React.Component<LargeListPropType> {
   _onScroll = (offset: { x: number, y: number }) => {
     this._contentOffsetY = offset.y;
     const now = new Date().getTime();
-    if (this._lastTick - now > 30) {
+    if (this._lastTick - now > 40) {
       this._lastTick = now;
       return;
     }
@@ -205,9 +199,9 @@ export class LargeList extends React.Component<LargeListPropType> {
       return Promise.reject("LargeList has not been initialized yet!");
     this._shouldUpdateContent = false;
     this._groupRefs.forEach(group =>
-      idx(() => group.current.contentConversion(offset.y, true))
+      idx(() => group.current.contentConversion(offset.y))
     );
-    idx(() => this._sectionContainer.current.updateOffset(offset.y, true));
+    idx(() => this._sectionContainer.current.updateOffset(offset.y));
     return this._scrollView.current.scrollTo(offset, animated).then(() => {
       this._shouldUpdateContent = true;
       return Promise.resolve();
