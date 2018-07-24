@@ -65,7 +65,7 @@ export class MenuListExample extends React.Component {
           renderIndexPath={this.renderItem}
           groupCount={8}
           groupMinHeight={180}
-          updateTimeInterval={100}
+          updateTimeInterval={150}
         />
       </View>
     );

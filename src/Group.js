@@ -9,7 +9,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import type { GroupPropType, IndexPath } from "./Types";
-import {SectionContainerPropType} from "./Types";
 
 let lastUpdate = 0;
 
@@ -49,7 +48,7 @@ export class Group extends React.Component<GroupPropType> {
       return;
     this._currentIndex = index;
 
-    if (now - lastUpdate > this.props.updateTimeInterval) {
+    if (now - lastUpdate > 0) {
       lastUpdate = now;
       this._dirty = false;
       this.forceUpdate();
@@ -77,7 +76,7 @@ export class Group extends React.Component<GroupPropType> {
         </View>
       );
     })
-    .concat(<Text key={1000} style={styles.showIndex}>{this.props.index}</Text>);
+    // .concat(<Text key={1000} style={styles.showIndex}>{this.props.index}</Text>);
   }
 }
 

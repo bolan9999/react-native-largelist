@@ -11,7 +11,7 @@
     "react": "^16.4.1",
     "react-native": "^0.56.0",
     "react-native-gesture-handler": "^1.0.6",
-    "react-native-spring-scrollview": "^0.0.5"
+    "react-native-spring-scrollview": "^0.0.6"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",

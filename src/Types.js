@@ -15,8 +15,8 @@ export interface IndexPath {
 }
 
 export interface Offset {
-  x:number;
-  y:number;
+  x: number,
+  y: number
 }
 
 export interface LargeListPropType {
@@ -36,21 +36,27 @@ export interface GroupPropType {
   criticalPoint: number[],
   input: number[],
   output: number[],
-  // offset:number,
   data: LargeListDataType,
   heightForSection?: (section: number) => number,
   heightForIndexPath: (indexPath: IndexPath) => number,
   renderSection?: (section: number) => React.Node<any>,
   renderIndexPath: (indexPath: IndexPath) => React.Node<any>,
 
-  updateTimeInterval:number
+  updateTimeInterval: number
 }
 
 export interface SectionContainerPropType {
-  tops:number[];
-  // offset: number;
-  nativeOffset:Animation.Value;
+  tops: number[],
+  nativeOffset: Animated.Value,
   data: LargeListDataType,
   heightForSection?: (section: number) => number,
-  renderSection?: (section: number) => React.Node<any>,
+  renderSection?: (section: number) => React.Node<any>
+}
+
+export interface SectionPropType {
+  tops: number[],
+  section: number,
+  nativeOffset: Animated.Value;
+  heightForSection: (section: number) => number,
+  renderSection?: (section: number) => React.Node<any>
 }

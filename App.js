@@ -13,7 +13,8 @@ import {
   MessageExample,
   ContactExample,
   MenuListExample,
-  RefreshAndLoadingExample
+  RefreshAndLoadingExample,
+  IntensiveSectionExample
 } from "./samples";
 
 export default class App extends React.Component {
@@ -37,7 +38,9 @@ export default class App extends React.Component {
       case 4:
         return <MenuListExample />;
       case 5:
-        return <RefreshAndLoadingExample />
+        return <RefreshAndLoadingExample />;
+      case 6:
+        return <IntensiveSectionExample />;
     }
     return this.renderChoose();
   }
@@ -49,7 +52,8 @@ export default class App extends React.Component {
       "MessageExample",
       "ContactExample",
       "MenuListExample",
-      "RefreshAndLoadingExample"
+      "RefreshAndLoadingExample",
+      "IntensiveSectionExample"
     ];
     return (
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>

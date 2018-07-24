@@ -8,76 +8,97 @@
  */
 
 import React from "react";
-import { StyleSheet, View, Animated } from "react-native";
+import { Dimensions } from "react-native";
 import { SectionContainerPropType } from "./Types";
+import { Section } from "./Section";
+import type { SectionPropType } from "./Types";
+import { idx } from "react-native-spring-scrollview/idx";
 
-const largelistHeight = 667;
 
 export class SectionContainer extends React.Component<
   SectionContainerPropType
 > {
-  updateOffset(offset: number, force: boolean = false) {
-    if (force || Math.abs(offset - this.state.offset) > largelistHeight / 3)
-      this.setState({ offset: offset });
+  _indexes: number[];
+  _offset;
+  _sections = [];
+
+  updateOffset(offset: number, force = false, props = undefined) {
+    if (!force && Math.abs(this._offset - offset) < 200) return;
+    if (!props) props = this.props;
+    this._offset = offset;
+    const indexes = [];
+    let first = 0;
+    const screenHeight = Dimensions.get("window").height;
+    props.tops.every((top, index) => {
+      if (top > offset + screenHeight + 300) return false;
+      if (top < offset - 300) {
+        first = index;
+      }
+      if (top > offset - 300 && top < offset + screenHeight + 300) {
+        if (indexes.length === 0 && first !== index) indexes.push(first);
+        indexes.push(index);
+      }
+      return true;
+    });
+    if (!this._indexes) {
+      this._indexes = indexes;
+      return;
+    }
+    if (indexes.length > this._indexes.length) {
+      this._indexes = indexes;
+      this.forceUpdate();
+    } else {
+      const recycle = [];
+      this._indexes.forEach(old => {
+        if (indexes.indexOf(old) < 0) {
+          recycle.push(old);
+        }
+      });
+      recycle.forEach(rec => {
+        this._indexes.splice(this._indexes.indexOf(rec), 1);
+      });
+      indexes.forEach(n => {
+        if (this._indexes.indexOf(n) < 0) {
+          const old = recycle.pop();
+          this._indexes.every((item, index) => {
+            if (item > n) {
+              this._indexes.splice(index, 0, n);
+              return false;
+            }
+            return true;
+          });
+          this._sections.every(ref => {
+            if (idx(() => ref.current.section === old)) {
+              ref.current.updateSection(n);
+              return false;
+            }
+            return true;
+          });
+        }
+      });
+    }
   }
 
   constructor(props) {
     super(props);
-    this.state = { offset: 0 };
+    this.componentWillReceiveProps(props);
+  }
+
+  componentWillReceiveProps(next: SectionPropType) {
+    const num = next.tops.length - this._sections.length;
+    for (let i = 0; i < num; ++i) this._sections.push(React.createRef());
+    this._indexes = undefined;
+    this.updateOffset(this._offset ? this._offset : 0, true, next);
   }
 
   render() {
-    const { heightForSection, tops, renderSection, nativeOffset } = this.props;
-    const { offset } = this.state;
-    return tops.map((top, index) => {
-      if (
-        top > offset - largelistHeight * 3 &&
-        top < offset + largelistHeight * 3
-      ) {
-        const inputRange = [-1, top];
-        const outputRange = [0, 0];
-        if (tops[index + 1]) {
-          const lastOffset = tops[index + 1] - heightForSection(index);
-          inputRange.push(lastOffset);
-          outputRange.push(lastOffset - top);
-          inputRange.push(lastOffset + 1);
-          outputRange.push(lastOffset - top);
-        } else {
-          inputRange.push(top + 1);
-          outputRange.push(1);
-        }
-        const style = StyleSheet.flatten([
-          styles.section,
-          {
-            top: top,
-            height: heightForSection(index),
-            transform: [
-              {
-                translateY: nativeOffset.interpolate({
-                  inputRange: inputRange,
-                  outputRange: outputRange
-                })
-              }
-            ]
-          }
-        ]);
-        return (
-          <Animated.View key={top} style={style}>
-            {renderSection(index)}
-          </Animated.View>
-        );
-      }
-    });
+    return this._indexes.map(index =>
+      <Section
+        {...this.props}
+        key={index}
+        section={index}
+        ref={this._sections[index]}
+      />
+    );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  section: {
-    position: "absolute",
-    left: 0,
-    right: 0
-  }
-});

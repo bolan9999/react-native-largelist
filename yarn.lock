@@ -4022,9 +4022,9 @@ react-native-gesture-handler@^1.0.6:
     invariant "^2.2.2"
     prop-types "^15.5.10"
 
-react-native-spring-scrollview@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/react-native-spring-scrollview/-/react-native-spring-scrollview-0.0.5.tgz#01eb338391fd0bb97ac8fc50a9ba3e65f4229b60"
+react-native-spring-scrollview@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.npmjs.org/react-native-spring-scrollview/-/react-native-spring-scrollview-0.0.6.tgz#f91b5d6edc756b4376316540a5c5c57b91e691db"
 
 react-native@^0.56.0:
   version "0.56.0"

@@ -22,6 +22,8 @@ export class LargeList extends React.Component<LargeListPropType> {
   _sectionContainer = React.createRef();
   _scrollView = React.createRef();
   _shouldUpdateContent = true;
+  _lastTick = 0;
+  _contentOffsetY = 0;
 
   static defaultProps = {
     heightForSection: () => 0,
@@ -127,6 +129,7 @@ export class LargeList extends React.Component<LargeListPropType> {
           this.forceUpdate();
         }}
         onScroll={this._onScroll}
+        onMomentumScrollEnd={this._onScrollEnd}
       >
         {this._offset &&
           groupIndexes.map((indexes, index) => {
@@ -173,7 +176,21 @@ export class LargeList extends React.Component<LargeListPropType> {
     );
   }
 
+  _onScrollEnd = () => {
+    this._groupRefs.forEach(group =>
+      idx(() => group.current.contentConversion(this._contentOffsetY))
+    );
+    idx(() => this._sectionContainer.current.updateOffset(this._contentOffsetY));
+  };
+
   _onScroll = (offset: { x: number, y: number }) => {
+    this._contentOffsetY = offset.y;
+    const now = new Date().getTime();
+    if (this._lastTick - now > 30) {
+      this._lastTick = now;
+      return;
+    }
+    this._lastTick = now;
     this._shouldUpdateContent &&
       this._groupRefs.forEach(group =>
         idx(() => group.current.contentConversion(offset.y))
