@@ -18,7 +18,6 @@ import {
 } from "react-native";
 import { foods } from "./DataSource";
 import { LargeList } from "../src";
-import {BaseButton} from "react-native-gesture-handler"
 
 const leftData = [{ items: foods }];
 
@@ -114,6 +113,7 @@ export class MenuListExample extends React.Component {
               alignSelf: "center"
             }}
             source={food.icon}
+            fadeDuration={0}
           />
           <View style={{ flex: 1, marginLeft: 5, marginTop: 10 }}>
             <Text style={{ fontSize: 18 }} fontWeight={300}>

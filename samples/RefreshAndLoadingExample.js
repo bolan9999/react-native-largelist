@@ -20,7 +20,7 @@ export class RefreshAndLoadingExample extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { data: [contacts[0]] };
+    this.state = { data: [contacts[0]], allLoaded: false };
   }
 
   render() {
@@ -39,6 +39,7 @@ export class RefreshAndLoadingExample extends React.Component {
         loadingFooterHeight={60}
         loadingFooter={NormalFooter}
         onLoading={this._onLoading}
+        allLoaded={this.state.allLoaded}
       />
     );
   }
@@ -48,7 +49,10 @@ export class RefreshAndLoadingExample extends React.Component {
     setTimeout(() => {
       this._largeList.endRefresh();
       this._index = 0;
-      this.setState({ data: [contacts[this._index]] });
+      this.setState({
+        data: [contacts[this._index]],
+        allLoaded: this._index > 2
+      });
     }, 2000);
   };
 
@@ -56,7 +60,10 @@ export class RefreshAndLoadingExample extends React.Component {
     this._largeList.beginLoading();
     setTimeout(() => {
       this._largeList.endLoading();
-      this.setState(p => ({ data: p.data.concat(contacts[++this._index]) }));
+      this.setState(p => ({
+        data: p.data.concat(contacts[++this._index]),
+        allLoaded: this._index > 2
+      }));
     }, 2000);
   };
 
