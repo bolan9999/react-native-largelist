@@ -37,6 +37,8 @@ export class HeightEqualExample extends React.Component {
         renderSection={this._renderSection}
         heightForIndexPath={() => 50}
         renderIndexPath={this._renderIndexPath}
+        renderHeader={this._renderHeader}
+        renderFooter={this._renderFooter}
       />
     );
   }
@@ -61,11 +63,31 @@ export class HeightEqualExample extends React.Component {
       </View>
     );
   };
+
+  _renderHeader = () => {
+    return (
+      <View>
+        <Text style={styles.header}>I am header</Text>
+      </View>
+    );
+  };
+
+  _renderFooter = () => {
+    return (
+      <View>
+        <Text style={styles.header}>I am Footer</Text>
+      </View>
+    );
+  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  header: {
+    alignSelf:"center",
+    marginVertical: 50
   },
   section: {
     flex: 1,

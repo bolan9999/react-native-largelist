@@ -40,9 +40,26 @@ export class RefreshAndLoadingExample extends React.Component {
         loadingFooter={NormalFooter}
         onLoading={this._onLoading}
         allLoaded={this.state.allLoaded}
+        renderHeader={this._renderHeader}
+        renderFooter={this._renderFooter}
       />
     );
   }
+  _renderHeader = () => {
+    return (
+      <View>
+        <Text style={styles.header}>I am header</Text>
+      </View>
+    );
+  };
+
+  _renderFooter = () => {
+    return (
+      <View>
+        <Text style={styles.header}>I am Footer</Text>
+      </View>
+    );
+  };
 
   _onRefresh = () => {
     this._largeList.beginRefresh();
@@ -112,6 +129,10 @@ const styles = StyleSheet.create({
   sectionText: {
     fontSize: 20,
     marginLeft: 10
+  },
+  header: {
+    alignSelf: "center",
+    marginVertical: 50
   },
   row: { flex: 1, flexDirection: "row", alignItems: "center" },
   image: { marginLeft: 16, width: 44, height: 44 },

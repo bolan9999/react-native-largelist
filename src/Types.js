@@ -25,6 +25,8 @@ export interface LargeListPropType {
   renderSection?: (section: number) => React.Node<any>,
   heightForIndexPath: (indexPath: IndexPath) => number,
   renderIndexPath: (indexPath: IndexPath) => React.Node<any>,
+  renderHeader?: ()=>React.ReactElement<any>,
+  renderFooter?: ()=>React.ReactElement<any>,
 
   groupCount?: number,
   groupMinHeight?: number,

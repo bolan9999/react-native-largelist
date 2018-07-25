@@ -24,6 +24,8 @@ export class LargeList extends React.Component<LargeListPropType> {
   _shouldUpdateContent = true;
   _lastTick = 0;
   _contentOffsetY = 0;
+  _headerLayout;
+  _footerLayout;
 
   static defaultProps = {
     heightForSection: () => 0,
@@ -47,23 +49,27 @@ export class LargeList extends React.Component<LargeListPropType> {
       heightForSection,
       heightForIndexPath,
       groupMinHeight,
-      groupCount
+      groupCount,
+      renderHeader,
+      renderFooter
     } = this.props;
     const groupIndexes = [];
     let indexes = [];
     const sectionTops = [];
-    let currentGroupHeight = 0;
+    // let currentGroupHeight = 0;
     let currentGroupIndex = 0;
     let inputs = [];
     let outputs = [];
     let lastOffset = [];
+    let sumHeight = this._headerLayout ? this._headerLayout.height : 0;
+    let currentGroupHeight = 0;
     for (let i = 0; i < groupCount; ++i) {
       inputs.push(i === 0 ? [Number.MIN_SAFE_INTEGER] : []);
-      outputs.push(i === 0 ? [0] : []);
-      lastOffset.push(0);
+      outputs.push(i === 0 ? [sumHeight] : []);
+      lastOffset.push(sumHeight);
       groupIndexes.push([]);
     }
-    let sumHeight = 0;
+
     const wrapperHeight = idx(
       () => this._scrollView.current._wrapperLayout.height,
       700
@@ -90,6 +96,8 @@ export class LargeList extends React.Component<LargeListPropType> {
           currentGroupHeight = 0;
           currentGroupIndex++;
           currentGroupIndex %= groupCount;
+          if ((section === data.length - 1 &&
+            row === data[section].items.length - 1)) break;
           if (inputs[currentGroupIndex].length === 0) {
             inputs[currentGroupIndex].push(Number.MIN_SAFE_INTEGER);
           }
@@ -109,6 +117,7 @@ export class LargeList extends React.Component<LargeListPropType> {
     inputs.forEach(range => range.push(Number.MAX_SAFE_INTEGER));
     outputs.forEach(range => range.push(range[range.length - 1]));
     const scrollStyle = StyleSheet.flatten([styles.container, style]);
+    if (this._footerLayout) sumHeight += this._footerLayout.height;
     return (
       <VerticalScrollView
         {...this.props}
@@ -119,6 +128,10 @@ export class LargeList extends React.Component<LargeListPropType> {
         onScroll={this._onScroll}
         onMomentumScrollEnd={this._onScrollEnd}
       >
+        {renderHeader &&
+          <Animated.View onLayout={this._onHeaderLayout}>
+            {this.props.renderHeader()}
+          </Animated.View>}
         {this._offset &&
           groupIndexes.map((indexes, index) => {
             const style = StyleSheet.flatten([
@@ -160,6 +173,10 @@ export class LargeList extends React.Component<LargeListPropType> {
             ref={this._sectionContainer}
             nativeOffset={this._offset}
           />}
+        {renderFooter &&
+          <Animated.View style={styles.footer} onLayout={this._onFooterLayout}>
+            {renderFooter()}
+          </Animated.View>}
       </VerticalScrollView>
     );
   }
@@ -172,11 +189,21 @@ export class LargeList extends React.Component<LargeListPropType> {
     this.forceUpdate();
   };
 
+  _onHeaderLayout = ({ nativeEvent: { layout: layout } }) => {
+    this._headerLayout = layout;
+  };
+
+  _onFooterLayout = ({ nativeEvent: { layout: layout } }) => {
+    this._footerLayout = layout;
+  };
+
   _onScrollEnd = () => {
     this._groupRefs.forEach(group =>
       idx(() => group.current.contentConversion(this._contentOffsetY))
     );
-    idx(() => this._sectionContainer.current.updateOffset(this._contentOffsetY));
+    idx(() =>
+      this._sectionContainer.current.updateOffset(this._contentOffsetY)
+    );
   };
 
   _onScroll = (offset: { x: number, y: number }) => {

@@ -30,24 +30,33 @@ export class ContactExample extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.search}
-          placeholder="Please type first letter to search"
-          onSubmitEditing={this._search}
-          returnKeyType="done"
-        />
-        <LargeList
-          style={styles.container}
-          heightForSection={() => 40}
-          renderSection={this._renderSection}
-          heightForIndexPath={() => 60}
-          renderIndexPath={this._renderItem}
-          data={this.state.data}
-        />
-      </View>
+      <LargeList
+        style={styles.container}
+        heightForSection={() => 40}
+        renderSection={this._renderSection}
+        heightForIndexPath={() => 60}
+        renderIndexPath={this._renderItem}
+        data={this.state.data}
+        renderHeader={this._renderHeader}
+        renderFooter={this._renderFooter}
+      />
     );
   }
+
+  _renderHeader = () => {
+    return (
+      <TextInput
+        style={styles.search}
+        placeholder="Please type first letter to search"
+        onSubmitEditing={this._search}
+        returnKeyType="done"
+      />
+    );
+  };
+
+  _renderFooter = () => {
+    return <Text style={{ marginVertical: 20, alignSelf:"center" }}>This is the footer</Text>;
+  };
 
   _renderSection = (section: number) => {
     const contact = this.state.data[section];
