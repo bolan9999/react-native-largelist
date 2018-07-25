@@ -104,8 +104,13 @@ class LargeList extends React.Component {
       "handled",
       false,
       true
+    ]),
+    keyboardDismissMode: PropTypes.oneOf([
+      "none", 
+      "on-drag", 
+      "interactive"
     ])
-
+    
     // onIndexPathDidAppear: PropTypes.func,
     // onIndexPathDidDisappear: PropTypes.func,
     // onSectionDidAppear: PropTypes.func,
@@ -154,6 +159,7 @@ class LargeList extends React.Component {
       <View style={{ height: 1, backgroundColor: "#EEE", marginLeft: 16 }} />,
     onLargeListDidUpdate: () => null,
     keyboardShouldPersistTaps: "never",
+    keyboardDismissMode: "none",
     scrollsToTop: true
   };
 
@@ -353,6 +359,7 @@ class LargeList extends React.Component {
           contentContainerStyle={{ flex: 1 }}
           bounces={false}
           keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
+          keyboardDismissMode={this.props.keyboardDismissMode}
         >
           <EventScrollView
             ref={ref => (this.scrollViewRef = ref)}
@@ -361,6 +368,7 @@ class LargeList extends React.Component {
             refreshControl={refreshControl}
             contentContainerStyle={contentStyle}
             keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
+            keyboardDismissMode={this.props.keyboardDismissMode}
             onLayout={this._onLayout.bind(this)}
             style={{ flex: 1 }}
             scrollEventThrottle={this.props.scrollEventThrottle}
