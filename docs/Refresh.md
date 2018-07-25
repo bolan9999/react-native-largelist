@@ -9,7 +9,7 @@
 Import
 
 ```$js
-import { LargeList } from "react-native-largelist";
+import { LargeList } from "react-native-largelist-v2";
 import { NormalHeader } from "react-native-spring-scrollview/NormalHeader";
 ```
 
