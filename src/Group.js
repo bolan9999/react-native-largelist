@@ -7,13 +7,16 @@
  */
 
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import type { GroupPropType, IndexPath } from "./Types";
+import {View, StyleSheet, Text} from "react-native";
+import type { GroupPropType } from "./Types";
 
 export class Group extends React.Component<GroupPropType> {
   _currentIndex = 0;
+  _offset=0;
 
   contentConversion(offset: number) {
+    if (Math.abs(this._offset - offset) < 300) return;
+    this._offset = offset;
     const { input, output } = this.props;
     const cc = [];
     output.forEach(v => cc.indexOf(v) < 0 && cc.push(v));
@@ -54,8 +57,8 @@ export class Group extends React.Component<GroupPropType> {
           {indexPath.row === -1 ? null : renderIndexPath(indexPath)}
         </View>
       );
-    });
-    // .concat(<Text key={1000} style={styles.showIndex}>{this.props.index}</Text>);
+    })
+    .concat(<Text key={1000} style={styles.showIndex}>{this.props.index}</Text>);
   }
 }
 

@@ -115,13 +115,7 @@ export class LargeList extends React.Component<LargeListPropType> {
         ref={this._scrollView}
         style={scrollStyle}
         contentStyle={{ height: sumHeight }}
-        getNativeOffset={offset => {
-          this._offset = offset.interpolate({
-            inputRange: [-1, 0, 1],
-            outputRange: [1, 0, -1]
-          });
-          this.forceUpdate();
-        }}
+        getNativeOffset={this._getNativeOffset}
         onScroll={this._onScroll}
         onMomentumScrollEnd={this._onScrollEnd}
       >
@@ -170,6 +164,14 @@ export class LargeList extends React.Component<LargeListPropType> {
     );
   }
 
+  _getNativeOffset = offset => {
+    this._offset = offset.interpolate({
+      inputRange: [-1, 0, 1],
+      outputRange: [1, 0, -1]
+    });
+    this.forceUpdate();
+  };
+
   _onScrollEnd = () => {
     this._groupRefs.forEach(group =>
       idx(() => group.current.contentConversion(this._contentOffsetY))
@@ -180,7 +182,7 @@ export class LargeList extends React.Component<LargeListPropType> {
   _onScroll = (offset: { x: number, y: number }) => {
     this._contentOffsetY = offset.y;
     const now = new Date().getTime();
-    if (this._lastTick - now > 40) {
+    if (this._lastTick - now > 30) {
       this._lastTick = now;
       return;
     }
