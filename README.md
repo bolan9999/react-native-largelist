@@ -13,12 +13,12 @@
 * Less blanks.
 
 ## Preview
-![Preview](./res/Update.gif)
-![Preview](./res/RefreshAndLoading.gif)
+![Preview](./docs/res/Update.gif)
+![Preview](./docs/res/RefreshAndLoading.gif)
 
 ## Documentation
 
-Here is the [Documentation](https://bolan9999.github.io/react-native-largelist)
+Here is the [Documentation](https://bolan9999.github.io/react-native-largelist/)
 
 ## Running Examples
 
