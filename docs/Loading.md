@@ -9,14 +9,14 @@
 导入
 
 ```$js
-import { VerticalScrollView } from "react-native-spring-scrollview";
+import { LargeList } from "react-native-largelist-v2";
 import { NormalFooter } from "react-native-spring-scrollview/NormalFooter";
 ```
 
-使用VerticalScrollView可以非常简单地实现上拉加载的功能, 本库默认提供了一个NormalFooter类供用户使用
+使用LargeList可以非常简单地实现上拉加载的功能, 本库默认提供了一个NormalFooter类供用户使用
 
 ```$js
-<VerticalScrollView
+<LargeList
   ref={ref => (this._scrollView = ref)}
   style={styles.container}
   loadingFooterHeight={60}
@@ -31,11 +31,8 @@ import { NormalFooter } from "react-native-spring-scrollview/NormalFooter";
   }
   onCancelLoading={()=>{
     console.log("当上拉加载，但是用户主动回拉取消时回调");
-  }>
-    <Text key={item} style={styles.text}>
-      This is a Normal Refresh and Loading Test
-    </Text>
-  </VerticalScrollView>
+  }
+  />
 ```
 
 

@@ -59,9 +59,9 @@ interface HeaderStateType {
 * this.state.status: 表示当前刷新组件正处在的状态
 
 
-#### 将自定义的刷新组件应用到VerticalScrollView
+#### 将自定义的刷新组件应用到LargeList
 ```$js
-<VerticalScrollView refreshHeader={MyHeader}/>
+<LargeList refreshHeader={MyHeader}/>
 ```
 
 完整的示例可以查看[NormalHeader](https://github.com/bolan9999/react-native-spring-scrollview/blob/master/src/NormalHeader.js)

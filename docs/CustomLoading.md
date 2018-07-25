@@ -62,9 +62,9 @@ interface FooterStateType {
 * this.state.status: 表示当前加载组件正处在的状态
 
 
-#### 将自定义的加载组件应用到VerticalScrollView
+#### 将自定义的加载组件应用到LargeList
 ```$js
-<VerticalScrollView loadingFooter={MyFooter}/>
+<LargeList loadingFooter={MyFooter}/>
 ```
 
 完整的示例可以查看[NormalFooter](https://github.com/bolan9999/react-native-spring-scrollview/blob/master/src/LoadingFooter.js)

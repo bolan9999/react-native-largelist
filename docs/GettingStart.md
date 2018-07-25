@@ -65,7 +65,7 @@ OK，[react-native-gesture-handler](https://github.com/kmagiera/react-native-ges
 Use this npm command to install react-native-largelist
 
 ```$node
-yarn add react-native-largelist
+yarn add react-native-largelist-v2
 ```
 
 
