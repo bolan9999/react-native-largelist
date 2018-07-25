@@ -16,30 +16,6 @@
 ![Preview](./res/Update.gif)
 ![Preview](./res/RefreshAndLoading.gif)
 
-## Documentation
-
-Here is the [Documentation](https://bolan9999.github.io/react-native-largelist)
-
-## Running Examples
-
-1. Git clone from github
-```
-git clone git@github.com:bolan9999/react-native-largelist.git
-```
-
-2. Install dependence and start.
-
-```
-yarn install
-yarn start
-```
-
-3. Modify iOS bundle source location in `AppDelegate.m`
-
-4. Change Android bundle source location in "Dev Setting"
-
-5. Running
-
 ## License
 
 react-native-largelist is released under the MIT license. See LICENSE for details.

@@ -15,7 +15,7 @@ import {
   MenuListExample,
   RefreshAndLoadingExample,
   IntensiveSectionExample
-} from "./samples";
+} from "./Examples";
 
 export default class App extends React.Component {
   constructor(props) {
