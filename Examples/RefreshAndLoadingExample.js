@@ -11,10 +11,11 @@ import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NormalHeader } from "react-native-spring-scrollview/NormalHeader";
 import { NormalFooter } from "react-native-spring-scrollview/NormalFooter";
-import { LargeList } from "../src";
+import { LargeList, NativeLargeList } from "../src";
 import { contacts } from "./DataSource";
+import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
-export class RefreshAndLoadingExample extends React.Component {
+class RefreshAndLoadingExampleStatic extends React.Component {
   _largeList;
   _index = 0;
 
@@ -24,8 +25,9 @@ export class RefreshAndLoadingExample extends React.Component {
   }
 
   render() {
+    const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <LargeList
+      <List
         ref={ref => (this._largeList = ref)}
         style={styles.container}
         data={this.state.data}
@@ -140,3 +142,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 18 },
   subtitle: { fontSize: 14, marginTop: 8 }
 });
+
+export const RefreshAndLoadingExample = gestureHandlerRootHOC(
+  RefreshAndLoadingExampleStatic
+);

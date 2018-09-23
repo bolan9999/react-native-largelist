@@ -25,8 +25,8 @@ export interface LargeListPropType {
   renderSection?: (section: number) => React.Node<any>,
   heightForIndexPath: (indexPath: IndexPath) => number,
   renderIndexPath: (indexPath: IndexPath) => React.Node<any>,
-  renderHeader?: ()=>React.ReactElement<any>,
-  renderFooter?: ()=>React.ReactElement<any>,
+  renderHeader?: () => React.ReactElement<any>,
+  renderFooter?: () => React.ReactElement<any>,
 
   groupCount?: number,
   groupMinHeight?: number,
@@ -43,7 +43,7 @@ export interface GroupPropType {
   heightForIndexPath: (indexPath: IndexPath) => number,
   renderSection?: (section: number) => React.Node<any>,
   renderIndexPath: (indexPath: IndexPath) => React.Node<any>,
-
+  offset?: number,
   updateTimeInterval: number
 }
 
@@ -58,7 +58,7 @@ export interface SectionContainerPropType {
 export interface SectionPropType {
   tops: number[],
   section: number,
-  nativeOffset: Animated.Value;
+  nativeOffset: Animated.Value,
   heightForSection: (section: number) => number,
   renderSection?: (section: number) => React.Node<any>
 }

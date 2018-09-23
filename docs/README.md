@@ -10,7 +10,7 @@
 * Header and Footer support.
 * ScrollToIndex support.
 * Sticky Section support.
-* Less blanks.
+* No blanks(theoretically speaking).
 
 ## Preview
 ![Preview](./res/Update.gif)

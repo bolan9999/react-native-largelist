@@ -15,12 +15,14 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  TextInput
+  TextInput,
+  LayoutAnimation
 } from "react-native";
-import { LargeList } from "../src/LargeList";
+import { LargeList, NativeLargeList } from "../src";
 import { contacts } from "./DataSource";
+import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
-export class ContactExample extends React.Component {
+class ContactExampleStatic extends React.Component {
   largeList;
 
   constructor(props) {
@@ -29,8 +31,9 @@ export class ContactExample extends React.Component {
   }
 
   render() {
+    const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <LargeList
+      <List
         style={styles.container}
         heightForSection={() => 40}
         renderSection={this._renderSection}
@@ -55,7 +58,11 @@ export class ContactExample extends React.Component {
   };
 
   _renderFooter = () => {
-    return <Text style={{ marginVertical: 20, alignSelf:"center" }}>This is the footer</Text>;
+    return (
+      <Text style={{ marginVertical: 20, alignSelf: "center" }}>
+        This is the footer
+      </Text>
+    );
   };
 
   _renderSection = (section: number) => {
@@ -123,3 +130,5 @@ const styles = StyleSheet.create({
   title: { fontSize: 18 },
   subtitle: { fontSize: 14, marginTop: 8 }
 });
+
+export const ContactExample = gestureHandlerRootHOC(ContactExampleStatic);

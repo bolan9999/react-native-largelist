@@ -9,10 +9,11 @@
 
 import React from "react";
 import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
-import { LargeList } from "../src/LargeList";
 import { messages } from "./DataSource";
+import { LargeList, NativeLargeList } from "../src";
+import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
-export class MessageExample extends React.Component {
+class MessageExampleStatic extends React.Component {
   messages;
   largeList;
 
@@ -23,9 +24,10 @@ export class MessageExample extends React.Component {
   }
 
   render() {
+    const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <LargeList
-        style={{flex:1}}
+      <List
+        style={{ flex: 1 }}
         ref={ref => (this.largeList = ref)}
         heightForSection={() => 0}
         renderSection={() => null}
@@ -36,10 +38,13 @@ export class MessageExample extends React.Component {
     );
   }
 
-  _renderItem = ({section: section, row: row}) => {
+  _renderItem = ({ section: section, row: row }) => {
     let msg = this.messages[section].items[row];
     return (
-      <TouchableOpacity style={{ flex: 1, backgroundColor: "#FFF" }}>
+      <TouchableOpacity
+        style={{ flex: 1, backgroundColor: "#FFF" }}
+        onPress={() => console.log("=====>")}
+      >
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
           <Image
             source={msg.icon}
@@ -58,3 +63,5 @@ export class MessageExample extends React.Component {
     );
   };
 }
+
+export const MessageExample = gestureHandlerRootHOC(MessageExampleStatic);

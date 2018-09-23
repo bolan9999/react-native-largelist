@@ -8,10 +8,11 @@
  */
 
 import React from "react";
-import {StyleSheet, Text, View} from "react-native";
-import {LargeList} from "../src";
+import { StyleSheet, Text, View } from "react-native";
+import { LargeList, NativeLargeList } from "../src";
+import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
-export class IntensiveSectionExample extends React.Component {
+class IntensiveSectionExampleStatic extends React.Component {
   _sectionCount = 100;
   _rowCount = 1;
 
@@ -29,8 +30,9 @@ export class IntensiveSectionExample extends React.Component {
       }
       data.push(sContent);
     }
+    const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <LargeList
+      <List
         style={styles.container}
         data={data}
         heightForSection={() => 50}
@@ -87,3 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE"
   }
 });
+
+export const IntensiveSectionExample = gestureHandlerRootHOC(
+  IntensiveSectionExampleStatic
+);

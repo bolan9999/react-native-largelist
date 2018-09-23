@@ -1,6 +1,6 @@
 {
 	"name": "react-native-largelist-v2",
-	"version": "2.0.1",
+	"version": "2.1.0",
 	"private": false,
 	"description": "The best performance large list component which is much better than SectionList for React Native.",
 	"author": "bolan9999 <bolan999999@gmail.com>",
@@ -24,12 +24,15 @@
 		"url": "https://github.com/bolan9999/react-native-largelist/issues"
 	},
 	"homepage": "https://github.com/bolan9999/react-native-largelist",
-	"dependencies": {
-		"prop-types": "^15.6.0"
+	"peerDependencies": {
+		"react": "^16.3.1",
+		"react-native": "^0.50.0",
+		"prop-types": "^15.6.0",
+		"react-native-spring-scrollview": "^0.0.24"
 	},
 	"devDependencies": {
 		"babel-jest": "21.2.0",
-		"babel-preset-react-native": "4.0.0",
+		"babel-preset-react-native": "^4.0.0",
 		"jest": "21.2.1",
 		"react-test-renderer": "16.0.0"
 	},

@@ -17,21 +17,22 @@ import {
   Platform
 } from "react-native";
 import { foods } from "./DataSource";
-import { LargeList } from "../src";
+import { LargeList, NativeLargeList } from "../src";
+import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
 const leftData = [{ items: foods }];
 
-export class MenuListExample extends React.Component {
+class MenuListExampleStatic extends React.Component {
   selectedIndex: number = 0;
   _listRef: LargeList;
   indexes: LargeList;
-  _buttonRefs:[] = [];
+  _buttonRefs: [] = [];
 
   constructor(props) {
     super(props);
-    for (let s=0;s<foods.length;++s){
+    for (let s = 0; s < foods.length; ++s) {
       const refs = [];
-      for (let r=0;r<foods[s].items.length;++r) {
+      for (let r = 0; r < foods[s].items.length; ++r) {
         refs.push(React.createRef());
       }
       this._buttonRefs.push(refs);
@@ -40,10 +41,11 @@ export class MenuListExample extends React.Component {
 
   render() {
     const buttons = [];
-    this._buttonRefs.forEach(btn=>buttons.concat(btn));
+    this._buttonRefs.forEach(btn => buttons.concat(btn));
+    const List = this.props.native ? NativeLargeList : LargeList;
     return (
       <View style={styles.container}>
-        <LargeList
+        <List
           style={styles.lc}
           ref={ref => (this.indexes = ref)}
           showsVerticalScrollIndicator={false}
@@ -55,7 +57,7 @@ export class MenuListExample extends React.Component {
           heightForIndexPath={() => 80}
           renderIndexPath={this.renderIndexes}
         />
-        <LargeList
+        <List
           ref={ref => (this._listRef = ref)}
           style={styles.rc}
           data={foods}
@@ -78,7 +80,9 @@ export class MenuListExample extends React.Component {
         ref={this._buttonRefs[section][row]}
         style={styles.indexes}
         onPress={() => {
-          this._listRef.scrollToIndexPath({section:row,row:-1}, false).then();
+          this._listRef
+            .scrollToIndexPath({ section: row, row: -1 }, false)
+            .then();
         }}
       >
         <Text style={{ fontSize: 18 }} fontWeight={300}>
@@ -157,7 +161,7 @@ export class MenuListExample extends React.Component {
 
   onBuy = () => {
     console.log("buy");
-  }
+  };
 }
 
 const styles = StyleSheet.create({
@@ -170,7 +174,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   rc: {
-    flex: 4
+    flex: 4,
+    flexGrow: 4
   },
   indexes: {
     flex: 1,
@@ -187,10 +192,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#999"
   },
   section: { flex: 1, backgroundColor: "#AAA", justifyContent: "center" },
-  sectionText:{ marginLeft: 10, fontSize: 18 },
+  sectionText: { marginLeft: 10, fontSize: 18 },
   rowLine: {
     height: 1,
     backgroundColor: "#999",
     marginLeft: 16
   }
 });
+
+export const MenuListExample = gestureHandlerRootHOC(MenuListExampleStatic);

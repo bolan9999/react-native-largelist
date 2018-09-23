@@ -12,7 +12,7 @@ import { Dimensions } from "react-native";
 import { SectionContainerPropType } from "./Types";
 import { Section } from "./Section";
 import type { SectionPropType } from "./Types";
-import { idx } from "react-native-spring-scrollview/idx";
+import { idx } from "./idx";
 
 
 export class SectionContainer extends React.Component<

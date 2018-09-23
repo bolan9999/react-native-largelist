@@ -1,12 +1,12 @@
 # Basic
-LargeList depends on [VerticalScrollViewProps](https://bolan9999.github.io/react-native-spring-scrollview), and all the props are supported in [VerticalScrollViewProps](https://bolan9999.github.io/react-native-spring-scrollview)
-LargeList supports cross-platform bounces and customizing refreshing and loading more data. But maybe it will a little stuck in some complicated scenarios.If you care this , use NativeLargeList please.
+
+NativeLargeList has a very high performance. Theoretically speaking,it will never disappear blanks. But it does not support cross-platform bounces and customizing refreshing and loading more data.
 
 ### Basic Props
 
 Props  |  Type  |  Default  |  Effect  
 ---- | ------ | --------- | --------
-...[VerticalScrollViewProps](https://bolan9999.github.io/react-native-spring-scrollview) | - | - | All props of VerticalScrollView
+...[ScrollViewProps](http://facebook.github.io/react-native/docs/scrollview) | - | - | All props of ScrollView
 data | { items: any[] }[] | required | The data source of largelist
 heightForSection | (section: number) => number | ()=>0 | The height function for every Section
 renderSection | (section: number) => React.ReactElement &lt;any> | ()=>null | The render function for every Section
@@ -18,7 +18,7 @@ renderFooter | ()=> React.ReactElement &lt;any> | undefined | The render functio
 ### Usage
 
 ```$js
-<LargeList
+<NativeLargeList
     style={styles.container}
     data={data}
     heightForSection={() => 50}
@@ -30,8 +30,7 @@ renderFooter | ()=> React.ReactElement &lt;any> | undefined | The render functio
 
 
 ### Precautions
-
-1. LargeList's height can not be propped up from its children, you should figure it out or use `flex` from a bounded height parent.
+1. NativeLargeList's height can not be propped up from its children, you should figure it out or use `flex` from a bounded height parent.
 
 2. The parent node's width and height of `renderSection` and `renderIndexPath` is bounded. You can use `Flex`.
 Conversely， The parent node's width and height of `renderHeader` and `renderFooter` is not bounded. Children must prop up parent node.
