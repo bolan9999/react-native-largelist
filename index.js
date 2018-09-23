@@ -1,4 +1,6 @@
-import { AppRegistry } from 'react-native';
-import App from './App';
+import { AppRegistry, UIManager } from "react-native";
+UIManager.setLayoutAnimationEnabledExperimental &&
+UIManager.setLayoutAnimationEnabledExperimental(true);
+import App from "./App";
 
-AppRegistry.registerComponent('LargeListDemo', () => App);
+AppRegistry.registerComponent("LargeListDemo", () => App);

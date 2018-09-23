@@ -15,7 +15,7 @@ export class Group extends React.Component<GroupPropType> {
   _offset = 0;
 
   contentConversion(offset: number) {
-    if (Math.abs(this._offset - offset) < 300) return;
+    // if (Math.abs(this._offset - offset) < 300) return;
     this._offset = offset;
     const { input, output } = this.props;
     const cc = [];
@@ -37,6 +37,13 @@ export class Group extends React.Component<GroupPropType> {
       return;
     this._currentIndex = index;
     this.forceUpdate();
+  }
+
+  componentWillReceiveProps(next: GroupPropType) {
+    if (next.offset) {
+      this._offset = null;
+      this.contentConversion(next.offset);
+    }
   }
 
   render() {

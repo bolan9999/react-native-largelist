@@ -3,22 +3,21 @@
  * Created by Stone
  * https://github.com/bolan9999
  * Email: shanshang130@gmail.com
- * Date: 2018/7/17
+ * Date: 2018/9/23
  *
  */
 
 import React from "react";
 import { Animated, StyleSheet, Dimensions } from "react-native";
 import { styles } from "./styles";
-import { VerticalScrollView } from "react-native-spring-scrollview";
 import type { IndexPath, LargeListPropType, Offset } from "./Types";
 import { Group } from "./Group";
 import { SectionContainer } from "./SectionContainer";
 import { idx } from "./idx";
 
-export class LargeList extends React.Component<LargeListPropType> {
+export class NativeLargeList extends React.Component<LargeListPropType> {
   _groupRefs = [];
-  _offset: Animated.Value;
+  _offset: Animated.Value = new Animated.Value(0);
   _sectionContainer = React.createRef();
   _scrollView = React.createRef();
   _shouldUpdateContent = true;
@@ -42,11 +41,6 @@ export class LargeList extends React.Component<LargeListPropType> {
     }
   }
 
-  componentWillReceiveProps(next:LargeListPropType){
-    return this.props.data !== next.data;
-  }
-
-
   render() {
     const {
       style,
@@ -61,7 +55,6 @@ export class LargeList extends React.Component<LargeListPropType> {
     const groupIndexes = [];
     let indexes = [];
     const sectionTops = [];
-    // let currentGroupHeight = 0;
     let currentGroupIndex = 0;
     let inputs = [];
     let outputs = [];
@@ -127,83 +120,77 @@ export class LargeList extends React.Component<LargeListPropType> {
     const scrollStyle = StyleSheet.flatten([styles.container, style]);
     if (this._footerLayout) sumHeight += this._footerLayout.height;
     return (
-      <VerticalScrollView
+      <Animated.ScrollView
+        scrollEventThrottle={1}
         {...this.props}
         ref={this._scrollView}
         style={scrollStyle}
-        contentStyle={{ height: sumHeight }}
-        getNativeOffset={this._getNativeOffset}
-        onScroll={this._onScroll}
+        contentContainerStyle={{ height: sumHeight }}
+        onScroll={this._scrollEvent}
         onMomentumScrollEnd={this._onScrollEnd}
       >
         {renderHeader &&
           <Animated.View onLayout={this._onHeaderLayout}>
             {this.props.renderHeader()}
           </Animated.View>}
-        {this._offset &&
-          groupIndexes.map((indexes, index) => {
-            const style = StyleSheet.flatten([
-              {
-                position: "absolute",
-                left: 0,
-                right: 0,
-                top: 0,
-                transform: [
-                  {
-                    translateY:
-                      this._offset && outputs[index].length > 1
-                        ? this._offset.interpolate({
-                            inputRange: inputs[index],
-                            outputRange: outputs[index]
-                          })
-                        : 0
-                  }
-                ]
-              }
-            ]);
-            return (
-              <Animated.View key={index} style={style}>
-                <Group
-                  {...this.props}
-                  index={index}
-                  ref={this._groupRefs[index]}
-                  indexes={indexes}
-                  input={inputs[index]}
-                  output={outputs[index]}
-                  offset={this._contentOffsetY}
-                />
-              </Animated.View>
-            );
-          })}
-        {this._offset &&
+        {groupIndexes.map((indexes, index) => {
+          const style = StyleSheet.flatten([
+            {
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: 0,
+              transform: [
+                {
+                  translateY:
+                    outputs[index].length > 1
+                      ? this._offset.interpolate({
+                          inputRange: inputs[index],
+                          outputRange: outputs[index]
+                        })
+                      : 0
+                }
+              ]
+            }
+          ]);
+          return (
+            <Animated.View key={index} style={style}>
+              <Group
+                {...this.props}
+                index={index}
+                ref={this._groupRefs[index]}
+                indexes={indexes}
+                input={inputs[index]}
+                output={outputs[index]}
+                offset={this._contentOffsetY}
+              />
+            </Animated.View>
+          );
+        })}
+        {
           <SectionContainer
             {...this.props}
             tops={sectionTops}
             ref={this._sectionContainer}
             nativeOffset={this._offset}
-          />}
+          />
+        }
         {renderFooter &&
           <Animated.View style={styles.footer} onLayout={this._onFooterLayout}>
             {renderFooter()}
           </Animated.View>}
-      </VerticalScrollView>
+      </Animated.ScrollView>
     );
   }
 
-  _getNativeOffset = offset => {
-    this._offset = offset.interpolate({
-      inputRange: [-1, 0, 1],
-      outputRange: [1, 0, -1]
-    });
-    this.forceUpdate();
-  };
-
   _onHeaderLayout = ({ nativeEvent: { layout: layout } }) => {
     this._headerLayout = layout;
+    if (this._footerLayout) this.forceUpdate();
   };
 
   _onFooterLayout = ({ nativeEvent: { layout: layout } }) => {
     this._footerLayout = layout;
+    if (this._headerLayout) this.forceUpdate();
   };
 
   _onScrollEnd = () => {
@@ -215,8 +202,8 @@ export class LargeList extends React.Component<LargeListPropType> {
     );
   };
 
-  _onScroll = (offset: { x: number, y: number }) => {
-    this._contentOffsetY = offset.y;
+  _onScroll = e => {
+    this._contentOffsetY = e.nativeEvent.contentOffset.y;
     const now = new Date().getTime();
     if (this._lastTick - now > 30) {
       this._lastTick = now;
@@ -225,12 +212,27 @@ export class LargeList extends React.Component<LargeListPropType> {
     this._lastTick = now;
     this._shouldUpdateContent &&
       this._groupRefs.forEach(group =>
-        idx(() => group.current.contentConversion(offset.y))
+        idx(() => group.current.contentConversion(this._contentOffsetY))
       );
     this._shouldUpdateContent &&
-      idx(() => this._sectionContainer.current.updateOffset(offset.y));
+      idx(() =>
+        this._sectionContainer.current.updateOffset(this._contentOffsetY)
+      );
     this.props.onScroll && this.props.onScroll(offset);
   };
+
+  _scrollEvent = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: {
+            y: this._offset
+          }
+        }
+      }
+    ],
+    { useNativeDriver: true, listener: this._onScroll }
+  );
 
   scrollTo(offset: Offset, animated: boolean = true): Promise<void> {
     if (!this._scrollView.current)
@@ -240,9 +242,13 @@ export class LargeList extends React.Component<LargeListPropType> {
       idx(() => group.current.contentConversion(offset.y))
     );
     idx(() => this._sectionContainer.current.updateOffset(offset.y));
-    return this._scrollView.current.scrollTo(offset, animated).then(() => {
-      this._shouldUpdateContent = true;
-      return Promise.resolve();
+    return new Promise((r, j) => {
+      this._scrollView.current.getNode().scrollTo(offset, animated);
+
+      setTimeout(() => {
+        r();
+        this._shouldUpdateContent = true;
+      }, animated ? 250 : 0);
     });
   }
 
@@ -261,21 +267,5 @@ export class LargeList extends React.Component<LargeListPropType> {
       }
     }
     return this.scrollTo({ x: 0, y: ht }, animated);
-  }
-
-  beginRefresh() {
-    idx(() => this._scrollView.current.beginRefresh());
-  }
-
-  endRefresh() {
-    idx(() => this._scrollView.current.endRefresh());
-  }
-
-  beginLoading() {
-    idx(() => this._scrollView.current.beginLoading());
-  }
-
-  endLoading(rebound: boolean = false) {
-    idx(() => this._scrollView.current.endLoading(rebound));
   }
 }
