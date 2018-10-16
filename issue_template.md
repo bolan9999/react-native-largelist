@@ -8,10 +8,7 @@
     issue 列表只接受LargeList bug 报告或是新功能请求 (feature requests)。
     这意味着我们不接受此库用法问题或react-native环境问题。
     如果你开的 issue 不符合规定，它将会被作者忽略并关闭。
--->
 
-
-<!--
     Before your new issue, please make sure you have read the documentation carefully:
         https://bolan9999.github.io/react-native-largelist/
 
@@ -24,7 +21,7 @@
 
     其次， 确保您已经在issues列表中没有找到与您相同的问题。
 
-    如果还是没有解决您的问题，请在下面空白出描述您的问题
+    如果还是没有解决您的问题，请在下面空白出描述您的问题：
 -->
 
 
