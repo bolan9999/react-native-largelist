@@ -32,7 +32,7 @@ class HeightUnequalExampleStatic extends React.Component {
     }
     const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <LargeList
+      <List
         style={styles.container}
         data={data}
         heightForSection={() => 50}

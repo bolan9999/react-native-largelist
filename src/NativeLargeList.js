@@ -15,7 +15,7 @@ import { Group } from "./Group";
 import { SectionContainer } from "./SectionContainer";
 import { idx } from "./idx";
 
-export class NativeLargeList extends React.Component<LargeListPropType> {
+export class NativeLargeList extends React.PureComponent<LargeListPropType> {
   _groupRefs = [];
   _offset: Animated.Value = new Animated.Value(0);
   _sectionContainer = React.createRef();

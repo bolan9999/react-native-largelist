@@ -1,6 +1,6 @@
 {
 	"name": "react-native-largelist-v2",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"private": false,
 	"description": "The best performance large list component which is much better than SectionList for React Native.",
 	"author": "bolan9999 <bolan999999@gmail.com>",
