@@ -38,7 +38,13 @@ yarn start
 
 4. Change Android bundle source location in "Dev Setting"
 
-5. Running
+5. If you build it in XCode and get this error:
+```
+'React/RCTBridgeModule.h' file not found
+```
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;you can resolve it by this [topic](https://github.com/facebook/react-native/issues/13371#issue-220117310)
+
+6. Running
 
 ## License
 
