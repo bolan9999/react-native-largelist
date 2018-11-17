@@ -42,7 +42,7 @@ yarn start
 ```
 'React/RCTBridgeModule.h' file not found
 ```
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;you can resolve it by this [topic](https://github.com/facebook/react-native/issues/13371#issue-220117310)
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;you can resolve it by this [topic](https://github.com/facebook/react-native/issues/22000#issuecomment-438201084)
 
 6. Running
 
