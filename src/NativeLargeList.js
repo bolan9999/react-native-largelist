@@ -8,7 +8,7 @@
  */
 
 import React from "react";
-import { Animated, StyleSheet, Dimensions } from "react-native";
+import { Animated, StyleSheet, Dimensions,RefreshControl } from "react-native";
 import { styles } from "./styles";
 import type { IndexPath, LargeListPropType, Offset } from "./Types";
 import { Group } from "./Group";
@@ -61,6 +61,10 @@ export class NativeLargeList extends React.PureComponent<LargeListPropType> {
     let lastOffset = [];
     let sumHeight = this._headerLayout ? this._headerLayout.height : 0;
     let currentGroupHeight = 0;
+    let refreshControl =
+    this.props.onRefresh !== undefined ? (
+      <RefreshControl refreshing={this.props.refreshing} onRefresh={this.props.onRefresh} />
+    ) : null;
     for (let i = 0; i < groupCount; ++i) {
       inputs.push(i === 0 ? [Number.MIN_SAFE_INTEGER] : []);
       outputs.push(i === 0 ? [sumHeight] : []);
@@ -128,6 +132,8 @@ export class NativeLargeList extends React.PureComponent<LargeListPropType> {
         contentContainerStyle={{ height: sumHeight }}
         onScroll={this._scrollEvent}
         onMomentumScrollEnd={this._onScrollEnd}
+        refreshControl={refreshControl}
+        onLayout={this.props.onLayout}
       >
         {renderHeader &&
           <Animated.View onLayout={this._onHeaderLayout}>

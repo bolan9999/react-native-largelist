@@ -44,7 +44,10 @@ export interface GroupPropType {
   renderSection?: (section: number) => React.Node<any>,
   renderIndexPath: (indexPath: IndexPath) => React.Node<any>,
   offset?: number,
-  updateTimeInterval: number
+  updateTimeInterval: number,
+  refreshing?:boolean;
+  onRefresh?:any;
+  onLayout?:any;
 }
 
 export interface SectionContainerPropType {
