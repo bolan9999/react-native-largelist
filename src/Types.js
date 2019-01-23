@@ -7,6 +7,8 @@
  *
  */
 
+import { Animated } from "react-native";
+
 export type LargeListDataType = { items: any[] }[];
 
 export interface IndexPath {
@@ -27,6 +29,10 @@ export interface LargeListPropType {
   renderIndexPath: (indexPath: IndexPath) => React.Node<any>,
   renderHeader?: () => React.ReactElement<any>,
   renderFooter?: () => React.ReactElement<any>,
+  onNativeContentOffsetExtract?: {
+    x: Animated.Value,
+    y: Animated.Value
+  },
 
   groupCount?: number,
   groupMinHeight?: number,

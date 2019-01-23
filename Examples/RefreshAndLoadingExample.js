@@ -13,9 +13,8 @@ import { NormalHeader } from "react-native-spring-scrollview/NormalHeader";
 import { NormalFooter } from "react-native-spring-scrollview/NormalFooter";
 import { LargeList, NativeLargeList } from "../src";
 import { contacts } from "./DataSource";
-import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
-class RefreshAndLoadingExampleStatic extends React.Component {
+export class RefreshAndLoadingExample extends React.Component {
   _largeList;
   _index = 0;
 
@@ -64,7 +63,6 @@ class RefreshAndLoadingExampleStatic extends React.Component {
   };
 
   _onRefresh = () => {
-    this._largeList.beginRefresh();
     setTimeout(() => {
       this._largeList.endRefresh();
       this._index = 0;
@@ -76,7 +74,6 @@ class RefreshAndLoadingExampleStatic extends React.Component {
   };
 
   _onLoading = () => {
-    this._largeList.beginLoading();
     setTimeout(() => {
       this._largeList.endLoading();
       this.setState(p => ({
@@ -142,7 +139,3 @@ const styles = StyleSheet.create({
   title: { fontSize: 18 },
   subtitle: { fontSize: 14, marginTop: 8 }
 });
-
-export const RefreshAndLoadingExample = gestureHandlerRootHOC(
-  RefreshAndLoadingExampleStatic
-);

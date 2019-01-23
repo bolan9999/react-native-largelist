@@ -10,7 +10,6 @@
     "prop-types": "^15.6.0",
     "react": "^16.4.1",
     "react-native": "^0.56.0",
-    "react-native-gesture-handler": "^1.0.6",
     "react-native-spring-scrollview": "latest"
   },
   "devDependencies": {

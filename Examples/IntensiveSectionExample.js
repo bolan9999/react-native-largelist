@@ -10,9 +10,8 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { LargeList, NativeLargeList } from "../src";
-import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
-class IntensiveSectionExampleStatic extends React.Component {
+export class IntensiveSectionExample extends React.Component {
   _sectionCount = 100;
   _rowCount = 1;
 
@@ -89,7 +88,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE"
   }
 });
-
-export const IntensiveSectionExample = gestureHandlerRootHOC(
-  IntensiveSectionExampleStatic
-);

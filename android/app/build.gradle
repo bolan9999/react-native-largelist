@@ -137,7 +137,7 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-gesture-handler')
+    compile project(':react-native-spring-scrollview')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:26.0.0'
     compile 'com.facebook.react:react-native:+'

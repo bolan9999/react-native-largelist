@@ -2327,10 +2327,6 @@ has-values@^1.0.0:
     is-number "^3.0.0"
     kind-of "^4.0.0"
 
-hoist-non-react-statics@^2.3.1:
-  version "2.5.5"
-  resolved "https://registry.npmjs.org/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
-
 home-or-tmp@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/home-or-tmp/-/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
@@ -3951,7 +3947,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0:
+prop-types@^15.5.8, prop-types@^15.6.0:
   version "15.6.2"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:
@@ -4014,17 +4010,9 @@ react-devtools-core@^3.2.2:
     shell-quote "^1.6.1"
     ws "^3.3.1"
 
-react-native-gesture-handler@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-1.0.6.tgz#8a672ca0c7a1b706dffee4e230e5cf0197d2cdb8"
-  dependencies:
-    hoist-non-react-statics "^2.3.1"
-    invariant "^2.2.2"
-    prop-types "^15.5.10"
-
-react-native-spring-scrollview@*:
-  version "0.0.24"
-  resolved "https://registry.npmjs.org/react-native-spring-scrollview/-/react-native-spring-scrollview-0.0.24.tgz#a1d74cbd844a038be279a41efb299b5e194f262c"
+react-native-spring-scrollview@latest:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/react-native-spring-scrollview/-/react-native-spring-scrollview-2.0.0.tgz#98fd62d7316d86e0e0e533d43c80823a82bc5eae"
 
 react-native@^0.56.0:
   version "0.56.0"

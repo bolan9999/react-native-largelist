@@ -18,11 +18,10 @@ import {
 } from "react-native";
 import { foods } from "./DataSource";
 import { LargeList, NativeLargeList } from "../src";
-import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
 const leftData = [{ items: foods }];
 
-class MenuListExampleStatic extends React.Component {
+export class MenuListExample extends React.Component {
   selectedIndex: number = 0;
   _listRef: LargeList;
   indexes: LargeList;
@@ -51,9 +50,6 @@ class MenuListExampleStatic extends React.Component {
           showsVerticalScrollIndicator={false}
           bounces={false}
           data={leftData}
-          buttonRefs={buttons}
-          heightForSection={() => 0}
-          renderSection={() => null}
           heightForIndexPath={() => 80}
           renderIndexPath={this.renderIndexes}
         />
@@ -65,9 +61,6 @@ class MenuListExampleStatic extends React.Component {
           renderSection={this.renderSection}
           heightForIndexPath={() => 96}
           renderIndexPath={this.renderItem}
-          groupCount={8}
-          groupMinHeight={180}
-          updateTimeInterval={150}
         />
       </View>
     );
@@ -200,4 +193,3 @@ const styles = StyleSheet.create({
   }
 });
 
-export const MenuListExample = gestureHandlerRootHOC(MenuListExampleStatic);

@@ -11,9 +11,8 @@ import React from "react";
 import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import { messages } from "./DataSource";
 import { LargeList, NativeLargeList } from "../src";
-import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
-class MessageExampleStatic extends React.Component {
+export class MessageExample extends React.Component {
   messages;
   largeList;
 
@@ -64,4 +63,3 @@ class MessageExampleStatic extends React.Component {
   };
 }
 
-export const MessageExample = gestureHandlerRootHOC(MessageExampleStatic);

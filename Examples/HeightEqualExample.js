@@ -10,9 +10,8 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { LargeList,NativeLargeList } from "../src";
-import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
-class HeightEqualExampleStatic extends React.Component {
+export class HeightEqualExample extends React.Component {
   _sectionCount = 10;
   _rowCount = 10;
 
@@ -112,4 +111,3 @@ const styles = StyleSheet.create({
   }
 });
 
-export const HeightEqualExample = gestureHandlerRootHOC(HeightEqualExampleStatic);

@@ -20,9 +20,8 @@ import {
 } from "react-native";
 import { LargeList, NativeLargeList } from "../src";
 import { contacts } from "./DataSource";
-import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
-class ContactExampleStatic extends React.Component {
+export class ContactExample extends React.Component {
   largeList;
 
   constructor(props) {
@@ -130,5 +129,3 @@ const styles = StyleSheet.create({
   title: { fontSize: 18 },
   subtitle: { fontSize: 14, marginTop: 8 }
 });
-
-export const ContactExample = gestureHandlerRootHOC(ContactExampleStatic);
