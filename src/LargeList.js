@@ -32,7 +32,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     heightForSection: () => 0,
     renderSection: () => null,
     groupCount: 4,
-    groupMinHeight: Dimensions.get("window").height / 2,
+    groupMinHeight: Dimensions.get("window").height / 3,
     updateTimeInterval: 150
   };
 
@@ -152,48 +152,44 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
           <Animated.View onLayout={this._onHeaderLayout}>
             {this.props.renderHeader()}
           </Animated.View>}
-        {this._offset &&
-          groupIndexes.map((indexes, index) => {
-            const style = StyleSheet.flatten([
+        {groupIndexes.map((indexes, index) => {
+          const style = {
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            transform: [
               {
-                position: "absolute",
-                left: 0,
-                right: 0,
-                top: 0,
-                transform: [
-                  {
-                    translateY:
-                      this._offset && outputs[index].length > 1
-                        ? this._offset.interpolate({
-                            inputRange: inputs[index],
-                            outputRange: outputs[index]
-                          })
-                        : 0
-                  }
-                ]
+                translateY:
+                  outputs[index].length > 1
+                    ? this._offset.interpolate({
+                        inputRange: inputs[index],
+                        outputRange: outputs[index]
+                      })
+                    : 0
               }
-            ]);
-            return (
-              <Animated.View key={index} style={style}>
-                <Group
-                  {...this.props}
-                  index={index}
-                  ref={this._groupRefs[index]}
-                  indexes={indexes}
-                  input={inputs[index]}
-                  output={outputs[index]}
-                  offset={this._contentOffsetY}
-                />
-              </Animated.View>
-            );
-          })}
-        {this._offset &&
-          <SectionContainer
-            {...this.props}
-            tops={sectionTops}
-            ref={this._sectionContainer}
-            nativeOffset={this._offset}
-          />}
+            ]
+          };
+          return (
+            <Animated.View key={index} style={style}>
+              <Group
+                {...this.props}
+                index={index}
+                ref={this._groupRefs[index]}
+                indexes={indexes}
+                input={inputs[index]}
+                output={outputs[index]}
+                offset={this._contentOffsetY}
+              />
+            </Animated.View>
+          );
+        })}
+        <SectionContainer
+          {...this.props}
+          tops={sectionTops}
+          ref={this._sectionContainer}
+          nativeOffset={this._offset}
+        />
         {renderFooter &&
           <Animated.View style={styles.footer} onLayout={this._onFooterLayout}>
             {renderFooter()}
@@ -230,7 +226,8 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
   _onScroll = e => {
     const offsetY = e.nativeEvent.contentOffset.y;
     this._contentOffsetY = offsetY;
-    idx(() => this._sectionContainer.current.updateOffset(offsetY));
+    this._shouldUpdateContent &&
+      idx(() => this._sectionContainer.current.updateOffset(offsetY));
     const now = new Date().getTime();
     if (this._lastTick - now > 30) {
       this._lastTick = now;
@@ -251,7 +248,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     this._groupRefs.forEach(group =>
       idx(() => group.current.contentConversion(offset.y))
     );
-    idx(() => this._sectionContainer.current.updateOffset(offset.y));
+    idx(() => this._sectionContainer.current.updateOffset(offset.y, true));
     return this._scrollView.current.scrollTo(offset, animated).then(() => {
       this._shouldUpdateContent = true;
       return Promise.resolve();

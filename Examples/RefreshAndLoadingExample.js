@@ -18,10 +18,7 @@ export class RefreshAndLoadingExample extends React.Component {
   _largeList;
   _index = 0;
 
-  constructor(props) {
-    super(props);
-    this.state = { data: [contacts[0]], allLoaded: false };
-  }
+  state = { data: [contacts[0]], allLoaded: false };
 
   render() {
     const List = this.props.native ? NativeLargeList : LargeList;
@@ -34,10 +31,8 @@ export class RefreshAndLoadingExample extends React.Component {
         renderSection={this._renderSection}
         heightForIndexPath={() => 60}
         renderIndexPath={this._renderItem}
-        refreshHeaderHeight={60}
         refreshHeader={NormalHeader}
         onRefresh={this._onRefresh}
-        loadingFooterHeight={60}
         loadingFooter={NormalFooter}
         onLoading={this._onLoading}
         allLoaded={this.state.allLoaded}
