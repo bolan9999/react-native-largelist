@@ -8,13 +8,16 @@
  */
 
 import React from "react";
-import { Animated, StyleSheet, Dimensions } from "react-native";
+import {Animated, StyleSheet, Dimensions, View} from "react-native";
 import { styles } from "./styles";
 import { SpringScrollView } from "react-native-spring-scrollview";
 import type { IndexPath, LargeListPropType, Offset } from "./Types";
 import { Group } from "./Group";
 import { SectionContainer } from "./SectionContainer";
 import { idx } from "./idx";
+
+const screenLayout = Dimensions.get("window");
+const screenHeight = Math.max(screenLayout.width, screenLayout.height);
 
 export class LargeList extends React.PureComponent<LargeListPropType> {
   _groupRefs = [];
@@ -32,7 +35,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     heightForSection: () => 0,
     renderSection: () => null,
     groupCount: 4,
-    groupMinHeight: Dimensions.get("window").height / 3,
+    groupMinHeight: screenHeight / 3,
     updateTimeInterval: 150
   };
 
@@ -149,53 +152,59 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
         onMomentumScrollEnd={this._onScrollEnd}
       >
         {renderHeader &&
-          <Animated.View onLayout={this._onHeaderLayout}>
+          <View onLayout={this._onHeaderLayout}>
             {this.props.renderHeader()}
-          </Animated.View>}
-        {groupIndexes.map((indexes, index) => {
-          const style = {
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 0,
-            transform: [
-              {
-                translateY:
-                  outputs[index].length > 1
-                    ? this._offset.interpolate({
-                        inputRange: inputs[index],
-                        outputRange: outputs[index]
-                      })
-                    : 0
-              }
-            ]
-          };
-          return (
-            <Animated.View key={index} style={style}>
-              <Group
-                {...this.props}
-                index={index}
-                ref={this._groupRefs[index]}
-                indexes={indexes}
-                input={inputs[index]}
-                output={outputs[index]}
-                offset={this._contentOffsetY}
-              />
-            </Animated.View>
-          );
-        })}
-        <SectionContainer
-          {...this.props}
-          tops={sectionTops}
-          ref={this._sectionContainer}
-          nativeOffset={this._offset}
-        />
+          </View>}
+        {this._shouldRenderContent() &&
+          groupIndexes.map((indexes, index) => {
+            const style = {
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: 0,
+              transform: [
+                {
+                  translateY:
+                    outputs[index].length > 1
+                      ? this._offset.interpolate({
+                          inputRange: inputs[index],
+                          outputRange: outputs[index]
+                        })
+                      : 0
+                }
+              ]
+            };
+            return (
+              <Animated.View key={index} style={style}>
+                <Group
+                  {...this.props}
+                  index={index}
+                  ref={this._groupRefs[index]}
+                  indexes={indexes}
+                  input={inputs[index]}
+                  output={outputs[index]}
+                  offset={this._contentOffsetY}
+                />
+              </Animated.View>
+            );
+          })}
+        {this._shouldRenderContent() &&
+          <SectionContainer
+            {...this.props}
+            tops={sectionTops}
+            ref={this._sectionContainer}
+            nativeOffset={this._offset}
+          />}
         {renderFooter &&
-          <Animated.View style={styles.footer} onLayout={this._onFooterLayout}>
+          <View style={styles.footer} onLayout={this._onFooterLayout}>
             {renderFooter()}
-          </Animated.View>}
+          </View>}
       </SpringScrollView>
     );
+  }
+
+  _shouldRenderContent() {
+    return !this.props.renderHeader || this._headerLayout;
   }
 
   _onHeaderLayout = ({ nativeEvent: { layout: layout } }) => {
@@ -208,8 +217,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
 
   _onFooterLayout = ({ nativeEvent: { layout: layout } }) => {
     this._footerLayout = layout;
-    const { renderHeader } = this.props;
-    if (!renderHeader || this._headerLayout) {
+    if (this._shouldRenderContent()) {
       this.forceUpdate();
     }
   };

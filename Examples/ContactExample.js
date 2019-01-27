@@ -12,7 +12,7 @@ import {
   View,
   Image,
   Text,
-  ScrollView,
+  Platform,
   TouchableOpacity,
   StyleSheet,
   TextInput,
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   search: {
-    marginTop: 20,
+    marginTop: Platform.OS === "ios" ? 20 : 0,
     fontSize: 18
   },
   section: {
