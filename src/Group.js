@@ -15,7 +15,6 @@ export class Group extends React.Component<GroupPropType> {
   _offset = 0;
 
   contentConversion(offset: number) {
-    // if (Math.abs(this._offset - offset) < 300) return;
     this._offset = offset;
     const { input, output } = this.props;
     const cc = [];
@@ -66,17 +65,5 @@ export class Group extends React.Component<GroupPropType> {
         </View>
       );
     });
-    // .concat(<Text key={1000} style={styles.showIndex}>{this.props.index}</Text>);
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  showIndex: {
-    position: "absolute",
-    left: 0,
-    top: 0
-  }
-});

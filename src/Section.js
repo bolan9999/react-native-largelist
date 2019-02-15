@@ -55,14 +55,3 @@ export class Section extends React.Component<SectionPropType> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  section: {
-    position: "absolute",
-    left: 0,
-    right: 0
-  }
-});

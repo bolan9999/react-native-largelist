@@ -13,7 +13,6 @@ import { styles } from "./styles";
 import { SpringScrollView } from "react-native-spring-scrollview";
 import type { IndexPath, LargeListPropType, Offset } from "./Types";
 import { Group } from "./Group";
-import { SectionContainer } from "./SectionContainer";
 import { idx } from "./idx";
 import { Section } from "./Section";
 
