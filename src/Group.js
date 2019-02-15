@@ -59,6 +59,7 @@ export class Group extends React.Component<GroupPropType> {
         indexPath.row === -1
           ? heightForSection(indexPath.section)
           : heightForIndexPath(indexPath);
+      if (height === 0) return null;
       return (
         <View key={index} style={{ height: height }}>
           {indexPath.row === -1 ? null : renderIndexPath(indexPath)}

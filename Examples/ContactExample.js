@@ -15,8 +15,7 @@ import {
   Platform,
   TouchableOpacity,
   StyleSheet,
-  TextInput,
-  LayoutAnimation
+  TextInput
 } from "react-native";
 import { LargeList, NativeLargeList } from "../src";
 import { contacts } from "./DataSource";
