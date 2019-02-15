@@ -17,7 +17,7 @@ import {
   StyleSheet,
   TextInput
 } from "react-native";
-import { LargeList, NativeLargeList } from "../src";
+import { LargeList } from "../src";
 import { contacts } from "./DataSource";
 
 export class ContactExample extends React.Component {
@@ -29,9 +29,8 @@ export class ContactExample extends React.Component {
   }
 
   render() {
-    const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <List
+      <LargeList
         style={styles.container}
         heightForSection={() => 40}
         renderSection={this._renderSection}
@@ -46,20 +45,24 @@ export class ContactExample extends React.Component {
 
   _renderHeader = () => {
     return (
-      <TextInput
-        style={styles.search}
-        placeholder="Please type first letter to search"
-        onSubmitEditing={this._search}
-        returnKeyType="done"
-      />
+      <View>
+        <TextInput
+          style={styles.search}
+          placeholder="Please type first letter to search"
+          onSubmitEditing={this._search}
+          returnKeyType="done"
+        />
+      </View>
     );
   };
 
   _renderFooter = () => {
     return (
-      <Text style={{ marginVertical: 20, alignSelf: "center" }}>
-        This is the footer
-      </Text>
+      <View>
+        <Text style={{ marginVertical: 20, alignSelf: "center" }}>
+          This is the footer
+        </Text>
+      </View>
     );
   };
 

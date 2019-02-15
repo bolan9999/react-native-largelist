@@ -10,7 +10,7 @@
 import React from "react";
 import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import { messages } from "./DataSource";
-import { LargeList, NativeLargeList } from "../src";
+import { LargeList } from "../src";
 
 export class MessageExample extends React.Component {
   messages;
@@ -23,9 +23,8 @@ export class MessageExample extends React.Component {
   }
 
   render() {
-    const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <List
+      <LargeList
         style={{ flex: 1 }}
         ref={ref => (this.largeList = ref)}
         heightForSection={() => 0}

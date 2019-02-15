@@ -9,7 +9,7 @@
 
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { LargeList, NativeLargeList } from "../src";
+import { LargeList } from "../src";
 
 export class HeightUnequalExample extends React.Component {
   _sectionCount = 10;
@@ -29,9 +29,8 @@ export class HeightUnequalExample extends React.Component {
       }
       data.push(sContent);
     }
-    const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <List
+      <LargeList
         style={styles.container}
         data={data}
         heightForSection={() => 50}

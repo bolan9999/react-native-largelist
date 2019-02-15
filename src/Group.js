@@ -7,12 +7,13 @@
  */
 
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import type { GroupPropType } from "./Types";
 
 export class Group extends React.Component<GroupPropType> {
   _currentIndex = 0;
   _offset = 0;
+  _margin = 0;
 
   contentConversion(offset: number) {
     this._offset = offset;
@@ -53,17 +54,25 @@ export class Group extends React.Component<GroupPropType> {
       renderIndexPath
     } = this.props;
     if (this._currentIndex >= indexes.length) return null;
+    this._margin = 0;
     return indexes[this._currentIndex].map((indexPath, index) => {
-      const height =
-        indexPath.row === -1
-          ? heightForSection(indexPath.section)
-          : heightForIndexPath(indexPath);
+      if (indexPath.row === -1) {
+        this._margin = heightForSection(indexPath.section);
+        return null;
+      }
+      const height = heightForIndexPath(indexPath);
       if (height === 0) return null;
-      return (
-        <View key={index} style={{ height: height }}>
-          {indexPath.row === -1 ? null : renderIndexPath(indexPath)}
-        </View>
-      );
+      const cell = React.Children.only(renderIndexPath(indexPath));
+      const marginTop = this._margin;
+      this._margin = 0;
+      const style = StyleSheet.flatten([
+        cell.props.style,
+        { height, marginTop, alignSelf: "stretch", flex:0 }
+      ]);
+      return React.cloneElement(cell, {
+        key: index,
+        style
+      });
     });
   }
 }

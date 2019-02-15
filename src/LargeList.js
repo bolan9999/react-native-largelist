@@ -8,7 +8,7 @@
  */
 
 import React from "react";
-import { Animated, StyleSheet, Dimensions, View } from "react-native";
+import { Animated, StyleSheet, Dimensions } from "react-native";
 import { styles } from "./styles";
 import { SpringScrollView } from "react-native-spring-scrollview";
 import type { IndexPath, LargeListPropType, Offset } from "./Types";

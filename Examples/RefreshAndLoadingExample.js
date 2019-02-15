@@ -11,7 +11,7 @@ import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NormalHeader } from "react-native-spring-scrollview/NormalHeader";
 import { NormalFooter } from "react-native-spring-scrollview/NormalFooter";
-import { LargeList, NativeLargeList } from "../src";
+import { LargeList } from "../src";
 import { contacts } from "./DataSource";
 
 export class RefreshAndLoadingExample extends React.Component {
@@ -21,9 +21,8 @@ export class RefreshAndLoadingExample extends React.Component {
   state = { data: [contacts[0]], allLoaded: false };
 
   render() {
-    const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <List
+      <LargeList
         ref={ref => (this._largeList = ref)}
         style={styles.container}
         data={this.state.data}

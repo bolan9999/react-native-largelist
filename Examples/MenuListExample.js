@@ -17,7 +17,7 @@ import {
   Platform
 } from "react-native";
 import { foods } from "./DataSource";
-import { LargeList, NativeLargeList } from "../src";
+import { LargeList } from "../src";
 
 const leftData = [{ items: foods }];
 
@@ -41,10 +41,9 @@ export class MenuListExample extends React.Component {
   render() {
     const buttons = [];
     this._buttonRefs.forEach(btn => buttons.concat(btn));
-    const List = this.props.native ? NativeLargeList : LargeList;
     return (
       <View style={styles.container}>
-        <List
+        <LargeList
           style={styles.lc}
           ref={ref => (this.indexes = ref)}
           showsVerticalScrollIndicator={false}
@@ -53,7 +52,7 @@ export class MenuListExample extends React.Component {
           heightForIndexPath={() => 80}
           renderIndexPath={this.renderIndexes}
         />
-        <List
+        <LargeList
           ref={ref => (this._listRef = ref)}
           style={styles.rc}
           data={foods}

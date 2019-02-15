@@ -53,14 +53,6 @@ export interface GroupPropType {
   updateTimeInterval: number
 }
 
-export interface SectionContainerPropType {
-  tops: number[],
-  nativeOffset: Animated.Value,
-  data: LargeListDataType,
-  heightForSection?: (section: number) => number,
-  renderSection?: (section: number) => React.Node<any>
-}
-
 export interface SectionPropType {
   tops: number[],
   section: number,
