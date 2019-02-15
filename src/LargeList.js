@@ -31,6 +31,8 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
   _footerLayout;
   _nativeOffset;
   _sectionRefs: [];
+  _orgOnHeaderLayout: () => 0;
+  _orgOnFooterLayout: () => 0;
 
   static defaultProps = {
     heightForSection: () => 0,
@@ -73,9 +75,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
       heightForSection,
       heightForIndexPath,
       groupMinHeight,
-      groupCount,
-      renderHeader,
-      renderFooter
+      groupCount
     } = this.props;
     const groupIndexes = [];
     let indexes = [];
@@ -203,9 +203,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     }
     if (this._footerLayout) sumHeight += this._footerLayout.height;
     const contentStyle = sumHeight > 0 ? { height: sumHeight } : null;
-    const headerAndFooterTransform = {
-      transform: [{ translateY: this._shouldRenderContent() ? 0 : 10000 }]
-    };
+
     return (
       <SpringScrollView
         {...this.props}
@@ -215,13 +213,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
         onScroll={this._onScroll}
         onMomentumScrollEnd={this._onScrollEnd}
       >
-        {renderHeader &&
-          <View
-            style={headerAndFooterTransform}
-            onLayout={this._onHeaderLayout}
-          >
-            {this.props.renderHeader()}
-          </View>}
+        {this._renderHeader()}
         {this._shouldRenderContent() &&
           groupIndexes.map((indexes, index) => {
             let transform;
@@ -276,31 +268,56 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
               />
             );
           })}
-        {renderFooter &&
-          <View
-            style={[styles.footer, headerAndFooterTransform]}
-            onLayout={this._onFooterLayout}
-          >
-            {renderFooter()}
-          </View>}
+        {this._renderFooter()}
       </SpringScrollView>
     );
+  }
+
+  _renderHeader() {
+    const { renderHeader } = this.props;
+    if (!renderHeader) return null;
+
+    const transform = {
+      transform: [{ translateY: this._shouldRenderContent() ? 0 : 10000 }]
+    };
+    const header = React.Children.only(renderHeader());
+    this._orgOnHeaderLayout = header.onLayout;
+    return React.cloneElement(header, {
+      style: StyleSheet.flatten([header.props.style, transform]),
+      onLayout: this._onHeaderLayout
+    });
+  }
+
+  _renderFooter() {
+    const { renderFooter } = this.props;
+    if (!renderFooter) return null;
+    const transform = {
+      transform: [{ translateY: this._shouldRenderContent() ? 0 : 10000 }]
+    };
+    const footer = React.Children.only(renderFooter());
+    this._orgOnFooterLayout = footer.onLayout;
+    return React.cloneElement(footer, {
+      style: StyleSheet.flatten([styles.footer, footer.props.style, transform]),
+      onLayout: this._onFooterLayout
+    });
   }
 
   _shouldRenderContent() {
     return !this.props.renderHeader || this._headerLayout;
   }
 
-  _onHeaderLayout = ({ nativeEvent: { layout: layout } }) => {
-    this._headerLayout = layout;
+  _onHeaderLayout = e => {
+    this._headerLayout = e.nativeEvent.layout;
     const { renderFooter } = this.props;
+    this._orgOnHeaderLayout && this._orgOnHeaderLayout(e);
     if (!renderFooter || this._footerLayout) {
       this.forceUpdate();
     }
   };
 
-  _onFooterLayout = ({ nativeEvent: { layout: layout } }) => {
-    this._footerLayout = layout;
+  _onFooterLayout = e => {
+    this._footerLayout = e.nativeEvent.layout;
+    this._orgOnFooterLayout && this._orgOnFooterLayout(e);
     if (this._shouldRenderContent()) {
       this.forceUpdate();
     }
