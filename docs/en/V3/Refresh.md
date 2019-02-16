@@ -7,7 +7,7 @@
 
 ```$js
 import { LargeList } from "react-native-largelist-v3";
-import { ChineseWithLastDateHeader } from "react-native-spring-scrollview/Customize";
+import { NormalHeader } from "react-native-spring-scrollview/NormalHeader";
 ```
 
 It is easy to support pulling to refresh with LargeList. React-native-spring-scrollview offers a `NormalHeader` for you. And you can try other refresh headers in the [Customize](https://github.com/bolan9999/react-native-spring-scrollview/tree/master/src/Customize) dir.
@@ -17,7 +17,7 @@ It is easy to support pulling to refresh with LargeList. React-native-spring-scr
 ```$js
 <LargeList
   ref={ref => (this._list = ref)}
-  refreshHeader={ChineseWithLastDateHeader}
+  refreshHeader={NormalHeader}
   onRefresh={()=>{
     setTimeOut(()=>{
       this._list.endRefresh();

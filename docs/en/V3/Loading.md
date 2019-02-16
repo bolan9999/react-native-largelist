@@ -9,7 +9,7 @@ Import
 
 ```$js
 import { LargeList } from "react-native-largelist-v3";
-import { ChineseWithLastDateFooter } from "react-native-spring-scrollview/Customize";
+import { NormalFooter } from "react-native-spring-scrollview/NormalFooter";
 ```
 
 It is easy to support loading more data with LargeList. React-native-spring-scrollview offers a `NormalFooter` for you. And you can try other loading footers in the [Customize](https://github.com/bolan9999/react-native-spring-scrollview/tree/master/src/Customize) dir.
@@ -17,7 +17,7 @@ It is easy to support loading more data with LargeList. React-native-spring-scro
 ```$js
 <LargeList
   ref={ref => (this._list = ref)}
-  loadingFooter={ChineseWithLastDateFooter}
+  loadingFooter={NormalFooter}
   allLoaded={this.state.allLoaded}
   onLoading={()=>{
     setTimeOut(()=>{
