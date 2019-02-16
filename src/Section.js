@@ -44,10 +44,7 @@ export class Section extends React.Component<SectionPropType> {
     const { data, style, heightForSection, renderSection } = this.props;
     const { section } = this.state;
     if (section === undefined || section < 0 || section >= data.length) return null;
-    const wStyle = StyleSheet.flatten([
-      style,
-      { height: heightForSection(section) }
-    ]);
+    const wStyle = StyleSheet.flatten([style, { height: heightForSection(section) }]);
     return (
       <Animated.View {...this.props} style={wStyle}>
         {renderSection(this.state.section)}

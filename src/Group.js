@@ -29,12 +29,7 @@ export class Group extends React.Component<GroupPropType> {
   }
 
   update(index: number) {
-    if (
-      index < 0 ||
-      index >= this.props.indexes.length ||
-      this._currentIndex === index
-    )
-      return;
+    if (index < 0 || index >= this.props.indexes.length || this._currentIndex === index) return;
     this._currentIndex = index;
     this.forceUpdate();
   }
@@ -47,12 +42,7 @@ export class Group extends React.Component<GroupPropType> {
   }
 
   render() {
-    const {
-      indexes,
-      heightForSection,
-      heightForIndexPath,
-      renderIndexPath
-    } = this.props;
+    const { indexes, heightForSection, heightForIndexPath, renderIndexPath } = this.props;
     if (this._currentIndex >= indexes.length) return null;
     this._margin = 0;
     return indexes[this._currentIndex].map((indexPath, index) => {
@@ -65,10 +55,7 @@ export class Group extends React.Component<GroupPropType> {
       const cell = React.Children.only(renderIndexPath(indexPath));
       const marginTop = this._margin;
       this._margin = 0;
-      const style = StyleSheet.flatten([
-        cell.props.style,
-        { height, marginTop, alignSelf: "stretch", flex:0 }
-      ]);
+      const style = StyleSheet.flatten([cell.props.style, { height, marginTop, alignSelf: "stretch", flex: 0 }]);
       return React.cloneElement(cell, {
         key: index,
         style

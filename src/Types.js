@@ -59,9 +59,9 @@ export interface SectionPropType {
   nativeOffset: Animated.Value,
   heightForSection: (section: number) => number,
   renderSection?: (section: number) => React.Node<any>,
-  input:number[],
-  output:number[],
-  sectionIndexes:number[],
-  offset:number,
-  data: LargeListDataType,
+  input: number[],
+  output: number[],
+  sectionIndexes: number[],
+  offset: number,
+  data: LargeListDataType
 }
