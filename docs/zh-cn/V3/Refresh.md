@@ -47,7 +47,7 @@ refreshHeader | [RefreshHeader](https://github.com/bolan9999/react-native-spring
 
 react-native-spring-scrollview提供了一些刷新控件, 用户可以试试
 ```
-import {NormalRefresh} from "react-native-spring-scrollview/NormalRefresh";
+import { NormalHeader } from "react-native-spring-scrollview/NormalHeader";
 import {
     WithLastDateHeader,
     ChineseNormalHeader,
