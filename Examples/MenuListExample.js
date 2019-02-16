@@ -17,12 +17,11 @@ import {
   Platform
 } from "react-native";
 import { foods } from "./DataSource";
-import { LargeList, NativeLargeList } from "../src";
-import { gestureHandlerRootHOC } from "react-native-gesture-handler";
+import { LargeList } from "../src";
 
 const leftData = [{ items: foods }];
 
-class MenuListExampleStatic extends React.Component {
+export class MenuListExample extends React.Component {
   selectedIndex: number = 0;
   _listRef: LargeList;
   indexes: LargeList;
@@ -42,22 +41,18 @@ class MenuListExampleStatic extends React.Component {
   render() {
     const buttons = [];
     this._buttonRefs.forEach(btn => buttons.concat(btn));
-    const List = this.props.native ? NativeLargeList : LargeList;
     return (
       <View style={styles.container}>
-        <List
+        <LargeList
           style={styles.lc}
           ref={ref => (this.indexes = ref)}
           showsVerticalScrollIndicator={false}
           bounces={false}
           data={leftData}
-          buttonRefs={buttons}
-          heightForSection={() => 0}
-          renderSection={() => null}
           heightForIndexPath={() => 80}
           renderIndexPath={this.renderIndexes}
         />
-        <List
+        <LargeList
           ref={ref => (this._listRef = ref)}
           style={styles.rc}
           data={foods}
@@ -65,9 +60,6 @@ class MenuListExampleStatic extends React.Component {
           renderSection={this.renderSection}
           heightForIndexPath={() => 96}
           renderIndexPath={this.renderItem}
-          groupCount={8}
-          groupMinHeight={180}
-          updateTimeInterval={150}
         />
       </View>
     );
@@ -107,7 +99,7 @@ class MenuListExampleStatic extends React.Component {
   renderItem = ({ section: section, row: row }) => {
     let food = foods[section].items[row];
     return (
-      <View style={{ flex: 1 }}>
+      <View>
         <View style={{ flex: 1, flexDirection: "row" }}>
           <Image
             style={{
@@ -178,7 +170,6 @@ const styles = StyleSheet.create({
     flexGrow: 4
   },
   indexes: {
-    flex: 1,
     backgroundColor: "#EEE",
     justifyContent: "center",
     alignItems: "center"
@@ -200,4 +191,3 @@ const styles = StyleSheet.create({
   }
 });
 
-export const MenuListExample = gestureHandlerRootHOC(MenuListExampleStatic);

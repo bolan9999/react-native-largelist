@@ -7,6 +7,8 @@
  *
  */
 
+import { Animated } from "react-native";
+
 export type LargeListDataType = { items: any[] }[];
 
 export interface IndexPath {
@@ -27,6 +29,10 @@ export interface LargeListPropType {
   renderIndexPath: (indexPath: IndexPath) => React.Node<any>,
   renderHeader?: () => React.ReactElement<any>,
   renderFooter?: () => React.ReactElement<any>,
+  onNativeContentOffsetExtract?: {
+    x: Animated.Value,
+    y: Animated.Value
+  },
 
   groupCount?: number,
   groupMinHeight?: number,
@@ -47,18 +53,15 @@ export interface GroupPropType {
   updateTimeInterval: number
 }
 
-export interface SectionContainerPropType {
-  tops: number[],
-  nativeOffset: Animated.Value,
-  data: LargeListDataType,
-  heightForSection?: (section: number) => number,
-  renderSection?: (section: number) => React.Node<any>
-}
-
 export interface SectionPropType {
   tops: number[],
   section: number,
   nativeOffset: Animated.Value,
   heightForSection: (section: number) => number,
-  renderSection?: (section: number) => React.Node<any>
+  renderSection?: (section: number) => React.Node<any>,
+  input: number[],
+  output: number[],
+  sectionIndexes: number[],
+  offset: number,
+  data: LargeListDataType
 }

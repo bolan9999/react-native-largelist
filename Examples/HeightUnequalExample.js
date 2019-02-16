@@ -9,10 +9,9 @@
 
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { LargeList, NativeLargeList } from "../src";
-import { gestureHandlerRootHOC } from "react-native-gesture-handler";
+import { LargeList } from "../src";
 
-class HeightUnequalExampleStatic extends React.Component {
+export class HeightUnequalExample extends React.Component {
   _sectionCount = 10;
   _rowCount = 20;
 
@@ -30,9 +29,8 @@ class HeightUnequalExampleStatic extends React.Component {
       }
       data.push(sContent);
     }
-    const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <List
+      <LargeList
         style={styles.container}
         data={data}
         heightForSection={() => 50}
@@ -77,7 +75,6 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   row: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -90,7 +87,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE"
   }
 });
-
-export const HeightUnequalExample = gestureHandlerRootHOC(
-  HeightUnequalExampleStatic
-);

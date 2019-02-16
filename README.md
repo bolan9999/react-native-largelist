@@ -1,16 +1,16 @@
 # react-native-largelist
 
-**React-native-largelist** is a high performance large list component for React-Native. (iOS & Android) Now V2 is available. V1 is [here](https://github.com/bolan9999/react-native-largelist/tree/V1)
+**React-native-largelist** is a very high performance large list component for React-Native. (iOS & Android) Now V3 is available. V1 is [here](https://github.com/bolan9999/react-native-largelist/tree/V1)
 
 ## Features
 
 * Large data source list component, items reused by group, Less CPU/Memory usage.
 * Fully Cross-platform bounces (iOS & Android).
-* Customize Refreshing and Loading.
+* Highly customize Refreshing and Loading.
 * Header and Footer support.
 * ScrollToIndex support.
 * Sticky Section support.
-* Less blanks.
+* Never blanks.
 
 ## Preview
 ![Preview](./docs/res/Update.gif)
@@ -18,7 +18,7 @@
 
 ## Documentation
 
-Here is the [Documentation](https://bolan9999.github.io/react-native-largelist/)
+API reference and more:  [Documentation Reference](https://bolan9999.github.io/react-native-largelist/)
 
 ## Running Examples
 

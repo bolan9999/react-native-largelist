@@ -12,17 +12,15 @@ import {
   View,
   Image,
   Text,
-  ScrollView,
+  Platform,
   TouchableOpacity,
   StyleSheet,
-  TextInput,
-  LayoutAnimation
+  TextInput
 } from "react-native";
-import { LargeList, NativeLargeList } from "../src";
+import { LargeList } from "../src";
 import { contacts } from "./DataSource";
-import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
-class ContactExampleStatic extends React.Component {
+export class ContactExample extends React.Component {
   largeList;
 
   constructor(props) {
@@ -31,9 +29,8 @@ class ContactExampleStatic extends React.Component {
   }
 
   render() {
-    const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <List
+      <LargeList
         style={styles.container}
         heightForSection={() => 40}
         renderSection={this._renderSection}
@@ -48,20 +45,24 @@ class ContactExampleStatic extends React.Component {
 
   _renderHeader = () => {
     return (
-      <TextInput
-        style={styles.search}
-        placeholder="Please type first letter to search"
-        onSubmitEditing={this._search}
-        returnKeyType="done"
-      />
+      <View>
+        <TextInput
+          style={styles.search}
+          placeholder="Please type first letter to search"
+          onSubmitEditing={this._search}
+          returnKeyType="done"
+        />
+      </View>
     );
   };
 
   _renderFooter = () => {
     return (
-      <Text style={{ marginVertical: 20, alignSelf: "center" }}>
-        This is the footer
-      </Text>
+      <View>
+        <Text style={{ marginVertical: 20, alignSelf: "center" }}>
+          This is the footer
+        </Text>
+      </View>
     );
   };
 
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   search: {
-    marginTop: 20,
+    marginTop: Platform.OS === "ios" ? 20 : 0,
     fontSize: 18
   },
   section: {
@@ -124,11 +125,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 10
   },
-  row: { flex: 1, flexDirection: "row", alignItems: "center" },
+  row: { flexDirection: "row", alignItems: "center" },
   image: { marginLeft: 16, width: 44, height: 44 },
   rContainer: { marginLeft: 20 },
   title: { fontSize: 18 },
   subtitle: { fontSize: 14, marginTop: 8 }
 });
-
-export const ContactExample = gestureHandlerRootHOC(ContactExampleStatic);

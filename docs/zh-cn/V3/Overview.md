@@ -1,0 +1,35 @@
+# 概述
+
+LargeList V3 依赖 `react-native-spring-scrollview@^2.0.3`, 支持SpringScrollView几乎所有的属性。
+
+与SpringScrollView一样，LargeList必须有一个确定的高度才能正常工作，因为它实际上所做的就是将一系列Cell装进一个确定高度的容器（通过滚动操作）。LargeList默认具有{flex:1}的样式，因此要使LargeList正常工作，它的父容器必须是确定高度的，你也可以通过手动指定样式，使之正常工作。
+
+### 基础属性列表
+
+属性  |  类型  |  默认值  |  描述  
+---- | ------ | --------- | --------
+[...SpringScrollView](https://bolan9999.github.io/react-native-spring-scrollview/#/) | - | - | 支持SpringScrollView几乎所有属性
+data | { items: any[] }[] | 必需 | 列表的数据源
+heightForSection | (section: number) => number | ()=>0 | 返回列表每一组组头高度的函数
+renderSection | (section: number) => React.ReactElement &lt;any> | ()=>null | 每一组组头的render函数
+heightForIndexPath | (indexPath: IndexPath) => number | 必需 | 返回列表每一行高度的函数
+renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any> | 必需 | 每一行的render函数
+renderHeader | ()=> React.ReactElement &lt;any> | undefined | 列表的头部组件函数
+renderFooter | ()=> React.ReactElement &lt;any> | undefined | 列表的尾部组件函数
+
+### 简单示例
+
+```
+<LargeList
+    style={styles.container}
+    data={data}
+    heightForSection={() => 50}
+    renderSection={this._renderSection}
+    heightForIndexPath={() => 50}
+    renderIndexPath={this._renderIndexPath}
+/>
+```
+
+### 注意事项
+* LargeList默认具有{flex:1}的样式，因此要使LargeList正常工作，它的父容器必须是确定高度的，你也可以通过手动指定样式，使之正常工作。
+* 在V3中，为了最大化优化性能，减少DOM节点数量, `renderIndexPath`、 `renderHeader` 、 `renderFooter` 的直系节点在内部都进行了切片重新装配操作，所以不要直接返回`Text`,`TextInput`,`Switch`等这类宽高样式不符合CSS规范的组件，推荐使用`View`或`TouchableOpacity`等组件包装一层。还有就是，他们本身已经具备正确的样式，不再建议使用`flex：1`。虽然您使用了也不会有什么问题。而`renderSection` 由于没有切片重新装配，则必须拥有`flex:1`样式，不然可能无法占满整个组头。

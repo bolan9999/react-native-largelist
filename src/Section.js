@@ -12,68 +12,43 @@ import { StyleSheet, View, Animated } from "react-native";
 import type { SectionPropType } from "./Types";
 
 export class Section extends React.Component<SectionPropType> {
-  section;
+  state = {
+    section: 0
+  };
 
-  constructor(props: SectionPropType) {
+  constructor(props) {
     super(props);
-    this.section = props.section;
+    this.updateOffset(props.offset, true);
   }
 
   componentWillReceiveProps(next: SectionPropType) {
-    this.section = next.section;
+    this.updateOffset(next.offset, false, next);
   }
 
-  updateSection(section) {
-    this.section = section;
-    this.forceUpdate();
+  updateOffset(offset: number, init: boolean = false, next?: SectionPropType) {
+    let index = 0;
+    if (!next) next = this.props;
+    for (let i = 0; i < next.input.length; ++i) {
+      if (offset > next.input[i]) {
+        index = i;
+      }
+    }
+    const section = next.sectionIndexes[index];
+    if (section !== this.state.section) {
+      if (init) this.state = { section };
+      else this.setState({ section });
+    }
   }
 
   render() {
-    const { heightForSection, renderSection, nativeOffset, tops } = this.props;
-    const index = this.section;
-    const top = tops[index];
-    const inputRange = [-1, top];
-    const outputRange = [0, 0];
-    if (tops[index + 1]) {
-      const lastOffset = tops[index + 1] - heightForSection(index);
-      inputRange.push(lastOffset);
-      outputRange.push(lastOffset - top);
-      inputRange.push(lastOffset + 1);
-      outputRange.push(lastOffset - top);
-    } else {
-      inputRange.push(top + 1);
-      outputRange.push(1);
-    }
-    const style = StyleSheet.flatten([
-      styles.section,
-      {
-        top: top,
-        height: heightForSection(index),
-        transform: [
-          {
-            translateY: nativeOffset.interpolate({
-              inputRange: inputRange,
-              outputRange: outputRange
-            })
-          }
-        ]
-      }
-    ]);
+    const { data, style, heightForSection, renderSection } = this.props;
+    const { section } = this.state;
+    if (section === undefined || section < 0 || section >= data.length) return null;
+    const wStyle = StyleSheet.flatten([style, { height: heightForSection(section) }]);
     return (
-      <Animated.View style={style}>
-        {renderSection(index)}
+      <Animated.View {...this.props} style={wStyle}>
+        {renderSection(this.state.section)}
       </Animated.View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  section: {
-    position: "absolute",
-    left: 0,
-    right: 0
-  }
-});

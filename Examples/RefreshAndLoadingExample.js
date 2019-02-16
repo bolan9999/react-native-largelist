@@ -11,23 +11,18 @@ import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NormalHeader } from "react-native-spring-scrollview/NormalHeader";
 import { NormalFooter } from "react-native-spring-scrollview/NormalFooter";
-import { LargeList, NativeLargeList } from "../src";
+import { LargeList } from "../src";
 import { contacts } from "./DataSource";
-import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 
-class RefreshAndLoadingExampleStatic extends React.Component {
+export class RefreshAndLoadingExample extends React.Component {
   _largeList;
   _index = 0;
 
-  constructor(props) {
-    super(props);
-    this.state = { data: [contacts[0]], allLoaded: false };
-  }
+  state = { data: [contacts[0]], allLoaded: false };
 
   render() {
-    const List = this.props.native ? NativeLargeList : LargeList;
     return (
-      <List
+      <LargeList
         ref={ref => (this._largeList = ref)}
         style={styles.container}
         data={this.state.data}
@@ -35,10 +30,8 @@ class RefreshAndLoadingExampleStatic extends React.Component {
         renderSection={this._renderSection}
         heightForIndexPath={() => 60}
         renderIndexPath={this._renderItem}
-        refreshHeaderHeight={60}
         refreshHeader={NormalHeader}
         onRefresh={this._onRefresh}
-        loadingFooterHeight={60}
         loadingFooter={NormalFooter}
         onLoading={this._onLoading}
         allLoaded={this.state.allLoaded}
@@ -64,7 +57,6 @@ class RefreshAndLoadingExampleStatic extends React.Component {
   };
 
   _onRefresh = () => {
-    this._largeList.beginRefresh();
     setTimeout(() => {
       this._largeList.endRefresh();
       this._index = 0;
@@ -76,7 +68,6 @@ class RefreshAndLoadingExampleStatic extends React.Component {
   };
 
   _onLoading = () => {
-    this._largeList.beginLoading();
     setTimeout(() => {
       this._largeList.endLoading();
       this.setState(p => ({
@@ -136,13 +127,9 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginVertical: 50
   },
-  row: { flex: 1, flexDirection: "row", alignItems: "center" },
+  row: { flexDirection: "row", alignItems: "center" },
   image: { marginLeft: 16, width: 44, height: 44 },
   rContainer: { marginLeft: 20 },
   title: { fontSize: 18 },
   subtitle: { fontSize: 14, marginTop: 8 }
 });
-
-export const RefreshAndLoadingExample = gestureHandlerRootHOC(
-  RefreshAndLoadingExampleStatic
-);
