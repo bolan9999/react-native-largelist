@@ -75,9 +75,9 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     const sectionTops = [];
     const sectionHeights = [];
     let currentGroupIndex = 0;
-    let inputs = [];
-    let outputs = [];
-    let lastOffset = [];
+    const inputs = [];
+    const outputs = [];
+    const lastOffset = [];
     const sectionInputs = [];
     const sectionOutputs = [];
     const sectionIndexes = [];
@@ -309,6 +309,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
         sectionRef.current.updateOffset(this._contentOffsetY);
       })
     );
+    this.props.onMomentumScrollEnd && this.props.onMomentumScrollEnd();
   };
 
   _onScroll = e => {

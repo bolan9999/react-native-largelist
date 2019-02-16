@@ -27,71 +27,25 @@
 
 
   <style>
-    .head {
-      width: 100%;
-      height: 60px;
-      background: #3f464f;
-      color: #cfd8dc;
-      text-align: left;
-      position: fixed;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      top: -25px;
-      left: 0;
-      z-index: 2000;
-    }
-    .left {
-      display: flex;
-      align-items: center;
-      margin-left: 20px;
-    }
-    .sidebar {
-      top: 60px;
-    }
-    .image {
-      width: 40px;
-      height: 40px;
-    }
-    .title {
-      margin-left: 20px;
-      font-size: 30px;
-    }
-    .right {
-      margin-right: 20px;
+    section.cover.show{
+      background: linear-gradient(to left bottom, hsl(69, 100%, 85%) 0%,hsl(185, 100%, 85%) 100%) !important;
     }
   </style>
 </head>
 
 <body>
 
-<nav class="head">
-
-  <div class="left">
-
-    <img class="image"
-         src="./res/list.png">
-
-
-    <span class="title">React Native LargeList V2
-      </span>
-  </div>
-
-  <div class="right">
-    <a href="https://github.com/bolan9999/react-native-largelist">GitHub
-    </a>
-  </div>
-</nav>
-
 <div id="app">
-
   <script>
     window.$docsify = {
-      name: "",
-      repo: "",
-
-      loadSidebar: true
+      name: "React Native Large List V3",
+      repo: "https://github.com/bolan9999/react-native-largelist",
+      // logo:'./res/list.png',
+      loadSidebar:true,
+      loadNavbar:true,
+      coverpage:true,
+      onlyCover:true,
+      auto2top:true
     };
 
   </script>

@@ -1,24 +1,20 @@
-/*
- *
- * Created by Stone
- * https://github.com/bolan9999
- * Email: shanshang130@gmail.com
- * Date: 2018/7/18
- *
- */
+# 简单使用
 
+导入：
+```$js
+import { LargeList } from "react-native-largelist-v3";
+```
+
+使用下面的代码检查您的安装是否正确：
+
+```
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { LargeList } from "../src";
+import { LargeList } from "react-native-largelist-v2";
 
-export class HeightUnequalExample extends React.Component {
+export class HeightEqualExample extends React.Component {
   _sectionCount = 10;
-  _rowCount = 20;
-
-  constructor(props) {
-    super(props);
-    this.state = { select: 0 };
-  }
+  _rowCount = 10;
 
   render() {
     const data = [];
@@ -35,8 +31,7 @@ export class HeightUnequalExample extends React.Component {
         data={data}
         heightForSection={() => 50}
         renderSection={this._renderSection}
-        heightForIndexPath={({ section: section, row: row }) =>
-          row % 2 ? 50 : 100}
+        heightForIndexPath={() => 50}
         renderIndexPath={this._renderIndexPath}
       />
     );
@@ -75,6 +70,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   row: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -87,3 +83,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE"
   }
 });
+```
+
+[更多示例](https://github.com/bolan9999/react-native-largelist/tree/master/Examples)

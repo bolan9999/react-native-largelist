@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TextInput,
-  Switch
-} from "react-native";
+import { TouchableOpacity, Text, StyleSheet, ScrollView } from "react-native";
 import {
   HeightUnequalExample,
   HeightEqualExample,
@@ -15,8 +7,7 @@ import {
   ContactExample,
   MenuListExample,
   RefreshAndLoadingExample,
-  IntensiveSectionExample,
-  NativeLargeListExample
+  IntensiveSectionExample
 } from "./Examples";
 
 export default class App extends React.Component {
@@ -61,11 +52,7 @@ export default class App extends React.Component {
     return (
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
         {examples.map((str, index) =>
-          <TouchableOpacity
-            key={index}
-            style={styles.button}
-            onPress={() => this.setState({ type: index })}
-          >
+          <TouchableOpacity key={index} style={styles.button} onPress={() => this.setState({ type: index })}>
             <Text style={styles.text}>
               {str}
             </Text>

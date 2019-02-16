@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 10
   },
-  row: { flex: 1, flexDirection: "row", alignItems: "center" },
+  row: { flexDirection: "row", alignItems: "center" },
   image: { marginLeft: 16, width: 44, height: 44 },
   rContainer: { marginLeft: 20 },
   title: { fontSize: 18 },

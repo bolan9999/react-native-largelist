@@ -40,7 +40,7 @@ export class MessageExample extends React.Component {
     let msg = this.messages[section].items[row];
     return (
       <TouchableOpacity
-        style={{ flex: 1, backgroundColor: "#FFF" }}
+        style={{ backgroundColor: "#FFF" }}
         onPress={() => console.log("=====>")}
       >
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
