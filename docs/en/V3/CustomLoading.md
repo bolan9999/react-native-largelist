@@ -105,6 +105,42 @@ Example:
 
 Fully example is here [NormalFooter](https://github.com/bolan9999/react-native-spring-scrollview/blob/master/src/NormalFooter.js)
 
+#### Lottie animation support
+
+```
+export class CommonLottieFooter extends RefreshHeader {
+  static height: number = 100;
+
+  render() {
+    if (this.state.status === "allLoaded") return null;
+    const { offset, bottomOffset } = this.props;
+    let progress = offset.interpolate({
+      inputRange: [
+        bottomOffset + 50,
+        bottomOffset + 500
+      ],
+      outputRange: [0, 1]
+    });
+    if (this.state.status === "loading") {
+      progress = undefined;
+    }
+    return (
+      <View style={{ flex: 1, marginBottom: 20 }}>
+        <LottieView
+          key={this.state.status === "loading"}
+          source={require("./res/loading.json")}
+          progress={progress}
+          autoPlay={this.state.status === "loading"}
+          loop={this.state.status === "loading"}
+          speed={2}
+        />
+      </View>
+    );
+  }
+}
+```
+Full lottie animation example is here [CommonLottieFooter](https://github.com/bolan9999/react-native-spring-scrollview/blob/master/src/Customize/CommonLottieFooter.js)
+
 ### Contribute your awesome loading footer
 
 Fork [react-native-spring-scrollview](https://github.com/bolan9999/react-native-spring-scrollview), make awesome loading footer in the [Customize](https://github.com/bolan9999/react-native-spring-scrollview/tree/master/src/Customize) dir, and pull a request to me.

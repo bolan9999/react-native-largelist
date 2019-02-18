@@ -4010,9 +4010,9 @@ react-devtools-core@^3.2.2:
     shell-quote "^1.6.1"
     ws "^3.3.1"
 
-react-native-spring-scrollview@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/react-native-spring-scrollview/-/react-native-spring-scrollview-2.0.3.tgz#fbd8acda8412a511d85ea4542867eb73ff8fa74f"
+react-native-spring-scrollview@2.0.5:
+  version "2.0.5"
+  resolved "https://registry.npmjs.org/react-native-spring-scrollview/-/react-native-spring-scrollview-2.0.5.tgz#011cc23bf4589d4382b3c26fc379724866548113"
 
 react-native@^0.56.0:
   version "0.56.0"

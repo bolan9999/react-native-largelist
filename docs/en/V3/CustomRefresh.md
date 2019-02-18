@@ -97,6 +97,39 @@ Example:
 
 Fully example is here [NormalHeader](https://github.com/bolan9999/react-native-spring-scrollview/blob/master/src/NormalHeader.js)
 
+#### Lottie animation support
+
+Example:
+```
+export class CommonLottieHeader extends RefreshHeader {
+  static height: number = 100;
+
+  render() {
+    let progress = this.props.offset.interpolate({
+      inputRange: [-200, -150, -150, -100, -100, -50],
+      outputRange: [1, 0, 1, 0, 1, 0]
+    });
+    if (this.state.status === "refreshing") {
+      progress = undefined;
+    }
+    return (
+      <View style={{ flex: 1, marginTop: 20 }}>
+        <LottieView
+          source={
+            this.state.status === "refreshing" ? require("./res/refreshing2.json") : require("./res/refreshing.json")
+          }
+          progress={progress}
+          autoPlay={this.state.status === "refreshing"}
+          loop={this.state.status === "refreshing"}
+        />
+      </View>
+    );
+  }
+}
+```
+
+Full example is here [CommonLottieHeader](https://github.com/bolan9999/react-native-spring-scrollview/blob/master/src/Customize/CommonLottieHeader.js)
+
 ### Contribute your awesome refreshing headers
 
 Fork [react-native-spring-scrollview](https://github.com/bolan9999/react-native-spring-scrollview), make awesome refreshing header in the [Customize](https://github.com/bolan9999/react-native-spring-scrollview/tree/master/src/Customize) dir, and pull a request to me.

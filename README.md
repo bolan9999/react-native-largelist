@@ -6,15 +6,15 @@
 
 * Large data source list component, items reused by group, Less CPU/Memory usage.
 * Fully Cross-platform bounces (iOS & Android).
-* Highly customize Refreshing and Loading.
+* Highly customize Refreshing and Loading. Fully support `react-native-lottie`. More smoothly animation.
 * Header and Footer support.
 * ScrollToIndex support.
 * Sticky Section support.
 * Never blanks.
 
 ## Preview
-![Preview](./docs/res/Update.gif)
-![Preview](./docs/res/RefreshAndLoading.gif)
+![Preview](./docs/res/LottieRefreshing.gif)
+![Preview](./docs/res/LottieLoading.gif)
 
 ## Documentation
 

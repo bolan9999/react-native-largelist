@@ -5,12 +5,12 @@
 
 * Support large data source, highly reused, high performance.Less CPU/Memory usage.
 * Cross-platform bounces.（iOS & Android）
-* Highly customize Refreshing and Loading.
+* Highly customize Refreshing and Loading.Fully support `react-native-lottie`. More smoothly animation.
 * Support header and footer.
 * Native onScroll Listener supported.
 * Sticky headers supported.
 * Never blanks, violence test passed on Redmi phone(only $99).
 
 ### Preview
-![Refreshing](../res/RefreshAndroid.gif)
-![Loading](../res/LoadingAndroid.gif)
+![Refreshing](../res/LottieRefreshing.gif)
+![Loading](../res/LottieLoading.gif)
