@@ -328,7 +328,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     }
     this._lastTick = now;
     this._shouldUpdateContent && this._groupRefs.forEach(group => idx(() => group.current.contentConversion(offsetY)));
-    this.props.onScroll && this.props.onScroll(offset);
+    this.props.onScroll && this.props.onScroll(e);
   };
 
   scrollTo(offset: Offset, animated: boolean = true): Promise<void> {
