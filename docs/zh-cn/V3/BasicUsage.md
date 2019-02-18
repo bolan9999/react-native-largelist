@@ -10,7 +10,7 @@ import { LargeList } from "react-native-largelist-v3";
 ```
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { LargeList } from "react-native-largelist-v2";
+import { LargeList } from "react-native-largelist-v3";
 
 export class HeightEqualExample extends React.Component {
   _sectionCount = 10;
