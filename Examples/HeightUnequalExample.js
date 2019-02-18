@@ -10,6 +10,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { LargeList } from "../src";
+import { CommonLottieHeader, CommonLottieFooter } from "react-native-spring-scrollview/Customize";
 
 export class HeightUnequalExample extends React.Component {
   _sectionCount = 1;
@@ -39,6 +40,8 @@ export class HeightUnequalExample extends React.Component {
         renderSection={this._renderSection}
         heightForIndexPath={({ section: section, row: row }) => (row % 2 ? 50 : 100)}
         renderIndexPath={this._renderIndexPath}
+        refreshHeader={CommonLottieHeader}
+        loadingFooter={CommonLottieFooter}
         onRefresh={this._onRefresh}
         onLoading={this._onLoading}
       />
