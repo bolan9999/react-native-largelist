@@ -22,7 +22,6 @@ const screenHeight = Math.max(screenLayout.width, screenLayout.height);
 export class LargeList extends React.PureComponent<LargeListPropType> {
   _groupRefs = [];
   _offset: Animated.Value;
-  _sectionContainer = React.createRef();
   _scrollView = React.createRef();
   _shouldUpdateContent = true;
   _lastTick = 0;
@@ -30,6 +29,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
   _headerLayout;
   _footerLayout;
   _nativeOffset;
+  _size;
   _sectionRefs: [];
   _orgOnHeaderLayout: () => 0;
   _orgOnFooterLayout: () => 0;
@@ -83,17 +83,15 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     const sectionIndexes = [];
     const sections = [0];
     let sumHeight = this._headerLayout ? this._headerLayout.height : 0;
+    const wrapperHeight = idx(() => this._size.height, 700);
     if (this._shouldRenderContent()) {
       let currentGroupHeight = 0;
-
       for (let i = 0; i < groupCount; ++i) {
         inputs.push(i === 0 ? [Number.MIN_SAFE_INTEGER] : []);
         outputs.push(i === 0 ? [sumHeight] : []);
         lastOffset.push(sumHeight);
         groupIndexes.push([]);
       }
-
-      const wrapperHeight = idx(() => this._scrollView.current._height, 700);
       for (let section = 0; section < data.length; ++section) {
         for (let row = -1; row < data[section].items.length; ++row) {
           let height;
@@ -180,12 +178,13 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
       }
     }
     if (this._footerLayout) sumHeight += this._footerLayout.height;
-    const contentStyle = sumHeight > 0 ? { height: sumHeight } : null;
+    const contentStyle = sumHeight > 0 ? { height: sumHeight > wrapperHeight ? sumHeight : wrapperHeight + 1 } : null;
 
     return (
       <SpringScrollView
         {...this.props}
         ref={this._scrollView}
+        onSizeChange={this._onSizeChange}
         contentStyle={contentStyle}
         onNativeContentOffsetExtract={this._nativeOffset}
         onScroll={this._onScroll}
@@ -280,26 +279,27 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
   }
 
   _shouldRenderContent() {
-    return !this.props.renderHeader || this._headerLayout;
+    const { renderHeader, renderFooter } = this.props;
+    return this._size && (!renderHeader || this._headerLayout) && (!renderFooter || this._footerLayout);
   }
+
+  _onSizeChange = size => {
+    this._size = size;
+    if (this._shouldRenderContent()) this.forceUpdate();
+  };
 
   _onHeaderLayout = e => {
     if (this._headerLayout && this._headerLayout.height === e.nativeEvent.layout.height) return;
     this._headerLayout = e.nativeEvent.layout;
-    const { renderFooter } = this.props;
     this._orgOnHeaderLayout && this._orgOnHeaderLayout(e);
-    if (!renderFooter || this._footerLayout) {
-      this.forceUpdate();
-    }
+    if (this._shouldRenderContent()) this.forceUpdate();
   };
 
   _onFooterLayout = e => {
     if (this._footerLayout && this._footerLayout.height === e.nativeEvent.layout.height) return;
     this._footerLayout = e.nativeEvent.layout;
     this._orgOnFooterLayout && this._orgOnFooterLayout(e);
-    if (this._shouldRenderContent()) {
-      this.forceUpdate();
-    }
+    if (this._shouldRenderContent()) this.forceUpdate();
   };
 
   _onScrollEnd = () => {
@@ -335,7 +335,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     if (!this._scrollView.current) return Promise.reject("LargeList has not been initialized yet!");
     this._shouldUpdateContent = false;
     this._groupRefs.forEach(group => idx(() => group.current.contentConversion(offset.y)));
-    idx(() => this._sectionContainer.current.updateOffset(offset.y, true));
+    this._sectionRefs.forEach(sectionRef => idx(() => sectionRef.current.updateOffset(offset.y)));
     return this._scrollView.current.scrollTo(offset, animated).then(() => {
       this._shouldUpdateContent = true;
       return Promise.resolve();
@@ -344,7 +344,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
 
   scrollToIndexPath(indexPath: IndexPath, animated: boolean = true): Promise<void> {
     const { data, heightForSection, heightForIndexPath } = this.props;
-    let ht = 0;
+    let ht = idx(() => this._headerLayout.height, 0);
     for (let s = 0; s < data.length && s <= indexPath.section; ++s) {
       if (indexPath.section === s && indexPath.row === -1) break;
       ht += heightForSection(s);

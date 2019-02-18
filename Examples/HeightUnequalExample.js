@@ -12,8 +12,9 @@ import { StyleSheet, Text, View } from "react-native";
 import { LargeList } from "../src";
 
 export class HeightUnequalExample extends React.Component {
-  _sectionCount = 10;
-  _rowCount = 20;
+  _sectionCount = 1;
+  _rowCount = 5;
+  _list: LargeList;
 
   constructor(props) {
     super(props);
@@ -33,14 +34,23 @@ export class HeightUnequalExample extends React.Component {
       <LargeList
         style={styles.container}
         data={data}
+        ref={ref => (this._list = ref)}
         heightForSection={() => 50}
         renderSection={this._renderSection}
-        heightForIndexPath={({ section: section, row: row }) =>
-          row % 2 ? 50 : 100}
+        heightForIndexPath={({ section: section, row: row }) => (row % 2 ? 50 : 100)}
         renderIndexPath={this._renderIndexPath}
+        onRefresh={this._onRefresh}
+        onLoading={this._onLoading}
       />
     );
   }
+
+  _onRefresh = () => {
+    setTimeout(() => this._list.endRefresh(), 2000);
+  };
+  _onLoading = () => {
+    setTimeout(() => this._list.endLoading(), 2000);
+  };
 
   _renderSection = (section: number) => {
     return (

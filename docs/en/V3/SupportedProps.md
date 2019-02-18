@@ -1,6 +1,6 @@
-# 所有支持属性列表
+# All supported props
 
-属性  |  类型  |  默认值  |  描述  
+Props  |  Type  |  Default  |  Description  
 ---- | ------ | --------- | --------
 [...Animated.View](http://facebook.github.io/react-native/docs/view) | - | - | Support all props of View
 bounces | boolean | true | Bounces if the content offset is out of the content view. It won't be bounces on the horizontal direction if the content view is not wider than the wrapper view although bounces is true. But it will on the vertical direction.
@@ -9,11 +9,11 @@ initialContentOffset | {x:number, y:number} | {x:0,y:0} | initial content offset
 showsVerticalScrollIndicator | boolean | true | showsVerticalScrollIndicator
 showsHorizontalScrollIndicator | boolean | true | showsHorizontalScrollIndicator（Only works when content view is wider than wrapper view）
 tapToHideKeyboard | boolean | true | tapToHideKeyboard
-data | { items: any[] }[] | 必需 | The data source of largelist
+data | { items: any[] }[] | required | The data source of largelist
 heightForSection | (section: number) => number | ()=>0 | The height function for every Section
 renderSection | (section: number) => React.ReactElement &lt;any> | ()=>null | The render function for every Section
-heightForIndexPath | (indexPath: IndexPath) => number | 必需 | The height function for every IndexPath
-renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any> | 必需 | The render function for every IndexPath
+heightForIndexPath | (indexPath: IndexPath) => number | required | The height function for every IndexPath
+renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any> | required | The render function for every IndexPath
 renderHeader | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist header
 renderFooter | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist footer
 onRefresh | ()=>any | undefined | The callback when refreshing. When this props is configured, a refresh header will be add on the top of the LargeList
