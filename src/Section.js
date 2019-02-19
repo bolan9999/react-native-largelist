@@ -46,7 +46,7 @@ export class Section extends React.Component<SectionPropType> {
     if (section === undefined || section < 0 || section >= data.length) return null;
     const wStyle = StyleSheet.flatten([
       style,
-      { height: heightForSection(section), transform: [{ scaleY: inverted ? -1 : 1 }] }
+      { height: heightForSection(section), transform: [...style.transform, { scaleY: inverted ? -1 : 1 }] }
     ]);
     return (
       <Animated.View {...this.props} style={wStyle}>
