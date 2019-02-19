@@ -10,6 +10,7 @@
 * Header and Footer support.
 * ScrollToIndex support.
 * Sticky Section support.
+* Support inverted.
 * Never blanks.
 
 ## Preview

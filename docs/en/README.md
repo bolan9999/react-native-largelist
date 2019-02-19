@@ -9,6 +9,7 @@
 * Support header and footer.
 * Native onScroll Listener supported.
 * Sticky headers supported.
+* Support inverted.
 * Never blanks, violence test passed on Redmi phone(only $99).
 
 ### Preview

@@ -33,6 +33,7 @@ export interface LargeListPropType {
     x: Animated.Value,
     y: Animated.Value
   },
+  inverted?: boolean;
 
   groupCount?: number,
   groupMinHeight?: number,
@@ -50,6 +51,7 @@ export interface GroupPropType {
   renderSection?: (section: number) => React.Node<any>,
   renderIndexPath: (indexPath: IndexPath) => React.Node<any>,
   offset?: number,
+  inverted?: boolean;
   updateTimeInterval: number
 }
 
@@ -63,5 +65,6 @@ export interface SectionPropType {
   output: number[],
   sectionIndexes: number[],
   offset: number,
+  inverted?: boolean;
   data: LargeListDataType
 }

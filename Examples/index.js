@@ -14,3 +14,4 @@ export * from "./ContactExample";
 export * from "./MenuListExample";
 export * from "./RefreshAndLoadingExample";
 export * from "./IntensiveSectionExample";
+export * from "./ChatExample";

@@ -42,7 +42,7 @@ export class Group extends React.Component<GroupPropType> {
   }
 
   render() {
-    const { indexes, heightForSection, heightForIndexPath, renderIndexPath } = this.props;
+    const { indexes, heightForSection, heightForIndexPath, renderIndexPath, inverted } = this.props;
     if (this._currentIndex >= indexes.length) return null;
     this._margin = 0;
     return indexes[this._currentIndex].map((indexPath, index) => {
@@ -55,7 +55,10 @@ export class Group extends React.Component<GroupPropType> {
       const cell = React.Children.only(renderIndexPath(indexPath));
       const marginTop = this._margin;
       this._margin = 0;
-      const style = StyleSheet.flatten([cell.props.style, { height, marginTop, alignSelf: "stretch", flex: 0 }]);
+      const style = StyleSheet.flatten([
+        cell.props.style,
+        { height, marginTop, alignSelf: "stretch", flex: 0, transform: [{ scaleY: inverted ? -1 : 1 }] }
+      ]);
       return React.cloneElement(cell, {
         key: index,
         style

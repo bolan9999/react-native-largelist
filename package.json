@@ -11,7 +11,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.4.1",
     "react-native": "^0.56.0",
-    "react-native-spring-scrollview": "2.0.7"
+    "react-native-spring-scrollview": "2.0.8"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",

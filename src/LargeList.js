@@ -179,7 +179,6 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     }
     if (this._footerLayout) sumHeight += this._footerLayout.height;
     const contentStyle = sumHeight > 0 ? { height: sumHeight > wrapperHeight ? sumHeight : wrapperHeight + 1 } : null;
-
     return (
       <SpringScrollView
         {...this.props}
@@ -251,10 +250,10 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
   }
 
   _renderHeader() {
-    const { renderHeader } = this.props;
+    const { renderHeader, inverted } = this.props;
     if (!renderHeader) return null;
     const transform = {
-      transform: [{ translateY: this._shouldRenderContent() ? 0 : 10000 }]
+      transform: [{ translateY: this._shouldRenderContent() ? 0 : 10000 }, { scaleY: inverted ? -1 : 1 }]
     };
     const header = React.Children.only(renderHeader());
     this._orgOnHeaderLayout = header.onLayout;
@@ -265,10 +264,10 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
   }
 
   _renderFooter() {
-    const { renderFooter } = this.props;
+    const { renderFooter, inverted } = this.props;
     if (!renderFooter) return null;
     const transform = {
-      transform: [{ translateY: this._shouldRenderContent() ? 0 : 10000 }]
+      transform: [{ translateY: this._shouldRenderContent() ? 0 : 10000 }, { scaleY: inverted ? -1 : 1 }]
     };
     const footer = React.Children.only(renderFooter());
     this._orgOnFooterLayout = footer.onLayout;
@@ -328,7 +327,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     }
     this._lastTick = now;
     this._shouldUpdateContent && this._groupRefs.forEach(group => idx(() => group.current.contentConversion(offsetY)));
-    this.props.onScroll && this.props.onScroll(offset);
+    this.props.onScroll && this.props.onScroll(e);
   };
 
   scrollTo(offset: Offset, animated: boolean = true): Promise<void> {

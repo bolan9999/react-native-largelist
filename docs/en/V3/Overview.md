@@ -16,6 +16,7 @@ heightForIndexPath | (indexPath: IndexPath) => number | required | The height fu
 renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any> | required | The render function for every IndexPath
 renderHeader | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist header
 renderFooter | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist footer
+inverted | boolean | false | Inverted the data source, see [ChatExample](https://github.com/bolan9999/react-native-largelist/tree/master/Examples/ChatExample.js) for example.
 
 ### Simple Usage
 
