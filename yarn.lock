@@ -4045,9 +4045,9 @@ react-native-safe-module@^1.1.0:
   dependencies:
     dedent "^0.6.0"
 
-react-native-spring-scrollview@2.0.8:
-  version "2.0.8"
-  resolved "https://registry.npmjs.org/react-native-spring-scrollview/-/react-native-spring-scrollview-2.0.8.tgz#f5d5e74f63826ad69c9161bb4e75cb5d48cf21ea"
+react-native-spring-scrollview@2.0.11:
+  version "2.0.11"
+  resolved "https://registry.npmjs.org/react-native-spring-scrollview/-/react-native-spring-scrollview-2.0.11.tgz#a1c20c18523b6f735e42510bb0fea9be50b2ab89"
 
 react-native@^0.56.0:
   version "0.56.0"
