@@ -7,7 +7,9 @@ import {
   ContactExample,
   MenuListExample,
   RefreshAndLoadingExample,
-  IntensiveSectionExample, ChatExample
+  IntensiveSectionExample,
+  ChatExample,
+  FlatListExample
 } from "./Examples";
 
 export default class App extends React.Component {
@@ -36,7 +38,9 @@ export default class App extends React.Component {
       case 6:
         return <IntensiveSectionExample />;
       case 7:
-        return <ChatExample />
+        return <ChatExample />;
+      case 8:
+        return <FlatListExample />;
     }
     return this.renderChoose();
   }
@@ -50,7 +54,8 @@ export default class App extends React.Component {
       "MenuListExample",
       "RefreshAndLoadingExample",
       "IntensiveSectionExample",
-      "ChatExample"
+      "ChatExample",
+      "MessageExample(use FlatList)\n (compare with MessageExample's performance )"
     ];
     return (
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
@@ -83,7 +88,8 @@ const styles = StyleSheet.create({
 
   text: {
     fontSize: 16,
-    marginTop: 20
+    marginTop: 20,
+    textAlign: "center"
   },
   button: { alignItems: "center" }
 });

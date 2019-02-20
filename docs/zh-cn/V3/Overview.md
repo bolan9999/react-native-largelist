@@ -16,6 +16,7 @@ heightForIndexPath | (indexPath: IndexPath) => number | 必需 | 返回列表每
 renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any> | 必需 | 每一行的render函数
 renderHeader | ()=> React.ReactElement &lt;any> | undefined | 列表的头部组件函数
 renderFooter | ()=> React.ReactElement &lt;any> | undefined | 列表的尾部组件函数
+inverted | boolean | false | 翻转滚动方向，适配聊天App，查看示例 [ChatExample](https://github.com/bolan9999/react-native-largelist/tree/master/Examples/ChatExample.js) .
 
 ### 简单示例
 

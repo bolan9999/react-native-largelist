@@ -16,6 +16,7 @@ heightForIndexPath | (indexPath: IndexPath) => number | 必需 | 返回列表每
 renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any> | 必需 | 每一行的render函数
 renderHeader | ()=> React.ReactElement &lt;any> | undefined | 列表的头部组件函数
 renderFooter | ()=> React.ReactElement &lt;any> | undefined | 列表的尾部组件函数
+inverted | boolean | false | 翻转滚动方向，适配聊天App，查看示例 [ChatExample](https://github.com/bolan9999/react-native-largelist/tree/master/Examples/ChatExample.js) .
 onRefresh | ()=>any | undefined | 下拉刷新的回调函数,如果设置了此属性，则会在顶部加一个刷新Header
 refreshHeader | [RefreshHeader](https://github.com/bolan9999/react-native-spring-scrollview/blob/master/src/RefreshHeader.js) | NormalHeader | 选择下拉刷新的组件，用户如果不希望高度自定义，则可以不设定直接使用NormalHeader,如果需要高度自定义，请参看[自定义下拉刷新](zh-cn/V3/CustomRefresh)
 onLoading | ()=>any | undefined | 上拉加载的回调函数,如果设置了此属性，则会在底部加一个加载组件

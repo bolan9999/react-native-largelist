@@ -16,6 +16,7 @@ heightForIndexPath | (indexPath: IndexPath) => number | required | The height fu
 renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any> | required | The render function for every IndexPath
 renderHeader | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist header
 renderFooter | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist footer
+inverted | boolean | false | Inverted the data source, see [ChatExample](https://github.com/bolan9999/react-native-largelist/tree/master/Examples/ChatExample.js) for example.
 onRefresh | ()=>any | undefined | The callback when refreshing. When this props is configured, a refresh header will be add on the top of the LargeList
 refreshHeader | [RefreshHeader](https://github.com/bolan9999/react-native-spring-scrollview/blob/master/src/RefreshHeader.js) | NormalHeader | Select a refreshing header , The headers in the Customize dir are all supported
 onLoading | ()=>any | undefined | The callback of loading. If set this prop, a loading footer will add to the bottom of the LargeLIst
