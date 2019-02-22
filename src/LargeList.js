@@ -119,7 +119,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
               inputs[currentGroupIndex].push(Number.MIN_SAFE_INTEGER);
             }
             inputs[currentGroupIndex].push(sumHeight - wrapperHeight);
-            inputs[currentGroupIndex].push(sumHeight + 1 - wrapperHeight);
+            inputs[currentGroupIndex].push(sumHeight + 0.1 - wrapperHeight);
             if (outputs[currentGroupIndex].length === 0) {
               outputs[currentGroupIndex].push(sumHeight);
               outputs[currentGroupIndex].push(sumHeight);
@@ -156,7 +156,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
         const headerHeight = this._headerLayout ? this._headerLayout.height : 0;
         const first = sectionInputs[index].length <= 0;
         sectionInputs[index].push(
-          first ? sectionTops[section] - 1 - headerHeight : sectionInputs[index][sectionInputs[index].length - 1] + 1,
+          first ? sectionTops[section] - 1 - headerHeight : sectionInputs[index][sectionInputs[index].length - 1] + 0.1,
           sectionTops[section] - headerHeight,
           sectionTops[section]
         );
@@ -178,7 +178,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
       }
     }
     if (this._footerLayout) sumHeight += this._footerLayout.height;
-    const contentStyle = sumHeight > 0 ? { height: sumHeight > wrapperHeight ? sumHeight : wrapperHeight + 1 } : null;
+    const contentStyle = sumHeight > 0 ? { height: sumHeight > wrapperHeight ? sumHeight : wrapperHeight + StyleSheet.hairlineWidth } : null;
     return (
       <SpringScrollView
         {...this.props}

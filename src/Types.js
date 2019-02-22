@@ -21,6 +21,11 @@ export interface Offset {
   y: number
 }
 
+export interface Size {
+  height:number,
+  width:number
+}
+
 export interface LargeListPropType {
   data: LargeListDataType,
   heightForSection?: (section: number) => number,
@@ -67,4 +72,25 @@ export interface SectionPropType {
   offset: number,
   inverted?: boolean;
   data: LargeListDataType
+}
+
+export interface WaterfallListType {
+  data:any[];
+  heightForItem:(item:any,index:number)=>number;
+  renderItem:(item:any,index:number)=>React.ReactElement<any>;
+  preferColumnWidth?: number;
+  numColumns?: number;
+  renderHeader?: ()=>React.ReactElement<any>;
+  renderFooter?: ()=>React.ReactElement<any>;
+  onNativeContentOffsetExtract?: {
+    x: Animated.Value,
+    y: Animated.Value
+  },
+}
+
+export interface WaterfallItemType extends WaterfallListType{
+  input: number[],
+  output: number[],
+  itemIndexes: number[],
+  offset: number,
 }

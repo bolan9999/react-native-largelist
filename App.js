@@ -9,7 +9,9 @@ import {
   RefreshAndLoadingExample,
   IntensiveSectionExample,
   ChatExample,
-  FlatListExample
+  FlatListExample,
+  WaterfallListExample,
+  PictureExample
 } from "./Examples";
 
 export default class App extends React.Component {
@@ -41,6 +43,10 @@ export default class App extends React.Component {
         return <ChatExample />;
       case 8:
         return <FlatListExample />;
+      case 9:
+        return <WaterfallListExample />;
+      case 10:
+        return <PictureExample />;
     }
     return this.renderChoose();
   }
@@ -55,7 +61,9 @@ export default class App extends React.Component {
       "RefreshAndLoadingExample",
       "IntensiveSectionExample",
       "ChatExample",
-      "MessageExample(use FlatList)\n (compare with MessageExample's performance )"
+      "MessageExample(use FlatList)\n (compare with MessageExample's performance )",
+      "WaterfallListExample",
+      "PictureExample"
     ];
     return (
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
