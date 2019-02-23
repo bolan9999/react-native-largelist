@@ -93,7 +93,7 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
         columnSummaries[minHeightIndex].indexes.push(index);
         const lastTop = idx(
           () => columnSummaries[minHeightIndex].tops[columnSummaries[minHeightIndex].tops.length - 1],
-          0
+          idx(() => this._headerLayout.height, 0)
         );
         columnSummaries[minHeightIndex].tops.push(lastTop + lastHeight);
       });
@@ -161,36 +161,34 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
         onSizeChange={this._onSizeChange}
       >
         {this._renderHeader()}
-        <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-          {columnSummaries.map((summary, index) =>
-            <View key={index} style={{ width: this._size.width / numColumns }}>
-              {summary.itemIndexes.map((itemIndex, cellIndex) =>
-                <WaterfallItem
-                  {...this.props}
-                  key={itemIndex[0]}
-                  ref={this._itemRefs[index][cellIndex]}
-                  offset={this._contentOffsetY}
-                  itemIndexes={summary.inputItemIndexes[cellIndex]}
-                  input={summary.inputs[cellIndex]}
-                  output={summary.outputs[cellIndex]}
-                  style={StyleSheet.flatten([
-                    styles.abs,
+        {columnSummaries.map((summary, index) => {
+          return summary.itemIndexes.map((itemIndex, cellIndex) =>
+            <WaterfallItem
+              {...this.props}
+              key={summary.inputItemIndexes[cellIndex][0]}
+              ref={this._itemRefs[index][cellIndex]}
+              offset={this._contentOffsetY}
+              itemIndexes={summary.inputItemIndexes[cellIndex]}
+              input={summary.inputs[cellIndex]}
+              output={summary.outputs[cellIndex]}
+              style={StyleSheet.flatten([
+                styles.leftTop,
+                {
+                  width: this._size.width / numColumns,
+                  transform: [
                     {
-                      transform: [
-                        {
-                          translateY: this._offset.interpolate({
-                            inputRange: summary.inputs[cellIndex],
-                            outputRange: summary.outputs[cellIndex]
-                          })
-                        }
-                      ]
-                    }
-                  ])}
-                />
-              )}
-            </View>
-          )}
-        </View>
+                      translateY: this._offset.interpolate({
+                        inputRange: summary.inputs[cellIndex],
+                        outputRange: summary.outputs[cellIndex]
+                      })
+                    },
+                    { translateX: this._size.width / numColumns * index }
+                  ]
+                }
+              ])}
+            />
+          );
+        })}
         {this._renderFooter()}
       </SpringScrollView>
     );
@@ -258,7 +256,7 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
     this._lastTick = now;
     this._shouldUpdateContent &&
       this._itemRefs.forEach(column =>
-        column.forEach(itemRef => idx(itemRef.current.updateOffset(this._contentOffsetY)))
+        column.forEach(itemRef => idx(() => itemRef.current.updateOffset(this._contentOffsetY)))
       );
     this._shouldUpdateContent && this.props.onScroll && this.props.onScroll(e);
   };

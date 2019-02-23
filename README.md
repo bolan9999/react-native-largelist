@@ -16,6 +16,8 @@
 ## Preview
 ![Preview](./docs/res/LottieRefreshing.gif)
 ![Preview](./docs/res/LottieLoading.gif)
+![WaterfallExample](./docs/res/WaterfallExample.gif)
+![PictureExample](./docs/res/PictureExample.gif)
 
 ## Documentation
 

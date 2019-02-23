@@ -15,3 +15,5 @@
 ### 预览
 ![Refreshing](../res/LottieRefreshing.gif)
 ![Loading](../res/LottieLoading.gif)
+![WaterfallExample](../res/WaterfallExample.gif)
+![PictureExample](../res/PictureExample.gif)
