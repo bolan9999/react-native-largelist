@@ -11,7 +11,7 @@
         * [滑动 & 监听滑动](zh-cn/V3/Scroll)
         * [所有支持属性列表](zh-cn/V3/SupportedProps)
         * [已知问题](zh-cn/V3/KnownIssues)
-    * WaterfallList
-        * [概述](zh-cn/V3/WaterfallList/Overview)
-        * [基本用法](zh-cn/V3/WaterfallList/Usage)
+    <!--* WaterfallList-->
+        <!--* [概述](zh-cn/V3/WaterfallList/Overview)-->
+        <!--* [基本用法](zh-cn/V3/WaterfallList/Usage)-->
     * 注意事项

@@ -7,7 +7,7 @@
  *
  */
 
-import { Animated } from "react-native";
+import { Animated,ViewStyle } from "react-native";
 
 export type LargeListDataType = { items: any[] }[];
 
@@ -28,6 +28,8 @@ export interface Size {
 
 export interface LargeListPropType {
   data: LargeListDataType,
+  contentStyle?: ViewStyle;
+  directionalLockEnabled?: boolean;
   heightForSection?: (section: number) => number,
   renderSection?: (section: number) => React.Node<any>,
   heightForIndexPath: (indexPath: IndexPath) => number,
@@ -93,4 +95,8 @@ export interface WaterfallItemType extends WaterfallListType{
   output: number[],
   itemIndexes: number[],
   offset: number,
+}
+
+export interface StickyFormPropType extends LargeListPropType{
+
 }

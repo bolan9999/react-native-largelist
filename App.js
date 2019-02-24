@@ -11,7 +11,8 @@ import {
   ChatExample,
   FlatListExample,
   WaterfallListExample,
-  PictureExample
+  PictureExample,
+  StickyFormExample
 } from "./Examples";
 
 export default class App extends React.Component {
@@ -47,6 +48,8 @@ export default class App extends React.Component {
         return <WaterfallListExample />;
       case 10:
         return <PictureExample />;
+      case 11:
+        return <StickyFormExample />;
     }
     return this.renderChoose();
   }
@@ -63,7 +66,8 @@ export default class App extends React.Component {
       "ChatExample",
       "MessageExample(use FlatList)\n (compare with MessageExample's performance )",
       "WaterfallListExample",
-      "PictureExample"
+      "PictureExample",
+      "StickyFormExample"
     ];
     return (
       <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
@@ -81,7 +85,7 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    alignItems: "stretch"
   },
   choseContainer: {
     marginVertical: 40,

@@ -184,7 +184,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
         {...this.props}
         ref={this._scrollView}
         onSizeChange={this._onSizeChange}
-        contentStyle={contentStyle}
+        contentStyle={StyleSheet.flatten([this.props.contentStyle,contentStyle])}
         onNativeContentOffsetExtract={this._nativeOffset}
         onScroll={this._onScroll}
         onMomentumScrollEnd={this._onScrollEnd}

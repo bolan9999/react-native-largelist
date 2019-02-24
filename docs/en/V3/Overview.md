@@ -10,6 +10,7 @@ Props  |  Type  |  Default  |  Description  
 ---- | ------ | --------- | --------
 [...SpringScrollView](https://bolan9999.github.io/react-native-spring-scrollview/#/) | - | - | Support almost all props in SpringScrollView
 data | { items: any[] }[] | required | The data source of the large list.
+contentStyle | ViewStyle | { height } | The content view style of LargeList.
 heightForSection | (section: number) => number | ()=>0 | The height function for every Section
 renderSection | (section: number) => React.ReactElement &lt;any> | ()=>null | The render function for every Section
 heightForIndexPath | (indexPath: IndexPath) => number | required | The height function for every IndexPath
