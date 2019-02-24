@@ -75,11 +75,7 @@ export class StickyForm extends React.PureComponent<StickyFormPropType> {
       null,
       childArray.map((v, index) => {
         if (index > 0) return React.cloneElement(v, { key: index });
-        return React.createElement(Animated.createAnimatedComponent(v.type), {
-          ...v.props,
-          style,
-          key: index
-        });
+        return <Animated.View {...v.props} style={style} key={index} />;
       })
     );
   }

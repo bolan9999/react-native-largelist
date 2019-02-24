@@ -31,8 +31,8 @@ export class StickyFormExample extends React.Component {
     const titles = data[section].titles;
     return (
       <View style={styles.row}>
-        <View style={styles.titleText}>
-          <Text>隐藏相同</Text>
+        <View style={styles.text}>
+          <Text>汉兰达配置表</Text>
         </View>
         {titles.map((title, index) =>
           <View style={styles.sectionText} key={index}>
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row"
   },
-  sectionText:{
+  sectionText: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: "#EEE"
   },
-  titleText:{
+  titleText: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: "#EEE"
   }
-
 });
 
 const data = [

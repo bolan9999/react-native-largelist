@@ -14,6 +14,7 @@ import {
   PictureExample,
   StickyFormExample
 } from "./Examples";
+import { SpringScrollView } from "react-native-spring-scrollview";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -70,7 +71,7 @@ export default class App extends React.Component {
       "StickyFormExample"
     ];
     return (
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
+      <SpringScrollView>
         {examples.map((str, index) =>
           <TouchableOpacity key={index} style={styles.button} onPress={() => this.setState({ type: index })}>
             <Text style={styles.text}>
@@ -78,7 +79,7 @@ export default class App extends React.Component {
             </Text>
           </TouchableOpacity>
         )}
-      </ScrollView>
+      </SpringScrollView>
     );
   }
 }

@@ -7,7 +7,7 @@
  *
  */
 
-import { Animated,ViewStyle } from "react-native";
+import { Animated, ViewStyle } from "react-native";
 
 export type LargeListDataType = { items: any[] }[];
 
@@ -22,14 +22,14 @@ export interface Offset {
 }
 
 export interface Size {
-  height:number,
-  width:number
+  height: number,
+  width: number
 }
 
 export interface LargeListPropType {
   data: LargeListDataType,
-  contentStyle?: ViewStyle;
-  directionalLockEnabled?: boolean;
+  contentStyle?: ViewStyle,
+  directionalLockEnabled?: boolean,
   heightForSection?: (section: number) => number,
   renderSection?: (section: number) => React.Node<any>,
   heightForIndexPath: (indexPath: IndexPath) => number,
@@ -40,7 +40,7 @@ export interface LargeListPropType {
     x: Animated.Value,
     y: Animated.Value
   },
-  inverted?: boolean;
+  inverted?: boolean,
 
   groupCount?: number,
   groupMinHeight?: number,
@@ -58,7 +58,7 @@ export interface GroupPropType {
   renderSection?: (section: number) => React.Node<any>,
   renderIndexPath: (indexPath: IndexPath) => React.Node<any>,
   offset?: number,
-  inverted?: boolean;
+  inverted?: boolean,
   updateTimeInterval: number
 }
 
@@ -72,31 +72,29 @@ export interface SectionPropType {
   output: number[],
   sectionIndexes: number[],
   offset: number,
-  inverted?: boolean;
+  inverted?: boolean,
   data: LargeListDataType
 }
 
 export interface WaterfallListType {
-  data:any[];
-  heightForItem:(item:any,index:number)=>number;
-  renderItem:(item:any,index:number)=>React.ReactElement<any>;
-  preferColumnWidth?: number;
-  numColumns?: number;
-  renderHeader?: ()=>React.ReactElement<any>;
-  renderFooter?: ()=>React.ReactElement<any>;
+  data: any[],
+  heightForItem: (item: any, index: number) => number,
+  renderItem: (item: any, index: number) => React.ReactElement<any>,
+  preferColumnWidth?: number,
+  numColumns?: number,
+  renderHeader?: () => React.ReactElement<any>,
+  renderFooter?: () => React.ReactElement<any>,
   onNativeContentOffsetExtract?: {
     x: Animated.Value,
     y: Animated.Value
-  },
+  }
 }
 
-export interface WaterfallItemType extends WaterfallListType{
+export interface WaterfallItemType extends WaterfallListType {
   input: number[],
   output: number[],
   itemIndexes: number[],
-  offset: number,
+  offset: number
 }
 
-export interface StickyFormPropType extends LargeListPropType{
-
-}
+export interface StickyFormPropType extends LargeListPropType {}
