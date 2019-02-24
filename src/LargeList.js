@@ -69,7 +69,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
   }
 
   render() {
-    const { data, heightForSection, heightForIndexPath, groupMinHeight, groupCount } = this.props;
+    const { data, heightForSection, heightForIndexPath, groupMinHeight, groupCount, headerStickyEnabled } = this.props;
     const groupIndexes = [];
     let indexes = [];
     const sectionTops = [];
@@ -176,20 +176,29 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
           sectionOutputs[index].push(last);
         }
       }
+      headerStickyEnabled &&
+        sectionInputs.forEach(inputs =>
+          inputs.forEach((input, index) => {
+            const mod = index % 5;
+            if (mod > 1 && mod < 4) inputs[index] -= idx(() => this._headerLayout.height, 0);
+          })
+        );
     }
     if (this._footerLayout) sumHeight += this._footerLayout.height;
-    const contentStyle = sumHeight > 0 ? { height: sumHeight > wrapperHeight ? sumHeight : wrapperHeight + StyleSheet.hairlineWidth } : null;
+    const contentStyle =
+      sumHeight > 0
+        ? { height: sumHeight > wrapperHeight ? sumHeight : wrapperHeight + StyleSheet.hairlineWidth }
+        : null;
     return (
       <SpringScrollView
         {...this.props}
         ref={this._scrollView}
         onSizeChange={this._onSizeChange}
-        contentStyle={StyleSheet.flatten([this.props.contentStyle,contentStyle])}
+        contentStyle={StyleSheet.flatten([this.props.contentStyle, contentStyle])}
         onNativeContentOffsetExtract={this._nativeOffset}
         onScroll={this._onScroll}
         onMomentumScrollEnd={this._onScrollEnd}
       >
-        {this._renderHeader()}
         {this._shouldRenderContent() &&
           groupIndexes.map((indexes, index) => {
             let transform;
@@ -244,28 +253,40 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
               />
             );
           })}
+        {this._renderHeader()}
         {this._renderFooter()}
       </SpringScrollView>
     );
   }
 
   _renderHeader() {
-    const { renderHeader, inverted } = this.props;
-    if (!renderHeader) return null;
-    const transform = {
-      transform: [{ translateY: this._shouldRenderContent() ? 0 : 10000 }, { scaleY: inverted ? -1 : 1 }]
-    };
+    const { renderHeader, inverted, headerStickyEnabled } = this.props;
+    if (!renderHeader || !renderHeader()) return null;
+    const transform = [];
+    if (this._shouldRenderContent()) {
+      headerStickyEnabled &&
+        transform.push({
+          translateY: this._offset.interpolate({
+            inputRange: [-1, 0, 1],
+            outputRange: [0, 0, 1]
+          })
+        });
+      if (inverted) transform.push({ scaleY: -1 });
+    } else {
+      transform.push({ translateY: 10000 });
+    }
     const header = React.Children.only(renderHeader());
     this._orgOnHeaderLayout = header.onLayout;
-    return React.cloneElement(header, {
-      style: StyleSheet.flatten([header.props.style, transform]),
-      onLayout: this._onHeaderLayout
-    });
+    return (
+      <Animated.View style={StyleSheet.flatten([header.props.style, { transform }])} onLayout={this._onHeaderLayout}>
+        {header.props.children}
+      </Animated.View>
+    );
   }
 
   _renderFooter() {
     const { renderFooter, inverted } = this.props;
-    if (!renderFooter) return null;
+    if (!renderFooter || !renderFooter()) return null;
     const transform = {
       transform: [{ translateY: this._shouldRenderContent() ? 0 : 10000 }, { scaleY: inverted ? -1 : 1 }]
     };
@@ -279,7 +300,11 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
 
   _shouldRenderContent() {
     const { renderHeader, renderFooter } = this.props;
-    return this._size && (!renderHeader || this._headerLayout) && (!renderFooter || this._footerLayout);
+    return (
+      this._size &&
+      (!renderHeader || !renderHeader() || this._headerLayout) &&
+      (!renderFooter || !renderFooter() || this._footerLayout)
+    );
   }
 
   _onSizeChange = size => {

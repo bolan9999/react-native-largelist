@@ -34,4 +34,3 @@ inverted | boolean | false | Inverted the data source, see [ChatExample](https:/
 
 ### Precautions
 * LargeList default has a `{flex:1}` style，please be sure its parent has abounded height.
-<!--* 在V3中，为了最大化优化性能，减少DOM节点数量, `renderIndexPath`、 `renderHeader` 、 `renderFooter` 的直系节点在内部都进行了切片重新装配操作，所以不要直接返回`Text`,`TextInput`,`Switch`等这类宽高样式不符合CSS规范的组件，推荐使用`View`或`TouchableOpacity`等组件包装一层。还有就是，他们本身已经具备正确的样式，不再建议使用`flex：1`。虽然您使用了也不会有什么问题。而`renderSection` 由于没有切片重新装配，则必须拥有`flex:1`样式，不然可能无法占满整个组头。-->

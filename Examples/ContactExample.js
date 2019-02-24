@@ -39,13 +39,14 @@ export class ContactExample extends React.Component {
         data={this.state.data}
         renderHeader={this._renderHeader}
         renderFooter={this._renderFooter}
+        headerStickyEnabled
       />
     );
   }
 
   _renderHeader = () => {
     return (
-      <View>
+      <View style={{backgroundColor:"white"}}>
         <TextInput
           style={styles.search}
           placeholder="Please type first letter to search"

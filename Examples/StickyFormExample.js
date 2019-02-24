@@ -19,7 +19,8 @@ export class StickyFormExample extends React.Component {
         style={{ backgroundColor: "white" }}
         contentStyle={{ alignItems: "flex-start", width: "200%" }}
         data={data}
-        heightForSection={() => 80}
+        heightForSection={() => 40}
+        renderHeader={this._renderHeader}
         renderSection={this._renderSection}
         heightForIndexPath={() => 50}
         renderIndexPath={this._renderItem}
@@ -27,20 +28,32 @@ export class StickyFormExample extends React.Component {
     );
   }
 
-  _renderSection = (section: number) => {
-    const titles = data[section].titles;
+  _renderHeader = () => {
     return (
-      <View style={styles.row}>
+      <View style={{height:80,flexDirection:"row"}}>
         <View style={styles.text}>
           <Text>汉兰达配置表</Text>
         </View>
-        {titles.map((title, index) =>
-          <View style={styles.sectionText} key={index}>
+        {this.state.titles.map((title, index) =>
+          <View style={styles.headerText} key={index}>
             <Text>
               {title}
             </Text>
           </View>
         )}
+      </View>
+    );
+  };
+
+  _renderSection = (section: number) => {
+    const sectionTitle = data[section].sectionTitle;
+    return (
+      <View style={{flex:1,backgroundColor:"lightgray",justifyContent:"center"}}>
+        <View>
+          <Text>
+            {sectionTitle}
+          </Text>
+        </View>
       </View>
     );
   };
@@ -64,11 +77,24 @@ export class StickyFormExample extends React.Component {
       </View>
     );
   };
+
+  state = {
+    titles: [
+      "汉兰达2018款2.0T两驱精英版5座",
+      "汉兰达2018款2.0T两驱精英版7座",
+      "汉兰达2018款2.0T两驱豪华版7座",
+      "汉兰达2018款2.0T两驱尊贵版7座",
+      "汉兰达2018款2.0T两驱至尊版7座",
+      "汉兰达2018款2.0T四驱版至尊7座"
+    ]
+  };
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   },
   text: {
     flex: 1,
@@ -82,13 +108,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row"
   },
-  sectionText: {
+  headerText: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "lightgray",
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: "#EEE"
+    backgroundColor: "#EEE",
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderColor:"gray"
   },
   titleText: {
     flex: 1,
@@ -102,14 +129,7 @@ const styles = StyleSheet.create({
 
 const data = [
   {
-    titles: [
-      "汉兰达2018款2.0T两驱精英版5座",
-      "汉兰达2018款2.0T两驱精英版7座",
-      "汉兰达2018款2.0T两驱豪华版7座",
-      "汉兰达2018款2.0T两驱尊贵版7座",
-      "汉兰达2018款2.0T两驱至尊版7座",
-      "汉兰达2018款2.0T四驱版至尊7座"
-    ],
+    sectionTitle: "基本参数",
     items: [
       { title: "参考价", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "厂商指导价", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
@@ -128,7 +148,12 @@ const data = [
       { title: "百公里制动", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "工信部油耗", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "实测油耗", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
-      { title: "整车质保", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
+      { title: "整车质保", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] }
+    ]
+  },
+  {
+    sectionTitle: "车身",
+    items: [
       { title: "长度", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "宽度", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "高度", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
@@ -141,7 +166,12 @@ const data = [
       { title: "座位数", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "邮箱容积", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "行李箱容积", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
-      { title: "整车质量", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
+      { title: "整车质量", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] }
+    ]
+  },
+  {
+    sectionTitle: "发动机",
+    items: [
       { title: "发动机型号", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "排量", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "进气形式", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
@@ -164,8 +194,12 @@ const data = [
       { title: "供油方式", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "缸盖材料", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "缸体材料", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
-      { title: "环保标准", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
-
+      { title: "环保标准", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] }
+    ]
+  },
+  {
+    sectionTitle: "变速箱",
+    items: [
       { title: "档位个数", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "变速箱类型", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },
       { title: "简称", data: ["23.98", "24.88", "28.98", "29.98", "25.88", "30.98"] },

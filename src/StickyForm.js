@@ -44,12 +44,26 @@ export class StickyForm extends React.PureComponent<StickyFormPropType> {
     return (
       <LargeList
         {...this.props}
+        renderHeader={this._renderHeader}
         renderSection={this._renderSection}
         renderIndexPath={this._renderIndexPath}
+        renderFooter={this._renderFooter}
         onNativeContentOffsetExtract={this._nativeOffset}
       />
     );
   }
+
+  _renderHeader = () => {
+    const { renderHeader } = this.props;
+    if (!renderHeader || !renderHeader()) return null;
+    return this._stickyFirstView(this.props.renderHeader());
+  };
+
+  _renderFooter = () => {
+    const { renderFooter } = this.props;
+    if (!renderFooter || !renderFooter()) return null;
+    return this._stickyFirstView(renderFooter());
+  };
 
   _renderSection = (section: number) => {
     return this._stickyFirstView(this.props.renderSection(section));
@@ -81,6 +95,7 @@ export class StickyForm extends React.PureComponent<StickyFormPropType> {
   }
 
   static defaultProps = {
-    directionalLockEnabled: true
+    directionalLockEnabled: true,
+    headerStickyEnabled: true
   };
 }

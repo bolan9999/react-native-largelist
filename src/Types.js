@@ -28,6 +28,7 @@ export interface Size {
 
 export interface LargeListPropType {
   data: LargeListDataType,
+  headerStickyEnabled?: boolean;
   contentStyle?: ViewStyle,
   directionalLockEnabled?: boolean,
   heightForSection?: (section: number) => number,
