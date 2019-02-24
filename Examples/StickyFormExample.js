@@ -31,7 +31,7 @@ export class StickyFormExample extends React.Component {
     const titles = data[section].titles;
     return (
       <View style={styles.row}>
-        <View style={styles.text}>
+        <View style={styles.titleText}>
           <Text>隐藏相同</Text>
         </View>
         {titles.map((title, index) =>

@@ -161,8 +161,8 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
         onSizeChange={this._onSizeChange}
       >
         {this._renderHeader()}
-        {columnSummaries.map((summary, index) => {
-          return summary.itemIndexes.map((itemIndex, cellIndex) =>
+        {columnSummaries.map((summary, index) =>
+          summary.itemIndexes.map((itemIndex, cellIndex) =>
             <WaterfallItem
               {...this.props}
               key={summary.inputItemIndexes[cellIndex][0]}
@@ -187,8 +187,8 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
                 }
               ])}
             />
-          );
-        })}
+          )
+        )}
         {this._renderFooter()}
       </SpringScrollView>
     );
