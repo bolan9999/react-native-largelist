@@ -253,9 +253,46 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
               />
             );
           })}
+        {this._renderHeaderBackground()}
         {this._renderHeader()}
         {this._renderFooter()}
       </SpringScrollView>
+    );
+  }
+
+  _renderHeaderBackground() {
+    const { renderScaleHeaderBackground } = this.props;
+    if (!renderScaleHeaderBackground || !renderScaleHeaderBackground() || !this._headerLayout) return null;
+    const height = this._headerLayout.height;
+    const style = {
+      position: "absolute",
+      left: 0,
+      top: 0,
+      right: 0,
+      height,
+      transform: [
+        {
+          scale: this._offset.interpolate({
+            inputRange: [-height, 0, 1],
+            outputRange: [2, 1, 1]
+          })
+        },
+        {
+          translateY: Animated.divide(this._offset.interpolate({
+            inputRange: [-1, 0, 1],
+            outputRange: [-1/2 , 0, 0]
+          }),
+            this._offset.interpolate({
+              inputRange: [-height, 0, 1],
+              outputRange: [2, 1, 1]
+            }))
+        }
+      ]
+    };
+    return (
+      <Animated.View style={style}>
+        {renderScaleHeaderBackground()}
+      </Animated.View>
     );
   }
 

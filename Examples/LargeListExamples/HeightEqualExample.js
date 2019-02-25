@@ -8,11 +8,10 @@
  */
 
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import { LargeList } from "../../src";
 
 export class HeightEqualExample extends React.Component {
-
   static navigationOptions = {
     title: "HeightEqualExample"
   };
@@ -43,6 +42,7 @@ export class HeightEqualExample extends React.Component {
         renderIndexPath={this._renderIndexPath}
         renderHeader={this._renderHeader}
         renderFooter={this._renderFooter}
+        renderScaleHeaderBackground={this._renderHeaderBackground}
       />
     );
   }
@@ -68,6 +68,10 @@ export class HeightEqualExample extends React.Component {
     );
   };
 
+  _renderHeaderBackground = () => {
+    return <ImageBackground style={{ flex: 1 }} source={require("./icons/ScaleHeader.jpg")} />;
+  };
+
   _renderHeader = () => {
     return (
       <View>
@@ -90,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   header: {
-    alignSelf:"center",
+    alignSelf: "center",
     marginVertical: 50
   },
   section: {
@@ -112,4 +116,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE"
   }
 });
-

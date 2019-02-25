@@ -8,5 +8,5 @@ headerStickyEnabled | boolean | true | Sticky the header of the StickyForm on th
 
 
 ### Precautions
-StickyForm will sticky the first element of `renderHeader`,`renderSection`,`renderIndexPath`,`renderFooter` element on the left of the StickyForm. See [StickyFormExample](https://github.com/bolan9999/react-native-largelist/blob/master/Examples/StickyFormExample.js) for more information.
+StickyForm will sticky the first element of `renderHeader`,`renderSection`,`renderIndexPath`,`renderFooter` element on the left of the StickyForm. See [StickyFormExample](https://github.com/bolan9999/react-native-largelist/blob/master/Examples/StickyFormExamples/StickyFormExample.js) for more information.
 

@@ -48,59 +48,63 @@ yarn start
 
 All the features below are supported on both iOS and Android.
 
-* Items reused. Never blank.
+##### Items reused. Never blank.
 
-* Sticky section support
+##### Sticky section support
 
-![StickySection](./docs/res/StickySection.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![StickySection](./docs/res/StickySection.gif)
 
-* Fully Cross-platform bounces (iOS & Android).
+##### Fully Cross-platform bounces (iOS & Android).
 
-![bounces](./docs/res/bounces.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![bounces](./docs/res/bounces.gif)
 
-* Customize refreshing (Support `lottie-react-native` progress with `useNativeDriver`)
+##### Customize refreshing (Support `lottie-react-native` progress with `useNativeDriver`)
 
-![CustomizeRefreshing](./docs/res/CustomizeRefreshing.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CustomizeRefreshing](./docs/res/CustomizeRefreshing.gif)
 
-* Customize loading (Support `lottie-react-native` progress with `useNativeDriver`)
+##### Customize loading (Support `lottie-react-native` progress with `useNativeDriver`)
 
-![CustomizeLoading](./docs/res/CustomizeLoading.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CustomizeLoading](./docs/res/CustomizeLoading.gif)
 
-* Slide on both horizontal and vertical directions.
+##### Slide on both horizontal and vertical directions.
 
-![BothDirections](./docs/res/BothDirections.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![BothDirections](./docs/res/BothDirections.gif)
 
-* Sticky header support.
+##### Sticky header support.
 
-![StickyHeader](./docs/res/StickyHeader.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![StickyHeader](./docs/res/StickyHeader.gif)
 
-* directionalLockEnabled
+##### directionalLockEnabled
 
-![directionalLockEnabled](./docs/res/directionalLockEnabled.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![directionalLockEnabled](./docs/res/directionalLockEnabled.gif)
 
-* Support `inverted`
+##### Support `inverted`
 
-![inverted](./docs/res/inverted.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![inverted](./docs/res/inverted.gif)
+
+##### Drag to scale header background: renderScaleHeaderBackground
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![renderScaleHeaderBackground](./docs/res/renderScaleHeaderBackground.gif)
 
 ### WaterfallList
 
-* Complex situation
+##### Complex situation
 
-![WaterfallExample](./docs/res/WaterfallExample.png)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![WaterfallExample](./docs/res/WaterfallExample.png)
 
-* preferColumnWidth
+##### preferColumnWidth
 
-![preferColumnWidth](./docs/res/preferColumnWidth.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![preferColumnWidth](./docs/res/preferColumnWidth.gif)
 
-* numColumns
+##### numColumns
 
-![numColumns](./docs/res/numColumns.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![numColumns](./docs/res/numColumns.gif)
 
 ### StickyForm
 
-* example
+##### example
 
-![StickyFormExample](./docs/res/StickyFormExample.gif)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![StickyFormExample](./docs/res/StickyFormExample.gif)
 
 
 ## License
