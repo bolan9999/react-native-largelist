@@ -36,7 +36,6 @@ export class HeightEqualExample extends React.Component {
     }
     return (
       <LargeList
-        style={styles.container}
         data={data}
         heightForSection={() => 50}
         renderSection={this._renderSection}

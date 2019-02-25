@@ -2,7 +2,7 @@
 
 LargeList V3 depends on `react-native-spring-scrollview@^2.0.3`, and supports almost all props in SpringScrollView.
 
-As the same as SpringScrollView，LargeList must have a bounded height in order to work, since they contain many cells children into a bounded container (via a scroll interaction). In order to bound the height of a LargeList, either set the height of the view directly (discouraged) or make sure all parent views have bounded height. LargeList default has a `{flex:1}` style，please be sure its parent has a bounded height.
+As the same as SpringScrollView，LargeList must have a bounded height in order to work, since they contain many cells children into a bounded container (via a scroll interaction). In order to bound the height of a LargeList, either set the height of the view directly (discouraged) or make sure all parent views have bounded height. LargeList default has a `{flex:1}` style，please be sure its parent has a bounded height. Note that in order to optimize performance, the height of each item and each section must be given.
 
 ### Basic Props
 

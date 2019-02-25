@@ -4,14 +4,9 @@
 
 ## Features
 
-* Large data source list component, items reused by group, Less CPU/Memory usage.
+* Large data source list component, items reused by group, Less CPU/Memory usage. Never blanks.
 * Fully Cross-platform bounces (iOS & Android).
 * Highly customize Refreshing and Loading. Fully support `react-native-lottie`. More smoothly animation.
-* Header and Footer support.
-* ScrollToIndex support.
-* Sticky Section support.
-* Support inverted.
-* Never blanks.
 
 ## Preview
 ![Preview](./docs/res/LottieRefreshing.gif)
@@ -48,6 +43,65 @@ yarn start
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;you can resolve it by this [topic](https://github.com/facebook/react-native/issues/22000#issuecomment-438201084)
 
 6. Running
+
+### LargeList
+
+All the features below are supported on both iOS and Android.
+
+* Items reused. Never blank.
+
+* Sticky section support
+
+![StickySection](./docs/res/StickySection.gif)
+
+* Fully Cross-platform bounces (iOS & Android).
+
+![bounces](./docs/res/bounces.gif)
+
+* Customize refreshing (Support `lottie-react-native` progress with `useNativeDriver`)
+
+![CustomizeRefreshing](./docs/res/CustomizeRefreshing.gif)
+
+* Customize loading (Support `lottie-react-native` progress with `useNativeDriver`)
+
+![CustomizeLoading](./docs/res/CustomizeLoading.gif)
+
+* Slide on both horizontal and vertical directions.
+
+![BothDirections](./docs/res/BothDirections.gif)
+
+* Sticky header support.
+
+![StickyHeader](./docs/res/StickyHeader.gif)
+
+* directionalLockEnabled
+
+![directionalLockEnabled](./docs/res/directionalLockEnabled.gif)
+
+* Support `inverted`
+
+![inverted](./docs/res/inverted.gif)
+
+### WaterfallList
+
+* Complex situation
+
+![WaterfallExample](./docs/res/WaterfallExample.png)
+
+* preferColumnWidth
+
+![preferColumnWidth](./docs/res/preferColumnWidth.gif)
+
+* numColumns
+
+![numColumns](./docs/res/numColumns.gif)
+
+### StickyForm
+
+* example
+
+![StickyFormExample](./docs/res/StickyFormExample.gif)
+
 
 ## License
 

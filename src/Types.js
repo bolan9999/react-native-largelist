@@ -31,6 +31,7 @@ export interface LargeListPropType {
   headerStickyEnabled?: boolean;
   contentStyle?: ViewStyle,
   directionalLockEnabled?: boolean,
+  renderScaleHeaderBackground?: () => React.ReactElement<any>,
   heightForSection?: (section: number) => number,
   renderSection?: (section: number) => React.Node<any>,
   heightForIndexPath: (indexPath: IndexPath) => number,
