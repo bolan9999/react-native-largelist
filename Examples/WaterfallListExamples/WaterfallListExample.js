@@ -8,16 +8,19 @@
  */
 
 import React from "react";
-import { WaterfallList } from "../src";
+import { WaterfallList } from "../../src";
 import { Text, View } from "react-native";
 
 export class WaterfallListExample extends React.Component {
+  static navigationOptions = {
+    title: "WaterfallListExample"
+  };
+
   state = { data: [...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data] };
 
   render() {
     return (
       <WaterfallList
-        style={{ marginTop: 20 }}
         data={this.state.data}
         heightForItem={item => item.height}
         preferColumnWidth={120}

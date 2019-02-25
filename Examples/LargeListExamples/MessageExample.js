@@ -10,9 +10,14 @@
 import React from "react";
 import { View, Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import { messages } from "./DataSource";
-import { LargeList } from "../src";
+import { LargeList } from "../../src";
 
 export class MessageExample extends React.Component {
+
+  static navigationOptions = {
+    title: "MessageExample"
+  };
+
   messages;
   largeList;
 

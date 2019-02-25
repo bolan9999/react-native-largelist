@@ -141,6 +141,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-gesture-handler')
     compile project(':lottie-react-native')
     compile project(':react-native-spring-scrollview')
     compile fileTree(include: ['*.jar'], dir: 'libs')

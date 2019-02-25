@@ -9,9 +9,13 @@
 
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { LargeList } from "../src";
+import { LargeList } from "../../src";
 
 export class IntensiveSectionExample extends React.Component {
+  static navigationOptions = {
+    title: "IntensiveSectionExample"
+  };
+
   _sectionCount = 100;
   _rowCount = 1;
 

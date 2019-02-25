@@ -3,23 +3,26 @@
  * Created by Stone
  * https://github.com/bolan9999
  * Email: shanshang130@gmail.com
- * Date: 2018/7/18
+ * Date: 2018/7/19
  *
  */
 
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { LargeList } from "../src";
-import { CommonLottieHeader, CommonLottieFooter } from "react-native-spring-scrollview/Customize";
+import { LargeList } from "../../src";
 
-export class HeightUnequalExample extends React.Component {
-  _sectionCount = 1;
-  _rowCount = 5;
-  _list: LargeList;
+export class HeightEqualExample extends React.Component {
+
+  static navigationOptions = {
+    title: "HeightEqualExample"
+  };
+
+  _sectionCount = 10;
+  _rowCount = 10;
 
   constructor(props) {
     super(props);
-    this.state = { select: 0 };
+    this.state = {};
   }
 
   render() {
@@ -35,25 +38,15 @@ export class HeightUnequalExample extends React.Component {
       <LargeList
         style={styles.container}
         data={data}
-        ref={ref => (this._list = ref)}
         heightForSection={() => 50}
         renderSection={this._renderSection}
-        heightForIndexPath={({ section: section, row: row }) => (row % 2 ? 50 : 100)}
+        heightForIndexPath={() => 50}
         renderIndexPath={this._renderIndexPath}
-        refreshHeader={CommonLottieHeader}
-        loadingFooter={CommonLottieFooter}
-        onRefresh={this._onRefresh}
-        onLoading={this._onLoading}
+        renderHeader={this._renderHeader}
+        renderFooter={this._renderFooter}
       />
     );
   }
-
-  _onRefresh = () => {
-    setTimeout(() => this._list.endRefresh(), 2000);
-  };
-  _onLoading = () => {
-    setTimeout(() => this._list.endLoading(), 2000);
-  };
 
   _renderSection = (section: number) => {
     return (
@@ -75,11 +68,31 @@ export class HeightUnequalExample extends React.Component {
       </View>
     );
   };
+
+  _renderHeader = () => {
+    return (
+      <View>
+        <Text style={styles.header}>I am header</Text>
+      </View>
+    );
+  };
+
+  _renderFooter = () => {
+    return (
+      <View>
+        <Text style={styles.header}>I am Footer</Text>
+      </View>
+    );
+  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  header: {
+    alignSelf:"center",
+    marginVertical: 50
   },
   section: {
     flex: 1,
@@ -100,3 +113,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE"
   }
 });
+

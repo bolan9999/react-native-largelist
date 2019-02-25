@@ -17,11 +17,15 @@ import {
   Platform
 } from "react-native";
 import { foods } from "./DataSource";
-import { LargeList } from "../src";
+import { LargeList } from "../../src";
 
 const leftData = [{ items: foods }];
 
 export class MenuListExample extends React.Component {
+  static navigationOptions = {
+    title: "MenuListExample"
+  };
+
   selectedIndex: number = 0;
   _listRef: LargeList;
   indexes: LargeList;
@@ -159,8 +163,7 @@ export class MenuListExample extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
-    marginTop: Platform.OS === "ios" ? 20 : 0
+    flexDirection: "row"
   },
   lc: {
     flex: 1

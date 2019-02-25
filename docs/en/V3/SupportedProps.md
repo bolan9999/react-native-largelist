@@ -5,9 +5,12 @@ Props  |  Type  |  Default  |  Description  
 [...Animated.View](http://facebook.github.io/react-native/docs/view) | - | - | Support all props of View
 bounces | boolean | true | Bounces if the content offset is out of the content view. It won't be bounces on the horizontal direction if the content view is not wider than the wrapper view although bounces is true. But it will on the vertical direction.
 scrollEnabled | boolean | true | scrollEnabled
+contentStyle | ViewStyle | { height } | The content view style of LargeList.
 initialContentOffset | {x:number, y:number} | {x:0,y:0} | initial content offset. Only works when initiation.
 showsVerticalScrollIndicator | boolean | true | showsVerticalScrollIndicator
 showsHorizontalScrollIndicator | boolean | true | showsHorizontalScrollIndicator（Only works when content view is wider than wrapper view）
+directionalLockEnabled | boolean | false | When true, the SpringScrollView will try to lock to only vertical or horizontal scrolling while dragging.
+headerStickyEnabled | boolean | false | Sticky the header of the LargeList on the top. And then sticky Section on the bottom of the header.
 tapToHideKeyboard | boolean | true | tapToHideKeyboard
 data | { items: any[] }[] | required | The data source of largelist
 heightForSection | (section: number) => number | ()=>0 | The height function for every Section

@@ -17,10 +17,14 @@ import {
   StyleSheet,
   TextInput
 } from "react-native";
-import { LargeList } from "../src";
+import { LargeList } from "../../src";
 import { contacts } from "./DataSource";
 
 export class ContactExample extends React.Component {
+  static navigationOptions = {
+    title: "ContactExample"
+  };
+
   largeList;
 
   constructor(props) {
@@ -114,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   search: {
-    marginTop: Platform.OS === "ios" ? 20 : 0,
+    margin:10,
     fontSize: 18
   },
   section: {

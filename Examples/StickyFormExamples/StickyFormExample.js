@@ -8,11 +8,16 @@
  */
 
 import React from "react";
-import { StickyForm } from "../src";
+import { StickyForm } from "../../src";
 import { Text, View, StyleSheet } from "react-native";
-import type { IndexPath } from "../src";
+import type { IndexPath } from "../../src";
 
 export class StickyFormExample extends React.Component {
+
+  static navigationOptions = {
+    title: "StickyFormExample"
+  };
+
   render() {
     return (
       <StickyForm
@@ -30,7 +35,7 @@ export class StickyFormExample extends React.Component {
 
   _renderHeader = () => {
     return (
-      <View style={{height:80,flexDirection:"row"}}>
+      <View style={{ height: 80, flexDirection: "row" }}>
         <View style={styles.text}>
           <Text>汉兰达配置表</Text>
         </View>
@@ -48,7 +53,7 @@ export class StickyFormExample extends React.Component {
   _renderSection = (section: number) => {
     const sectionTitle = data[section].sectionTitle;
     return (
-      <View style={{flex:1,backgroundColor:"lightgray",justifyContent:"center"}}>
+      <View style={{ flex: 1, backgroundColor: "lightgray", justifyContent: "center" }}>
         <View>
           <Text>
             {sectionTitle}
@@ -115,7 +120,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE",
     borderLeftWidth: StyleSheet.hairlineWidth,
     borderRightWidth: StyleSheet.hairlineWidth,
-    borderColor:"gray"
+    borderColor: "gray"
   },
   titleText: {
     flex: 1,

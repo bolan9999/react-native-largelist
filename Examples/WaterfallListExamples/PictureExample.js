@@ -9,11 +9,15 @@
 
 import React from "react";
 import { Image, SafeAreaView, Dimensions } from "react-native";
-import { WaterfallList } from "../src";
+import { WaterfallList } from "../../src";
 
 const cookData = require("./data.json").data.list;
 
 export class PictureExample extends React.Component {
+  static navigationOptions = {
+    title: "PictureExample"
+  };
+
   state = { data: [...cookData, ...cookData, ...cookData, ...cookData, ...cookData] };
 
   render() {

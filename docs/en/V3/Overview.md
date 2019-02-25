@@ -18,6 +18,8 @@ renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any> | requir
 renderHeader | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist header
 renderFooter | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist footer
 inverted | boolean | false | Inverted the data source, see [ChatExample](https://github.com/bolan9999/react-native-largelist/tree/master/Examples/ChatExample.js) for example.
+directionalLockEnabled | boolean | false | When true, the SpringScrollView will try to lock to only vertical or horizontal scrolling while dragging.
+headerStickyEnabled | boolean | false | Sticky the header of the LargeList on the top. And then sticky Section on the bottom of the header.
 
 ### Simple Usage
 

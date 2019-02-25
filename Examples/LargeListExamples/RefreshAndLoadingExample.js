@@ -11,10 +11,15 @@ import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NormalHeader } from "react-native-spring-scrollview/NormalHeader";
 import { NormalFooter } from "react-native-spring-scrollview/NormalFooter";
-import { LargeList } from "../src";
+import { LargeList } from "../../src";
 import { contacts } from "./DataSource";
 
 export class RefreshAndLoadingExample extends React.Component {
+
+  static navigationOptions = {
+    title: "RefreshAndLoadingExample"
+  };
+
   _largeList;
   _index = 0;
 

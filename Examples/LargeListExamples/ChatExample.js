@@ -8,12 +8,71 @@
  */
 
 import React from "react";
-import { LargeList } from "../src";
+import { LargeList } from "../../src";
 import { iconArray } from "./icons";
 import { Text, View, StyleSheet, SafeAreaView, TextInput, TouchableOpacity } from "react-native";
-import type { IndexPath } from "../src/Types";
+import type { IndexPath } from "../../src/Types";
 
 export class ChatExample extends React.Component {
+  static navigationOptions = {
+    title: "ChatExample"
+  };
+
+  _input: TextInput;
+  _text: string;
+
+  render() {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <LargeList
+          inverted
+          style={styles.list}
+          data={this.state.histories}
+          heightForIndexPath={() => 50}
+          renderIndexPath={this._renderItem}
+        />
+        <View style={styles.inputContainer}>
+          <TextInput ref={ref => (this._input = ref)} style={{ flex: 1 }} onChangeText={text => (this._text = text)} />
+          <TouchableOpacity onPress={this._onSend}>
+            <Text>send</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  _renderItem = (path: IndexPath) => {
+    const msg = this.state.histories[path.section].items[path.row];
+    const isMyself = msg.senderId === this.state.myId;
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: isMyself ? "flex-end" : "flex-start"
+        }}
+      >
+        <View style={[styles.message, { backgroundColor: isMyself ? "green" : "white" }]}>
+          <Text>
+            {msg.content}
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
+  _onSend = () => {
+    const histories = this.state.histories;
+    histories[0].items.splice(0, 0, {
+      senderId: this.state.myId,
+      senderHeaderIcon: iconArray[0],
+      content: this._text,
+      sendTimeInterval: 1550546201000
+    });
+    this._input.clear();
+    this.setState({ histories: [...histories] });
+  };
+
   state = {
     histories: [
       {
@@ -98,61 +157,6 @@ export class ChatExample extends React.Component {
       }
     ],
     myId: 0
-  };
-
-  _input: TextInput;
-  _text: string;
-
-  render() {
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <LargeList
-          inverted
-          style={styles.list}
-          data={this.state.histories}
-          heightForIndexPath={() => 50}
-          renderIndexPath={this._renderItem}
-        />
-        <View style={styles.inputContainer}>
-          <TextInput ref={ref => (this._input = ref)} style={{ flex: 1 }} onChangeText={text => (this._text = text)} />
-          <TouchableOpacity onPress={this._onSend}>
-            <Text>send</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-  _renderItem = (path: IndexPath) => {
-    const msg = this.state.histories[path.section].items[path.row];
-    const isMyself = msg.senderId === this.state.myId;
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: isMyself ? "flex-end" : "flex-start"
-        }}
-      >
-        <View style={[styles.message, { backgroundColor: isMyself ? "green" : "white" }]}>
-          <Text>
-            {msg.content}
-          </Text>
-        </View>
-      </View>
-    );
-  };
-
-  _onSend = () => {
-    const histories = this.state.histories;
-    histories[0].items.splice(0, 0, {
-      senderId: this.state.myId,
-      senderHeaderIcon: iconArray[0],
-      content: this._text,
-      sendTimeInterval: 1550546201000
-    });
-    this._input.clear();
-    this.setState({ histories: [...histories] });
   };
 }
 

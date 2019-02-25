@@ -27,6 +27,7 @@
 		8E00289E1FEA69C200B2D1BF /* main.jsbundle.meta in Resources */ = {isa = PBXBuildFile; fileRef = 8E00289D1FEA69C200B2D1BF /* main.jsbundle.meta */; };
 		8E0028A01FEA69CB00B2D1BF /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 8E00289F1FEA69CB00B2D1BF /* assets */; };
 		8E1043AE222265B3007F0A7F /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E1043A72222658D007F0A7F /* Lottie.framework */; };
+		8E2343152223A53500BCA894 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E2343132223A34900BCA894 /* libRNGestureHandler.a */; };
 		8ED9CDA121FDA43800140479 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 /* End PBXBuildFile section */
@@ -235,6 +236,13 @@
 			remoteGlobalIDString = 84FE12EF1E4C1485009B157C;
 			remoteInfo = LottieLibraryIOS;
 		};
+		8E2343122223A34900BCA894 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 345602B7FD634FDD8B1B0EFF /* RNGestureHandler.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNGestureHandler;
+		};
 		8E260734221B055800847C58 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E4E1622DE09F4ABB8887337D /* LottieReactNative.xcodeproj */;
@@ -355,6 +363,7 @@
 		1440FAC3538447F99C2F050A /* RNSpringScrollView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSpringScrollView.xcodeproj; path = "../node_modules/react-native-spring-scrollview/ios/RNSpringScrollView.xcodeproj"; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1AB696E89546489E88544521 /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
+		345602B7FD634FDD8B1B0EFF /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		451F5F26C34B4C3A8B1B3351 /* libLottie.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libLottie.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -375,6 +384,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E2343152223A53500BCA894 /* libRNGestureHandler.a in Frameworks */,
 				8E1043AE222265B3007F0A7F /* Lottie.framework in Frameworks */,
 				8ED9CDA121FDA43800140479 /* libRCTAnimation.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
@@ -550,6 +560,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				1440FAC3538447F99C2F050A /* RNSpringScrollView.xcodeproj */,
 				E4E1622DE09F4ABB8887337D /* LottieReactNative.xcodeproj */,
+				345602B7FD634FDD8B1B0EFF /* RNGestureHandler.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -593,6 +604,14 @@
 				8E1043A92222658D007F0A7F /* Lottie.framework */,
 				8E1043AB2222658D007F0A7F /* Lottie.framework */,
 				8E1043AD2222658D007F0A7F /* libLottie.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8E2342E52223A34900BCA894 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8E2343132223A34900BCA894 /* libRNGestureHandler.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -742,6 +761,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 8E2342E52223A34900BCA894 /* Products */;
+					ProjectRef = 345602B7FD634FDD8B1B0EFF /* RNGestureHandler.xcodeproj */;
 				},
 				{
 					ProductGroup = 8ED0245F21F8CA1F005E6FD6 /* Products */;
@@ -959,6 +982,13 @@
 			remoteRef = 8E1043AC2222658D007F0A7F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8E2343132223A34900BCA894 /* libRNGestureHandler.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNGestureHandler.a;
+			remoteRef = 8E2343122223A34900BCA894 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8E260735221B055800847C58 /* libLottieReactNative.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1112,6 +1142,7 @@
 					"$(SRCROOT)/../node_modules/react-native-spring-scrollview/ios/SpringScrollView",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
+					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 				);
 				INFOPLIST_FILE = LargeListDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1145,6 +1176,7 @@
 					"$(SRCROOT)/../node_modules/react-native-spring-scrollview/ios/SpringScrollView",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
+					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 				);
 				INFOPLIST_FILE = LargeListDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
