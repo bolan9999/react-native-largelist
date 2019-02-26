@@ -29,6 +29,7 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
   _offset: Animated.Value;
   _itemRefs: [];
   _shouldUpdateContent = true;
+  _scrollView=React.createRef();
 
   constructor(props) {
     super(props);
@@ -269,5 +270,13 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
       this._shouldUpdateContent = true;
       return Promise.resolve();
     });
+  }
+
+  endRefresh() {
+    idx(() => this._scrollView.current.endRefresh());
+  }
+
+  endLoading() {
+    idx(() => this._scrollView.current.endLoading());
   }
 }

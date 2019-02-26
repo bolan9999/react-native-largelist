@@ -17,16 +17,24 @@ export class WaterfallListExample extends React.Component {
   };
 
   state = { data: [...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data] };
+  _list: WaterfallList;
 
   render() {
     return (
       <WaterfallList
         data={this.state.data}
+        ref={ref => (this._list = ref)}
         heightForItem={item => item.height}
         preferColumnWidth={120}
         renderItem={this._renderItem}
         renderHeader={this._renderHeader}
         renderFooter={this._renderFooter}
+        onRefresh={() => {
+          setTimeout(() => this._list.endRefresh(), 2000);
+        }}
+        onLoading={() => {
+          setTimeout(() => this._list.endLoading(), 2000);
+        }}
       />
     );
   }

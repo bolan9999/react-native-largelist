@@ -9,15 +9,17 @@
 
 import React from "react";
 import { StickyFormPropType } from "./Types";
-import type { IndexPath, LargeListPropType, Size } from "./Types";
+import type {IndexPath, LargeListPropType, Offset, Size} from "./Types";
 import { Animated, StyleSheet } from "react-native";
 import { LargeList } from "./LargeList";
+import {idx} from "./idx";
 
 export class StickyForm extends React.PureComponent<StickyFormPropType> {
   _size: Size;
   _contentOffsetY = 0;
   _nativeOffset;
   _offset: Animated.Value;
+  _largeList=React.createRef();
 
   constructor(props) {
     super(props);
@@ -44,6 +46,7 @@ export class StickyForm extends React.PureComponent<StickyFormPropType> {
     return (
       <LargeList
         {...this.props}
+        ref={this._largeList}
         renderHeader={this._renderHeader}
         renderSection={this._renderSection}
         renderIndexPath={this._renderIndexPath}
@@ -92,6 +95,21 @@ export class StickyForm extends React.PureComponent<StickyFormPropType> {
         return <Animated.View {...v.props} style={style} key={index} />;
       })
     );
+  }
+
+  scrollTo(offset: Offset, animated: boolean = true): Promise<void> {
+    if (!this._largeList.current) return Promise.reject("StickyForm has not been initialized yet!");
+    return this._largeList.current.scrollTo(offset, animated).then(() => {
+      return Promise.resolve();
+    });
+  }
+
+  endRefresh() {
+    idx(() => this._largeList.current.endRefresh());
+  }
+
+  endLoading() {
+    idx(() => this._largeList.current.endLoading());
   }
 
   static defaultProps = {

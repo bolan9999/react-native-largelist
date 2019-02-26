@@ -8,6 +8,7 @@
  */
 
 import { Animated, ViewStyle } from "react-native";
+import { SpringScrollViewPropType } from "react-native-spring-scrollview";
 
 export type LargeListDataType = { items: any[] }[];
 
@@ -26,9 +27,9 @@ export interface Size {
   width: number
 }
 
-export interface LargeListPropType {
+export interface LargeListPropType extends SpringScrollViewPropType {
   data: LargeListDataType,
-  headerStickyEnabled?: boolean;
+  headerStickyEnabled?: boolean,
   contentStyle?: ViewStyle,
   directionalLockEnabled?: boolean,
   renderScaleHeaderBackground?: () => React.ReactElement<any>,
@@ -78,7 +79,7 @@ export interface SectionPropType {
   data: LargeListDataType
 }
 
-export interface WaterfallListType {
+export interface WaterfallListType extends SpringScrollViewPropType{
   data: any[],
   heightForItem: (item: any, index: number) => number,
   renderItem: (item: any, index: number) => React.ReactElement<any>,

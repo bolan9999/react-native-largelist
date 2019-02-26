@@ -13,10 +13,11 @@ import { Text, View, StyleSheet } from "react-native";
 import type { IndexPath } from "../../src";
 
 export class StickyFormExample extends React.Component {
-
   static navigationOptions = {
     title: "StickyFormExample"
   };
+
+  _list: StickyForm;
 
   render() {
     return (
@@ -24,11 +25,18 @@ export class StickyFormExample extends React.Component {
         style={{ backgroundColor: "white" }}
         contentStyle={{ alignItems: "flex-start", width: "200%" }}
         data={data}
+        ref={ref => (this._list = ref)}
         heightForSection={() => 40}
         renderHeader={this._renderHeader}
         renderSection={this._renderSection}
         heightForIndexPath={() => 50}
         renderIndexPath={this._renderItem}
+        onRefresh={() => {
+          setTimeout(() => this._list.endRefresh(), 2000);
+        }}
+        onLoading={() => {
+          setTimeout(() => this._list.endLoading(), 2000);
+        }}
       />
     );
   }
