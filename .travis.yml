@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+ - "10"
+os:
+ - osx
+
+stages:
+ - name: deploy
+
+jobs:
+ include:
+   - stage: deploy
+     deploy:
+       provider: npm
+       email: shanshang130@gmail.com
+       api_key: "$NPM_TOKEN"
+       on:
+         tags: true
