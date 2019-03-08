@@ -15,23 +15,30 @@ export class Group extends React.Component<GroupPropType> {
   _offset = 0;
   _margin = 0;
 
-  contentConversion(offset: number) {
+  constructor(props) {
+    super(props);
+    if (props.initialContentOffset) {
+      this.contentConversion(props.initialContentOffset.y, true);
+    }
+  }
+
+  contentConversion(offset: number, init: boolean = false) {
     this._offset = offset;
     const { input, output } = this.props;
     const cc = [];
     output.forEach(v => cc.indexOf(v) < 0 && cc.push(v));
     for (let i = 0; i < input.length; ++i) {
       if (offset >= input[i] && offset <= input[i + 1]) {
-        this.update(cc.indexOf(output[i]));
+        this.update(cc.indexOf(output[i]), init);
         break;
       }
     }
   }
 
-  update(index: number) {
+  update(index: number, init: boolean) {
     if (index < 0 || index >= this.props.indexes.length || this._currentIndex === index) return;
     this._currentIndex = index;
-    this.forceUpdate();
+    !init && this.forceUpdate();
   }
 
   componentWillReceiveProps(next: GroupPropType) {
@@ -57,7 +64,13 @@ export class Group extends React.Component<GroupPropType> {
       this._margin = 0;
       const style = StyleSheet.flatten([
         cell.props.style,
-        { height, marginTop, alignSelf: "stretch", flex: 0, transform: [{ scaleY: inverted ? -1 : 1 }] }
+        {
+          height,
+          marginTop,
+          alignSelf: "stretch",
+          flex: 0,
+          transform: [{ scaleY: inverted ? -1 : 1 }]
+        }
       ]);
       return React.cloneElement(cell, {
         key: index,

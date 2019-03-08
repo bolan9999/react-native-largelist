@@ -18,7 +18,11 @@ export class Section extends React.Component<SectionPropType> {
 
   constructor(props) {
     super(props);
-    this.updateOffset(props.offset, true);
+    let offset = props.offset;
+    if (props.initialContentOffset) {
+      offset = props.initialContentOffset.y;
+    }
+    this.updateOffset(offset, true);
   }
 
   componentWillReceiveProps(next: SectionPropType) {

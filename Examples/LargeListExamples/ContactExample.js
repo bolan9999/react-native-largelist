@@ -44,6 +44,7 @@ export class ContactExample extends React.Component {
         renderHeader={this._renderHeader}
         renderFooter={this._renderFooter}
         headerStickyEnabled
+        initialContentOffset={{x:0,y:1000}}
       />
     );
   }

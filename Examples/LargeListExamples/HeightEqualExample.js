@@ -8,7 +8,7 @@
  */
 
 import React from "react";
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import {ImageBackground, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import { LargeList } from "../../src";
 
 export class HeightEqualExample extends React.Component {
@@ -36,6 +36,7 @@ export class HeightEqualExample extends React.Component {
     return (
       <LargeList
         data={data}
+        initialContentOffset={{x:0,y:3000}}
         heightForSection={() => 50}
         renderSection={this._renderSection}
         heightForIndexPath={() => 50}
@@ -43,6 +44,9 @@ export class HeightEqualExample extends React.Component {
         renderHeader={this._renderHeader}
         renderFooter={this._renderFooter}
         renderScaleHeaderBackground={this._renderHeaderBackground}
+        onTouchBegin={()=>console.log("onTouchBegin")}
+        onTouchEnd={()=>console.log("onTouchEnd")}
+        // onScroll={({nativeEvent:{contentOffset:{x,y}}})=>console.log("onScroll:",x,y)}
       />
     );
   }
@@ -59,12 +63,12 @@ export class HeightEqualExample extends React.Component {
 
   _renderIndexPath = ({ section: section, row: row }) => {
     return (
-      <View style={styles.row}>
+      <TouchableOpacity style={styles.row}>
         <Text>
           Section {section} Row {row}
         </Text>
         <View style={styles.line} />
-      </View>
+      </TouchableOpacity>
     );
   };
 
