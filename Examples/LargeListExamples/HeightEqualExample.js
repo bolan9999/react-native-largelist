@@ -44,8 +44,8 @@ export class HeightEqualExample extends React.Component {
         renderHeader={this._renderHeader}
         renderFooter={this._renderFooter}
         renderScaleHeaderBackground={this._renderHeaderBackground}
-        onTouchBegin={()=>console.log("onTouchBegin")}
-        onTouchEnd={()=>console.log("onTouchEnd")}
+        // onTouchBegin={()=>console.log("onTouchBegin")}
+        // onTouchEnd={()=>console.log("onTouchEnd")}
         // onScroll={({nativeEvent:{contentOffset:{x,y}}})=>console.log("onScroll:",x,y)}
       />
     );

@@ -7,16 +7,13 @@
     "test": "jest"
   },
   "dependencies": {
-    "add": "^2.0.6",
-    "docsify-cli": "^4.3.0",
     "lottie-react-native": "^2.5.11",
     "prop-types": "^15.6.0",
     "react": "^16.4.1",
     "react-native": "^0.56.0",
-    "react-native-gesture-handler": "^1.0.16",
+    "react-native-gesture-handler": "1.0.10",
     "react-native-spring-scrollview": "2.0.16",
-    "react-navigation": "^3.3.0",
-    "yarn": "^1.13.0"
+    "react-navigation": "^3.3.0"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",
