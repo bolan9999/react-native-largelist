@@ -14,6 +14,12 @@
 ![WaterfallExample](./docs/res/WaterfallExample.gif)
 ![PictureExample](./docs/res/PictureExample.gif)
 
+## Installation
+```
+yarn add react-native-spring-scrollview react-native-largelist-v3
+react-native link react-native-spring-scrollview
+```
+
 ## Documentation
 
 API reference and more:  [Documentation Reference](https://bolan9999.github.io/react-native-largelist/)
