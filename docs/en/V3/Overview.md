@@ -9,7 +9,7 @@ As the same as SpringScrollView，LargeList must have a bounded height in order 
 Props  |  Type  |  Default  |  Description  
 ---- | ------ | --------- | --------
 [...SpringScrollView](https://bolan9999.github.io/react-native-spring-scrollview/#/) | - | - | Support almost all props in SpringScrollView
-data | { items: any[] }[] | required | The data source of the large list.
+data | { items: any[] }[] | required | The data source of the large list. The outer array is the number of sections. And the inner array:`items` is the items of the section.
 contentStyle | ViewStyle | { height } | The content view style of LargeList.
 heightForSection | (section: number) => number | ()=>0 | The height function for every Section
 renderSection | (section: number) => React.ReactElement &lt;any> | ()=>null | The render function for every Section
@@ -37,3 +37,32 @@ renderScaleHeaderBackground | ()=> React.ReactElement &lt;any> | undefined | Ren
 
 ### Precautions
 * LargeList default has a `{flex:1}` style，please be sure its parent has abounded height.
+* In V3, in order to maximize performance optimization, reduce the number of dom nodes, LargeList will slice the `renderHeader`,`renderFooter` and `renderIndexPath` and add some additional styles and `onLayout` prop to the root node. I think it is worth. If your items looks messy. If your Item is a single `Text`,`TextInput` or `Switch` component ,please wrapper it with a `View` , `TouchableOpacity`, `TouchableHighlight` or other.
+```
+renderIndexPath = ({ section, row }) => (
+    return <View><Text>{...}</Text></View>
+)
+```
+
+* If your item has a vertical margin(marginTop or marginBottom)，  You should also wrapper it with a `View` , `TouchableOpacity`, `TouchableHighlight` or other.
+```
+renderIndexPath = ({ section, row }) => (
+    return <View>
+        <TouchableOpacity style={{margin:10}}>
+            {...}
+        </TouchableOpacity>
+    </View>
+)
+```
+
+* If you want to return a customized component. You should always pass down the style prop that the <CustomizedComponent /> receives. 
+```
+const CustomizedComponent = (props) => <TouchableHighlight style={StyleSheet.flatten([this.props.style,{your customized style}])} {...other props}>{some info...}</TouchableHighlight>;
+...
+renderIndexPath = ({ section, row }) => (
+  <CustomizedComponent />
+)
+```
+
+Check out [this issue](https://github.com/bolan9999/react-native-largelist/issues/260) for more detail.
+
