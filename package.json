@@ -4,22 +4,29 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "lottie-react-native": "^2.5.11",
-    "prop-types": "^15.6.0",
-    "react": "^16.4.1",
-    "react-native": "^0.56.0",
-    "react-native-gesture-handler": "1.0.10",
-    "react-native-spring-scrollview": "2.0.16",
-    "react-navigation": "^3.3.0"
+    "add": "^2.0.6",
+    "lottie-react-native": "^2.6.0",
+    "react": "16.8.3",
+    "react-native": "0.59.2",
+    "react-native-gesture-handler": "^1.1.0",
+    "react-native-largelist-v3": "^3.0.10",
+    "react-native-spring-scrollview": "^2.0.17",
+    "react-navigation": "^3.5.1",
+    "yarn": "^1.15.2"
   },
   "devDependencies": {
-    "babel-jest": "21.2.0",
-    "babel-preset-react-native": "5.0.2",
-    "jest": "21.2.1",
-    "react-test-renderer": "16.0.0"
+    "@babel/core": "^7.4.0",
+    "@babel/runtime": "^7.4.2",
+    "@react-native-community/eslint-config": "^0.0.3",
+    "babel-jest": "^24.5.0",
+    "eslint": "^5.15.3",
+    "jest": "^24.5.0",
+    "metro-react-native-babel-preset": "^0.53.1",
+    "react-test-renderer": "16.8.3"
   },
   "jest": {
     "preset": "react-native"
