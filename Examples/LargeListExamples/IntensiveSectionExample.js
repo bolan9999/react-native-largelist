@@ -35,7 +35,6 @@ export class IntensiveSectionExample extends React.Component {
     }
     return (
       <LargeList
-        style={styles.container}
         data={data}
         heightForSection={() => 50}
         renderSection={this._renderSection}
@@ -68,9 +67,6 @@ export class IntensiveSectionExample extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
   section: {
     flex: 1,
     backgroundColor: "gray",

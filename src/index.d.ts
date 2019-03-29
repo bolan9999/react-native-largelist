@@ -26,6 +26,7 @@ declare module "react-native-largelist-v3" {
     renderIndexPath: (indexPath: IndexPath) => React.ReactElement<any>;
     renderHeader?: () => React.ReactElement<any>;
     renderFooter?: () => React.ReactElement<any>;
+    renderEmpty?: () => React.ReactElement<any>,
 
     groupCount?: number;
     groupMinHeight?: number;

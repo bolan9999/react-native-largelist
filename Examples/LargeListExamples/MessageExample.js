@@ -30,7 +30,6 @@ export class MessageExample extends React.Component {
   render() {
     return (
       <LargeList
-        style={{ flex: 1 }}
         ref={ref => (this.largeList = ref)}
         heightForSection={() => 0}
         renderSection={() => null}

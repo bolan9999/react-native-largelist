@@ -1,5 +1,5 @@
 {
-  "name": "LargeListDemo",
+  "name": "large-list-demo",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -14,7 +14,7 @@
     "react-native": "0.59.2",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-largelist-v3": "^3.0.10",
-    "react-native-spring-scrollview": "^2.0.17",
+    "react-native-spring-scrollview": "^2.0.18",
     "react-navigation": "^3.5.1",
     "yarn": "^1.15.2"
   },

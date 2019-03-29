@@ -37,7 +37,6 @@ export class HeightUnequalExample extends React.Component {
     }
     return (
       <LargeList
-        style={styles.container}
         data={data}
         ref={ref => (this._list = ref)}
         heightForSection={() => 50}
@@ -82,9 +81,6 @@ export class HeightUnequalExample extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
   section: {
     flex: 1,
     backgroundColor: "gray",

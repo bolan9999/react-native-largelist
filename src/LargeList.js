@@ -72,14 +72,8 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
   }
 
   render() {
-    const {
-      data,
-      heightForSection,
-      heightForIndexPath,
-      groupMinHeight,
-      groupCount,
-      headerStickyEnabled
-    } = this.props;
+    const { data, heightForSection, heightForIndexPath, groupMinHeight, groupCount, headerStickyEnabled } = this.props;
+    if (data.length === 0) return this._renderEmpty();
     const groupIndexes = [];
     let indexes = [];
     const sectionTops = [];
@@ -167,23 +161,14 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
         const headerHeight = this._headerLayout ? this._headerLayout.height : 0;
         const first = sectionInputs[index].length <= 0;
         sectionInputs[index].push(
-          first
-            ? sectionTops[section] - 1 - headerHeight
-            : sectionInputs[index][sectionInputs[index].length - 1] + 0.1,
+          first ? sectionTops[section] - 1 - headerHeight : sectionInputs[index][sectionInputs[index].length - 1] + 0.1,
           sectionTops[section] - headerHeight,
           sectionTops[section]
         );
         sectionIndexes[index].push(section, section, section);
-        sectionOutputs[index].push(
-          sectionTops[section],
-          sectionTops[section],
-          sectionTops[section]
-        );
+        sectionOutputs[index].push(sectionTops[section], sectionTops[section], sectionTops[section]);
         if (section + 1 < data.length) {
-          sectionInputs[index].push(
-            sectionTops[section + 1] - sectionHeights[section],
-            sectionTops[section + 1]
-          );
+          sectionInputs[index].push(sectionTops[section + 1] - sectionHeights[section], sectionTops[section + 1]);
           sectionIndexes[index].push(section, section);
           sectionOutputs[index].push(
             sectionTops[section + 1] - sectionHeights[section],
@@ -203,6 +188,13 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
             if (mod > 1 && mod < 4) inputs[index] -= idx(() => this._headerLayout.height, 0);
           })
         );
+      sectionInputs.forEach((inputs, index) => {
+        while (inputs.length > 1 && inputs[inputs.length - 1] === inputs[inputs.length - 2]) {
+          inputs.splice(inputs.length - 1, 1);
+          sectionIndexes[index].splice(sectionIndexes[index].length - 1, 1);
+          sectionOutputs[index].splice(sectionOutputs[index].length - 1, 1);
+        }
+      });
     }
     if (this._footerLayout) sumHeight += this._footerLayout.height;
     const contentStyle =
@@ -284,8 +276,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
 
   _renderHeaderBackground() {
     const { renderScaleHeaderBackground } = this.props;
-    if (!renderScaleHeaderBackground || !renderScaleHeaderBackground() || !this._headerLayout)
-      return null;
+    if (!renderScaleHeaderBackground || !renderScaleHeaderBackground() || !this._headerLayout) return null;
     const height = this._headerLayout.height;
     const style = {
       position: "absolute",
@@ -317,10 +308,21 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     return <Animated.View style={style}>{renderScaleHeaderBackground()}</Animated.View>;
   }
 
+  _renderEmpty() {
+    return (
+      <SpringScrollView {...this.props} ref={this._scrollView} onNativeContentOffsetExtract={this._nativeOffset}>
+        {this._renderHeader && this._renderHeader()}
+        {this.props.renderEmpty && this.props.renderEmpty()}
+        {this.props.renderFooter && this.props.renderFooter()}
+      </SpringScrollView>
+    );
+  }
+
   _renderHeader() {
     const { renderHeader, inverted, headerStickyEnabled } = this.props;
     if (!renderHeader || !renderHeader()) return null;
     const transform = [];
+    const zIndex = headerStickyEnabled ? 9999 : undefined;
     if (this._shouldRenderContent()) {
       headerStickyEnabled &&
         transform.push({
@@ -336,10 +338,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     const header = React.Children.only(renderHeader());
     this._orgOnHeaderLayout = header.onLayout;
     return (
-      <Animated.View
-        style={StyleSheet.flatten([header.props.style, { transform }])}
-        onLayout={this._onHeaderLayout}
-      >
+      <Animated.View style={StyleSheet.flatten([header.props.style, { transform, zIndex }])} onLayout={this._onHeaderLayout}>
         {header.props.children}
       </Animated.View>
     );
@@ -349,10 +348,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     const { renderFooter, inverted } = this.props;
     if (!renderFooter || !renderFooter()) return null;
     const transform = {
-      transform: [
-        { translateY: this._shouldRenderContent() ? 0 : 10000 },
-        { scaleY: inverted ? -1 : 1 }
-      ]
+      transform: [{ translateY: this._shouldRenderContent() ? 0 : 10000 }, { scaleY: inverted ? -1 : 1 }]
     };
     const footer = React.Children.only(renderFooter());
     this._orgOnFooterLayout = footer.onLayout;
@@ -373,6 +369,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
 
   _onSizeChange = size => {
     this._size = size;
+    this.props.onSizeChange && this.props.onSizeChange(size);
     if (this._shouldRenderContent()) this.forceUpdate();
   };
 
@@ -391,9 +388,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
   };
 
   _onScrollEnd = () => {
-    this._groupRefs.forEach(group =>
-      idx(() => group.current.contentConversion(this._contentOffsetY))
-    );
+    this._groupRefs.forEach(group => idx(() => group.current.contentConversion(this._contentOffsetY)));
     idx(() =>
       this._sectionRefs.forEach(sectionRef => {
         sectionRef.current.updateOffset(this._contentOffsetY);
@@ -403,7 +398,6 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
   };
 
   _onScroll = e => {
-    // console.log("onScroll=========", JSON.stringify(e.nativeEvent.contentOffset));
     const offsetY = e.nativeEvent.contentOffset.y;
     this._contentOffsetY = offsetY;
     this._shouldUpdateContent &&
@@ -413,14 +407,13 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
         })
       );
     const now = new Date().getTime();
+    this.props.onScroll && this.props.onScroll(e);
     if (this._lastTick - now > 30) {
       this._lastTick = now;
       return;
     }
     this._lastTick = now;
-    this._shouldUpdateContent &&
-      this._groupRefs.forEach(group => idx(() => group.current.contentConversion(offsetY)));
-    this.props.onScroll && this.props.onScroll(e);
+    this._shouldUpdateContent && this._groupRefs.forEach(group => idx(() => group.current.contentConversion(offsetY)));
   };
 
   scrollTo(offset: Offset, animated: boolean = true): Promise<void> {

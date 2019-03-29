@@ -8,15 +8,7 @@
  */
 
 import React from "react";
-import {
-  View,
-  Image,
-  Text,
-  Platform,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput
-} from "react-native";
+import { View, Image, Text, Platform, TouchableOpacity, StyleSheet, TextInput } from "react-native";
 import { LargeList } from "../../src";
 import { contacts } from "./DataSource";
 
@@ -35,7 +27,6 @@ export class ContactExample extends React.Component {
   render() {
     return (
       <LargeList
-        style={styles.container}
         heightForSection={() => 40}
         renderSection={this._renderSection}
         heightForIndexPath={() => 60}
@@ -44,14 +35,15 @@ export class ContactExample extends React.Component {
         renderHeader={this._renderHeader}
         renderFooter={this._renderFooter}
         headerStickyEnabled
-        initialContentOffset={{x:0,y:1000}}
+        initialContentOffset={{ x: 0, y: 1000 }}
+        renderEmpty={this._renderEmpty}
       />
     );
   }
 
   _renderHeader = () => {
     return (
-      <View style={{backgroundColor:"white"}}>
+      <View style={{ backgroundColor: "white" }}>
         <TextInput
           style={styles.search}
           placeholder="Please type first letter to search"
@@ -62,12 +54,18 @@ export class ContactExample extends React.Component {
     );
   };
 
+  _renderEmpty = () => {
+    return (
+      <View style={styles.empty}>
+        <Text>No results found</Text>
+      </View>
+    );
+  };
+
   _renderFooter = () => {
     return (
       <View>
-        <Text style={{ marginVertical: 20, alignSelf: "center" }}>
-          This is the footer
-        </Text>
+        <Text style={{ marginVertical: 20, alignSelf: "center" }}>This is the footer</Text>
       </View>
     );
   };
@@ -76,9 +74,7 @@ export class ContactExample extends React.Component {
     const contact = this.state.data[section];
     return (
       <TouchableOpacity style={styles.section}>
-        <Text style={styles.sectionText}>
-          {contact.header}
-        </Text>
+        <Text style={styles.sectionText}>{contact.header}</Text>
       </TouchableOpacity>
     );
   };
@@ -89,12 +85,8 @@ export class ContactExample extends React.Component {
       <TouchableOpacity style={styles.row}>
         <Image source={contact.icon} style={styles.image} />
         <View style={styles.rContainer}>
-          <Text style={styles.title}>
-            {contact.name}
-          </Text>
-          <Text style={styles.subtitle}>
-            {contact.phone}
-          </Text>
+          <Text style={styles.title}>{contact.name}</Text>
+          <Text style={styles.subtitle}>{contact.phone}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -115,12 +107,13 @@ export class ContactExample extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
   search: {
-    margin:10,
+    margin: 10,
     fontSize: 18
+  },
+  empty: {
+    marginVertical: 20,
+    alignSelf: "center"
   },
   section: {
     flex: 1,

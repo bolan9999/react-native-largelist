@@ -29,7 +29,6 @@ export class RefreshAndLoadingExample extends React.Component {
     return (
       <LargeList
         ref={ref => (this._largeList = ref)}
-        style={styles.container}
         data={this.state.data}
         heightForSection={() => 40}
         renderSection={this._renderSection}
@@ -112,9 +111,6 @@ export class RefreshAndLoadingExample extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
   search: {
     marginTop: 20,
     fontSize: 18

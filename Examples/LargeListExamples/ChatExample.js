@@ -53,9 +53,7 @@ export class ChatExample extends React.Component {
         }}
       >
         <View style={[styles.message, { backgroundColor: isMyself ? "green" : "white" }]}>
-          <Text>
-            {msg.content}
-          </Text>
+          <Text>{msg.content}</Text>
         </View>
       </View>
     );
@@ -77,6 +75,82 @@ export class ChatExample extends React.Component {
     histories: [
       {
         items: [
+          {
+            senderId: 1,
+            senderHeaderIcon: iconArray[1],
+            content: "I can't wait any more to have a try!",
+            sendTimeInterval: 1550546201000
+          },
+          {
+            senderId: 1,
+            senderHeaderIcon: iconArray[1],
+            content: "Wow, that is awesome!",
+            sendTimeInterval: 1550546201000
+          },
+          {
+            senderId: 0,
+            senderHeaderIcon: iconArray[0],
+            content: "I'm writing a chat example, and I am fixing the inverted problem!",
+            sendTimeInterval: 1550546201000
+          },
+          {
+            senderId: 0,
+            senderHeaderIcon: iconArray[0],
+            content: "I can agree more!",
+            sendTimeInterval: 1550546201000
+          },
+          {
+            senderId: 1,
+            senderHeaderIcon: iconArray[1],
+            content: "This is an awesome large list!",
+            sendTimeInterval: 1550546201000
+          },
+          { senderId: 0, senderHeaderIcon: iconArray[0], content: "I am fine, too!", sendTimeInterval: 1550546201000 },
+          {
+            senderId: 1,
+            senderHeaderIcon: iconArray[1],
+            content: "Fine, thank you. And you?",
+            sendTimeInterval: 1550546201000
+          },
+          { senderId: 0, senderHeaderIcon: iconArray[0], content: "How are you!", sendTimeInterval: 1550546201000 },
+          {
+            senderId: 1,
+            senderHeaderIcon: iconArray[1],
+            content: "I can't wait any more to have a try!",
+            sendTimeInterval: 1550546201000
+          },
+          {
+            senderId: 1,
+            senderHeaderIcon: iconArray[1],
+            content: "Wow, that is awesome!",
+            sendTimeInterval: 1550546201000
+          },
+          {
+            senderId: 0,
+            senderHeaderIcon: iconArray[0],
+            content: "I'm writing a chat example, and I am fixing the inverted problem!",
+            sendTimeInterval: 1550546201000
+          },
+          {
+            senderId: 0,
+            senderHeaderIcon: iconArray[0],
+            content: "I can agree more!",
+            sendTimeInterval: 1550546201000
+          },
+          {
+            senderId: 1,
+            senderHeaderIcon: iconArray[1],
+            content: "This is an awesome large list!",
+            sendTimeInterval: 1550546201000
+          },
+          { senderId: 0, senderHeaderIcon: iconArray[0], content: "I am fine, too!", sendTimeInterval: 1550546201000 },
+          {
+            senderId: 1,
+            senderHeaderIcon: iconArray[1],
+            content: "Fine, thank you. And you?",
+            sendTimeInterval: 1550546201000
+          },
+          { senderId: 0, senderHeaderIcon: iconArray[0], content: "How are you!", sendTimeInterval: 1550546201000 },
           {
             senderId: 1,
             senderHeaderIcon: iconArray[1],
