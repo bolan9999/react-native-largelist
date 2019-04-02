@@ -49,13 +49,13 @@ declare module "react-native-largelist-v3" {
     renderHeader?: () => React.ReactElement<any>;
     renderFooter?: () => React.ReactElement<any>;
     onNativeContentOffsetExtract?: {
-      x: Animated.Value;
-      y: Animated.Value;
+      x?: Animated.Value;
+      y?: Animated.Value;
     };
   }
 
   export class WaterfallList<T> extends React.PureComponent<WaterfallListType<T>> {
-    scrollTo(offset: Offset, animated: boolean = true): Promise<void>;
+    scrollTo(offset: Offset, animated?: boolean): Promise<void>;
     endRefresh(): void;
     endLoading(): void;
   }
@@ -63,7 +63,7 @@ declare module "react-native-largelist-v3" {
   export interface StickyFormPropType extends LargeListPropType {}
 
   export class StickyForm extends React.PureComponent<StickyFormPropType> {
-    scrollTo(offset: Offset, animated: boolean = true): Promise<void>;
+    scrollTo(offset: Offset, animated?: boolean): Promise<void>;
     endRefresh(): void;
     endLoading(): void;
   }
