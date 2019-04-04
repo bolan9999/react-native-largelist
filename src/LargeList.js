@@ -73,7 +73,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
 
   render() {
     const { data, heightForSection, heightForIndexPath, groupMinHeight, groupCount, headerStickyEnabled } = this.props;
-    if (this.props.render && (data.length === 0 || data[0].items.length === 0)) return this._renderEmpty();
+    if (this.props.renderEmpty && (data.length === 0 || data[0].items.length === 0)) return this._renderEmpty();
     const groupIndexes = [];
     let indexes = [];
     const sectionTops = [];
