@@ -73,7 +73,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
 
   render() {
     const { data, heightForSection, heightForIndexPath, groupMinHeight, groupCount, headerStickyEnabled } = this.props;
-    if (data.length === 0) return this._renderEmpty();
+    if (this.props.render && (data.length === 0 || data[0].items.length === 0)) return this._renderEmpty();
     const groupIndexes = [];
     let indexes = [];
     const sectionTops = [];
@@ -310,7 +310,13 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
 
   _renderEmpty() {
     return (
-      <SpringScrollView {...this.props} ref={this._scrollView} onNativeContentOffsetExtract={this._nativeOffset}>
+      <SpringScrollView
+        {...this.props}
+        ref={this._scrollView}
+        onSizeChange={this._onSizeChange}
+        onNativeContentOffsetExtract={this._nativeOffset}
+        onScroll={this._onScroll}
+      >
         {this._renderHeader && this._renderHeader()}
         {this.props.renderEmpty && this.props.renderEmpty()}
         {this.props.renderFooter && this.props.renderFooter()}
@@ -338,7 +344,10 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     const header = React.Children.only(renderHeader());
     this._orgOnHeaderLayout = header.onLayout;
     return (
-      <Animated.View style={StyleSheet.flatten([header.props.style, { transform, zIndex }])} onLayout={this._onHeaderLayout}>
+      <Animated.View
+        style={StyleSheet.flatten([header.props.style, { transform, zIndex }])}
+        onLayout={this._onHeaderLayout}
+      >
         {header.props.children}
       </Animated.View>
     );
