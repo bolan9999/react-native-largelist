@@ -72,8 +72,9 @@ export class Group extends React.Component<GroupPropType> {
           transform: [{ scaleY: inverted ? -1 : 1 }]
         }
       ]);
+      const key = cell.props.key ? cell.props.key : index;
       return React.cloneElement(cell, {
-        key: index,
+        key,
         style
       });
     });

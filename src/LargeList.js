@@ -311,6 +311,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
   _renderEmpty() {
     return (
       <SpringScrollView
+        contentStyle={{flex:1}}
         {...this.props}
         ref={this._scrollView}
         onSizeChange={this._onSizeChange}
