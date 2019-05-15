@@ -57,6 +57,13 @@ V3已经独立成为一个单独的库，您可以直接删除react-native-large
 1. 编译找不到`RCTXXXX.h`文件：
 
    可以参看[这里](https://github.com/facebook/react-native/issues/22000#issuecomment-438201084)
+   
+2. Pod安装
+    
+    在您的项目pod文件里加入如下内容后pod install
+    ```
+    pod 'RNSpringScrollView', :path => '../node_modules/react-native-spring-scrollview/ios'
+    ```
 
 ### Android常见接入问题
 
