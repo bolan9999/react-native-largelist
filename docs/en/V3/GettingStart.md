@@ -52,6 +52,13 @@ protected List<ReactPackage> getPackages() {
 1. Can not find files `RCTXXXX.h`：
 
    [Click here to find a solution](https://github.com/facebook/react-native/issues/22000#issuecomment-438201084)
+   
+2. Pod install problem:
+
+    add this to your pod file:
+    ```
+    pod 'RNSpringScrollView', :path => '../node_modules/react-native-spring-scrollview/ios'
+    ```
 
 ### Android common installation problems
 
