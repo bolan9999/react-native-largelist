@@ -84,21 +84,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/shaders" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/build/generated/not_namespaced_r_class_sources" />
-      <excludeFolder url="file://$MODULE_DIR$/build/generated/source/r" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/apk_list" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/bundle_manifest" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/check_manifest_result" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/compatible_screen_manifest" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant_app_manifest" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant_run_merged_manifests" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/lint_jar" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/merged_manifests" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/metadata_feature_manifest" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/prebuild" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

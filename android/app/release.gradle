@@ -1,0 +1,100 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'signing'
+
+def configureReactNativePom(def pom) {
+    pom.artifactId = POM_ARTIFACT_ID
+    pom.name = GROUP
+    pom.packaging = POM_PACKAGING
+    pom.version = VERSION_NAME
+    pom.groupId = "com.react-native-image-picker"
+    archivesBaseName='react-native-image-picker-android'
+
+    pom.project {
+        name POM_NAME
+
+        description 'A library for selecting images from photo library on android'
+        url 'https://github.com/skillz/react-native-image-picker'
+
+        scm {
+            url 'https://github.com/skillz/react-native-image-picker.git'
+            connection 'scm:git:https://github.com/skillz/react-native-image-picker.git'
+            developerConnection 'scm:git:git@github.com/skillz/react-native-image-picker.git'
+        }
+
+        licenses {
+            license {
+                name 'Proprietary'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'skillz'
+                name 'Skillz'
+            }
+        }
+    }
+}
+
+afterEvaluate { project ->
+
+    task androidSourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+        include '**/*.java'
+    }
+
+    task renameArchive(type: Copy) {
+        dependsOn 'assembleLiveRelease'
+        from('build/outputs/aar')
+        into('build/outputs/aar')
+        include('android-release.aar')
+        rename ('android-release.aar',
+                'react-native-image-picker.aar')
+    }
+
+    android.libraryVariants.all { variant ->
+        def name = variant.name.capitalize()
+        task "jar${name}"(type: Jar, dependsOn: variant.javaCompile) {
+            from variant.javaCompile.destinationDir
+        }
+    }
+
+    version = VERSION_NAME
+    group = GROUP
+
+    signing {
+        required { gradle.taskGraph.hasTask('uploadArchives') }
+
+        sign configurations.archives
+    }
+
+    uploadArchives {
+        configuration = configurations.archives
+
+        repositories.mavenDeployer {
+            beforeDeployment {
+                MavenDeployment deployment -> signing.signPom(deployment)
+            }
+
+            repository(url: 'http://nexus.skillz.com/content/repositories/thirdparty/') {
+                authentication(userName: "garbage", password: "garbage")
+            }
+
+            configureReactNativePom pom
+        }
+    }
+
+    task installArchives(type: Upload) {
+        configuration = configurations.archives
+
+        repositories.mavenDeployer {
+
+            repository url: "file://${projectDir}/../android"
+
+            configureReactNativePom pom
+
+        }
+    }
+}
