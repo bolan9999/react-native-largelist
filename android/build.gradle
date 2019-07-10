@@ -7,8 +7,6 @@ def computeVersionName() {
     return json.version
 }
 
-apply plugin: 'com.android.library'
-
 buildscript {
     ext {
         buildToolsVersion = "29.0.0"
@@ -28,6 +26,8 @@ buildscript {
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     }
 }
+
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 28
@@ -49,7 +49,6 @@ android {
 
 allprojects {
     repositories {
-        mavenLocal()
         google()
         jcenter()
         maven { url "$rootDir/../node_modules/react-native/android" }
@@ -58,12 +57,11 @@ allprojects {
 
 repositories {
     google()
-    jcenter()
-    mavenLocal()
     mavenCentral()
     maven { url 'http://nexus.skillz.com/content/groups/public' }
     maven { url 'http://nexus.skillz.com/content/repositories/snapshots' }
     maven { url 'https://maven.fabric.io/public' }
+    jcenter()
     flatDir { dirs 'libs', '../../node_modules' }
 }
 
