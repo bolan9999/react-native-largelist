@@ -6,19 +6,19 @@ def configureReactNativePom(def pom) {
     pom.name = GROUP
     pom.packaging = POM_PACKAGING
     pom.version = VERSION_NAME
-    pom.groupId = "com.react-native-image-picker"
-    archivesBaseName='react-native-image-picker-android'
+    pom.groupId = "com.largelistdemo"
+    archivesBaseName='react-native-largelist-android'
 
     pom.project {
         name POM_NAME
 
         description 'A library for selecting images from photo library on android'
-        url 'https://github.com/skillz/react-native-image-picker'
+        url 'https://github.com/skillz/react-native-largelist'
 
         scm {
-            url 'https://github.com/skillz/react-native-image-picker.git'
-            connection 'scm:git:https://github.com/skillz/react-native-image-picker.git'
-            developerConnection 'scm:git:git@github.com/skillz/react-native-image-picker.git'
+            url 'https://github.com/skillz/react-native-largelist.git'
+            connection 'scm:git:https://github.com/skillz/react-native-largelist.git'
+            developerConnection 'scm:git:git@github.com/skillz/react-native-largelist.git'
         }
 
         licenses {
@@ -51,7 +51,7 @@ afterEvaluate { project ->
         into('build/outputs/aar')
         include('android-release.aar')
         rename ('android-release.aar',
-                'react-native-image-picker.aar')
+                'react-native-largelist.aar')
     }
 
     android.libraryVariants.all { variant ->
