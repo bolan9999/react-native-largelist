@@ -34,9 +34,10 @@ export class ContactExample extends React.Component {
         data={this.state.data}
         renderHeader={this._renderHeader}
         renderFooter={this._renderFooter}
-        headerStickyEnabled
-        initialContentOffset={{ x: 0, y: 1000 }}
+        // headerStickyEnabled
+        // initialContentOffset={{ x: 0, y: 1000 }}
         renderEmpty={this._renderEmpty}
+        contentStyle={{overflow:"scroll"}}
       />
     );
   }
@@ -44,6 +45,7 @@ export class ContactExample extends React.Component {
   _renderHeader = () => {
     return (
       <View style={{ backgroundColor: "white" }}>
+        <Text>Long Header Test</Text>
         <TextInput
           style={styles.search}
           placeholder="Please type first letter to search"
@@ -109,6 +111,7 @@ export class ContactExample extends React.Component {
 const styles = StyleSheet.create({
   search: {
     margin: 10,
+    marginTop: 600,
     fontSize: 18
   },
   empty: {

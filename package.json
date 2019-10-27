@@ -13,7 +13,7 @@
     "react-native": "0.59.2",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-largelist-v3": "^3.0.14",
-    "react-native-spring-scrollview": "^2.0.21",
+    "react-native-spring-scrollview": "2.0.23",
     "react-navigation": "^3.5.1"
   },
   "devDependencies": {
