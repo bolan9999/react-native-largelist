@@ -14,34 +14,48 @@ export class Group extends React.Component<GroupPropType> {
   _currentIndex = 0;
   _offset = 0;
   _margin = 0;
+  _input = null;
+  _output = null;
+  _indexes = null;
+  _elementGroupArray = [];
 
   constructor(props) {
     super(props);
+    this._input = props.input;
+    this._output = props.output;
+    this._indexes = props.indexes;
+    this.updateElementGroupArray();
     if (props.initialContentOffset) {
       this.contentConversion(props.initialContentOffset.y, true);
     }
   }
 
+  updateElementGroupArray() {
+      this._elementGroupArray.length = 0
+      this._output.forEach(v => this._elementGroupArray.indexOf(v) < 0 && this._elementGroupArray.push(v));
+  }
+
   contentConversion(offset: number, init: boolean = false) {
     this._offset = offset;
-    const { input, output } = this.props;
-    const cc = [];
-    output.forEach(v => cc.indexOf(v) < 0 && cc.push(v));
-    for (let i = 0; i < input.length; ++i) {
-      if (offset >= input[i] && offset <= input[i + 1]) {
-        this.update(cc.indexOf(output[i]), init);
+    for (let i = 0; i < this._input.length; ++i) {
+      if (offset >= this._input[i] && offset <= this._input[i + 1]) {
+        this.update(this._elementGroupArray.indexOf(this._output[i]), init);
         break;
       }
     }
   }
 
   update(index: number, init: boolean) {
-    if (index < 0 || index >= this.props.indexes.length || this._currentIndex === index) return;
+    if (index < 0 || index >= this._indexes.length || this._currentIndex === index) return;
     this._currentIndex = index;
     !init && this.forceUpdate();
   }
 
   componentWillReceiveProps(next: GroupPropType) {
+    this._input = next.input;
+    this._output = next.output;
+    this._indexes = next.indexes;
+    this.updateElementGroupArray();
     if (next.offset) {
       this._offset = null;
       this.contentConversion(next.offset);
