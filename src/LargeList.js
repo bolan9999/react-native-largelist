@@ -346,7 +346,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     this._orgOnHeaderLayout = header.onLayout;
     return (
       <Animated.View
-        style={StyleSheet.flatten([header.props.style, { transform, zIndex }])}
+        style={StyleSheet.flatten([header.props.style, { transform: transform.length ? transform: undefined, zIndex }])}
         onLayout={this._onHeaderLayout}
       >
         {header.props.children}
