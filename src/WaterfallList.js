@@ -9,7 +9,6 @@
 
 import React from "react";
 import type {LargeListPropType, Offset, Size, WaterfallListType} from "./Types";
-import {Text} from "react-native";
 import {SpringScrollView} from "react-native-spring-scrollview";
 import {
   Animated,
@@ -44,7 +43,7 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
     this.obtainOffset();
   }
 
-  UNSAFE_componentWillReceiveProps(props: LargeListPropType) {
+  componentWillReceiveProps(props: LargeListPropType) {
     if (
       props.onNativeContentOffsetExtract &&
       this.props.onNativeContentOffsetExtract !==
