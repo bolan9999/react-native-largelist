@@ -1,32 +1,44 @@
 {
-  "name": "large-list-demo",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "lint": "eslint ."
-  },
-  "dependencies": {
-    "lottie-react-native": "^2.6.0",
-    "react": "16.8.3",
-    "react-native": "0.59.2",
-    "react-native-gesture-handler": "^1.1.0",
-    "react-native-largelist-v3": "^3.0.14",
-    "react-native-spring-scrollview": "^2.0.21",
-    "react-navigation": "^3.5.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.4.0",
-    "@babel/runtime": "^7.4.2",
-    "@react-native-community/eslint-config": "^0.0.3",
-    "babel-jest": "^24.5.0",
-    "eslint": "^5.15.3",
-    "jest": "^24.5.0",
-    "metro-react-native-babel-preset": "^0.53.1",
-    "react-test-renderer": "16.8.3"
-  },
-  "jest": {
-    "preset": "react-native"
-  }
+	"name": "react-native-largelist-v3",
+	"version": "3.0.15",
+	"private": false,
+	"description": "The best performance large list component which is much better than SectionList for React Native.",
+	"author": "baokhanhlv <baokhanhlv@gmail.com>",
+  "license": "MIT",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:LVBK/react-native-largelist.git"
+	},
+	"keywords": [
+		"react-native",
+		"react-component",
+		"large list",
+		"flatlist",
+		"sectionlist",
+		"tableview",
+		"high performance",
+		"swipeout",
+		"swipable flatlist"
+	],
+	"bugs": {
+		"url": "https://github.com/bolan9999/react-native-largelist/issues"
+	},
+	"homepage": "https://github.com/LVBK/react-native-largelist",
+	"peerDependencies": {
+		"react": "^16.3.1",
+		"react-native": "^0.50.0",
+		"prop-types": "^15.6.0",
+		"react-native-spring-scrollview": "^2.0.16"
+	},
+	"devDependencies": {
+		"babel-jest": "21.2.0",
+		"babel-preset-react-native": "^4.0.0",
+		"jest": "21.2.1",
+		"react-test-renderer": "16.0.0"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
 }
