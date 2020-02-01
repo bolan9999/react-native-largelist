@@ -53,7 +53,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     }
   }
 
-  componentWillReceiveProps(props: LargeListPropType) {
+  UNSAFE_componentWillReceiveProps(props: LargeListPropType) {
     if (
       props.onNativeContentOffsetExtract &&
       this.props.onNativeContentOffsetExtract !== props.onNativeContentOffsetExtract
@@ -91,6 +91,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     const shouldRenderContent = this._shouldRenderContent();
     if (shouldRenderContent) {
       let currentGroupHeight = 0;
+      const headerHeight = this._headerLayout ? this._headerLayout.height : 0;
       for (let i = 0; i < groupCount; ++i) {
         inputs.push(i === 0 ? [Number.MIN_SAFE_INTEGER] : []);
         outputs.push(i === 0 ? [sumHeight] : []);
@@ -158,11 +159,10 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
       });
       for (let section = 0; section < data.length; section++) {
         const index = section % sections.length;
-        const headerHeight = this._headerLayout ? this._headerLayout.height : 0;
         const first = sectionInputs[index].length <= 0;
         sectionInputs[index].push(
           first ? sectionTops[section] - 1 - headerHeight : sectionInputs[index][sectionInputs[index].length - 1] + 0.1,
-          sectionTops[section] - headerHeight,
+          sectionTops[section] - Math.min(headerHeight, wrapperHeight),
           sectionTops[section]
         );
         sectionIndexes[index].push(section, section, section);
@@ -181,13 +181,16 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
           sectionOutputs[index].push(last);
         }
       }
-      headerStickyEnabled &&
+      if (headerStickyEnabled){
+        if(headerHeight >= wrapperHeight)
+          console.error( "WrapperHeight must be larger than largelist header height when headerStickyEnabled is enabled");
         sectionInputs.forEach(inputs =>
           inputs.forEach((input, index) => {
             const mod = index % 5;
             if (mod > 1 && mod < 4) inputs[index] -= idx(() => this._headerLayout.height, 0);
           })
         );
+      }
       sectionInputs.forEach((inputs, index) => {
         while (inputs.length > 1 && inputs[inputs.length - 1] === inputs[inputs.length - 2]) {
           inputs.splice(inputs.length - 1, 1);

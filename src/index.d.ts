@@ -31,7 +31,6 @@ declare module "react-native-largelist-v3" {
     groupCount?: number;
     groupMinHeight?: number;
     updateTimeInterval?: number;
-    headerStickyEnabled?: boolean;
   }
 
   export class LargeList extends React.PureComponent<LargeListPropType> {

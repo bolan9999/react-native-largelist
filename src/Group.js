@@ -41,7 +41,7 @@ export class Group extends React.Component<GroupPropType> {
     !init && this.forceUpdate();
   }
 
-  componentWillReceiveProps(next: GroupPropType) {
+  UNSAFE_componentWillReceiveProps(next: GroupPropType) {
     if (next.offset) {
       this._offset = null;
       this.contentConversion(next.offset);
@@ -54,7 +54,7 @@ export class Group extends React.Component<GroupPropType> {
     this._margin = 0;
     return indexes[this._currentIndex].map((indexPath, index) => {
       if (indexPath.row === -1) {
-        this._margin = this._margin + heightForSection(indexPath.section);
+        this._margin = heightForSection(indexPath.section);
         return null;
       }
       const height = heightForIndexPath(indexPath);
