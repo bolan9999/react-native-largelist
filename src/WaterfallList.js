@@ -55,7 +55,7 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
   }
 
   render() {
-    let { numColumns, heightForItem, data, preferColumnWidth } = this.props;
+    let { numColumns, heightForItem, data, preferColumnWidth, contentStyle = {} } = this.props;
     const columnSummaries = [];
     let sumHeight = null;
     if (this._shouldRenderContent()) {
@@ -155,7 +155,7 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
     return (
       <SpringScrollView
         {...this.props}
-        contentStyle={{ height: sumHeight }}
+        contentStyle={[{ height: sumHeight }, contentStyle]}
         ref={this._scrollView}
         onScroll={this._onScroll}
         onNativeContentOffsetExtract={this._nativeOffset}
