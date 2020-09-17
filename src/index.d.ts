@@ -44,7 +44,7 @@ declare module "react-native-largelist-v3" {
   export interface WaterfallListType<T> extends SpringScrollViewPropType {
     data: T[];
     heightForItem: (item: T, index: number) => number;
-    renderItem: (item: T, index: number) => React.ReactElement<any>;
+    renderItem: (item: T, index: number, columnIdx: number) => React.ReactElement<any>;
     preferColumnWidth?: number;
     numColumns?: number;
     renderHeader?: () => React.ReactElement<any>;

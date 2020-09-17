@@ -166,6 +166,7 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
           summary.itemIndexes.map((itemIndex, cellIndex) =>
             <WaterfallItem
               {...this.props}
+              columnIdx={index}
               key={summary.inputItemIndexes[cellIndex][0]}
               ref={this._itemRefs[index][cellIndex]}
               offset={this._contentOffsetY}
