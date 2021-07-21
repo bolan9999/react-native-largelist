@@ -12,49 +12,49 @@ import { StyleSheet, View, Animated } from "react-native";
 import type { SectionPropType } from "./Types";
 
 export class Section extends React.Component<SectionPropType> {
-  state = {
-    section: 0
-  };
+  _section = 0;
+  _offset = 0;
 
   constructor(props) {
     super(props);
-    let offset = props.offset;
-    if (props.initialContentOffset) {
-      offset = props.initialContentOffset.y;
-    }
-    this.updateOffset(offset, true);
+    this._offset = props.offset;
   }
 
-  componentWillReceiveProps(next: SectionPropType) {
-    this.updateOffset(next.offset, false, next);
-  }
-
-  updateOffset(offset: number, init: boolean = false, next?: SectionPropType) {
+  updateOffset(offset: number, preventUpdate: boolean = false) {
     let index = 0;
-    if (!next) next = this.props;
-    for (let i = 0; i < next.input.length; ++i) {
-      if (offset > next.input[i]) {
+    this._offset = offset;
+    for (let i = 0; i < this.props.input.length; ++i) {
+      if (offset > this.props.input[i]) {
         index = i;
       }
     }
-    const section = next.sectionIndexes[index];
-    if (section !== this.state.section) {
-      if (init) this.state = { section };
-      else this.setState({ section });
+    const section = this.props.sectionIndexes[index];
+    if (section !== this._section) {
+      this._section = section;
+      if (!preventUpdate) this.forceUpdate();
     }
   }
 
   render() {
-    const { data, style, heightForSection, renderSection, inverted } = this.props;
-    const { section } = this.state;
-    if (section === undefined || section < 0 || section >= data.length) return null;
+    const { data, style, heightForSection, renderSection, inverted, offset } =
+      this.props;
+    this.updateOffset(this._offset, true);
+    if (
+      this._section === undefined ||
+      this._section < 0 ||
+      this._section >= data.length
+    )
+      return null;
     const wStyle = StyleSheet.flatten([
       style,
-      { height: heightForSection(section), transform: [...style.transform, { scaleY: inverted ? -1 : 1 }] }
+      {
+        height: heightForSection(this._section),
+        transform: [...style.transform, { scaleY: inverted ? -1 : 1 }],
+      },
     ]);
     return (
       <Animated.View {...this.props} style={wStyle}>
-        {renderSection(this.state.section)}
+        {renderSection(this._section)}
       </Animated.View>
     );
   }
