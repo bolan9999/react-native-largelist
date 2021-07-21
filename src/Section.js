@@ -20,7 +20,7 @@ export class Section extends React.Component<SectionPropType> {
     this._offset = props.offset;
   }
 
-  updateOffset(offset: number, preventUpdate: boolean = false) {
+  updateOffset=(offset: number, preventUpdate: boolean = false) =>{
     let index = 0;
     this._offset = offset;
     for (let i = 0; i < this.props.input.length; ++i) {
@@ -33,6 +33,11 @@ export class Section extends React.Component<SectionPropType> {
       this._section = section;
       if (!preventUpdate) this.forceUpdate();
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    this._offset = nextProps.offset;
+    return true;
   }
 
   render() {

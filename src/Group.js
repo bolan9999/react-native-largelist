@@ -14,19 +14,18 @@ export class Group extends React.Component<GroupPropType> {
   _currentIndex = 0;
   _offset = 0;
   _margin = 0;
+  // _offsetDirty = false;
 
   constructor(props) {
     super(props);
-    if (props.initialContentOffset) {
-      this.contentConversion(props.initialContentOffset.y, true);
-    }
+    this.contentConversion(props.offset, true);
   }
 
-  contentConversion(offset: number, init: boolean = false) {
+  contentConversion=(offset: number, init: boolean = false) =>{
     this._offset = offset;
     const { input, output } = this.props;
     const cc = [];
-    output.forEach(v => cc.indexOf(v) < 0 && cc.push(v));
+    output.forEach((v) => cc.indexOf(v) < 0 && cc.push(v));
     for (let i = 0; i < input.length; ++i) {
       if (offset >= input[i] && offset <= input[i + 1]) {
         this.update(cc.indexOf(output[i]), init);
@@ -36,20 +35,31 @@ export class Group extends React.Component<GroupPropType> {
   }
 
   update(index: number, init: boolean) {
-    if (index < 0 || index >= this.props.indexes.length || this._currentIndex === index) return;
+    if (
+      index < 0 ||
+      index >= this.props.indexes.length ||
+      this._currentIndex === index
+    )
+      return;
     this._currentIndex = index;
     !init && this.forceUpdate();
   }
 
-  componentWillReceiveProps(next: GroupPropType) {
-    if (next.offset) {
-      this._offset = null;
-      this.contentConversion(next.offset);
-    }
+  shouldComponentUpdate(nextProps, nextState) {
+    this._offset = nextProps.offset;
+    return true;
   }
 
   render() {
-    const { indexes, heightForSection, heightForIndexPath, renderIndexPath, inverted } = this.props;
+    const {
+      indexes,
+      heightForSection,
+      heightForIndexPath,
+      renderIndexPath,
+      inverted,
+      offset,
+    } = this.props;
+    this.contentConversion(this._offset, true);
     if (this._currentIndex >= indexes.length) return null;
     this._margin = 0;
     return indexes[this._currentIndex].map((indexPath, index) => {
@@ -69,13 +79,13 @@ export class Group extends React.Component<GroupPropType> {
           marginTop,
           alignSelf: "stretch",
           flex: 0,
-          transform: [{ scaleY: inverted ? -1 : 1 }]
-        }
+          transform: [{ scaleY: inverted ? -1 : 1 }],
+        },
       ]);
       const key = cell.props.key ? cell.props.key : index;
       return React.cloneElement(cell, {
         key,
-        style
+        style,
       });
     });
   }

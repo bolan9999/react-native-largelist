@@ -47,7 +47,9 @@ export class RefreshAndLoadingExample extends React.Component {
   _renderHeader = () => {
     return (
       <View>
-        <Text style={styles.header}>I am header</Text>
+      <TouchableOpacity onPress={()=>this._largeList.beginRefresh()}>
+        <Text style={styles.header}>I am header. Click to begin refresh</Text>
+      </TouchableOpacity>
       </View>
     );
   };
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
   },
   header: {
     alignSelf: "center",
-    marginVertical: 50
+    marginVertical: 30
   },
   row: { flexDirection: "row", alignItems: "center" },
   image: { marginLeft: 16, width: 44, height: 44 },

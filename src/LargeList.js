@@ -60,7 +60,6 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
 
   render() {
     //#region compute before render
-    
     const {
       data,
       heightForSection,
@@ -510,11 +509,16 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     return this.scrollTo({ x: 0, y: ht }, animated);
   }
 
+  beginRefresh(){
+    if (!this._scrollView.current) return Promise.reject("LargeList does not initialize yet")
+    return this._scrollView.current.beginRefresh();
+  }
+
   endRefresh() {
     idx(() => this._scrollView.current.endRefresh());
   }
 
-  endLoading() {
-    idx(() => this._scrollView.current.endLoading());
+  endLoading(rebound:boolean = false) {
+    idx(() => this._scrollView.current.endLoading(rebound));
   }
 }

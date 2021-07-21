@@ -77,7 +77,7 @@ export class MenuListExample extends React.Component {
         style={styles.indexes}
         onPress={() => {
           this._listRef
-            .scrollToIndexPath({ section: row, row: -1 }, false)
+            .scrollToIndexPath({ section: row, row: -1 }, true)
             .then();
         }}
       >

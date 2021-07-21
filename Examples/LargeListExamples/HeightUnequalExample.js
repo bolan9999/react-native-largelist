@@ -55,7 +55,7 @@ export class HeightUnequalExample extends React.Component {
     setTimeout(() => this._list.endRefresh(), 2000);
   };
   _onLoading = () => {
-    setTimeout(() => this._list.endLoading(), 2000);
+    setTimeout(() => this._list.endLoading(true), 2000);
   };
 
   _renderSection = (section: number) => {
