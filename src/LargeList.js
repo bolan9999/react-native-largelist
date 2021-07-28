@@ -262,6 +262,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
                   input={inputs[index]}
                   output={outputs[index]}
                   offset={this._contentOffsetY}
+                  nativeOffset={this._offset}
                 />
               </Animated.View>
             );

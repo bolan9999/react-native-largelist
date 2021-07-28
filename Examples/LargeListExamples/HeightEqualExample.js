@@ -36,6 +36,7 @@ export class HeightEqualExample extends React.Component {
     return (
       <LargeList
         data={data}
+        pagingEnabled
         initialContentOffset={{x:0,y:3000}}
         heightForSection={() => 50}
         renderSection={this._renderSection}

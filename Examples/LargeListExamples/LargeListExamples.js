@@ -1,4 +1,12 @@
 /*
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-28 11:29:05
+ * @LastEditors: 石破天惊
+ * @Description: 
+ */
+/*
  *
  * Created by Stone
  * https://github.com/bolan9999
@@ -45,6 +53,7 @@ export class LargeListExamples extends React.Component {
        "IntensiveSectionExample",
        "ChatExample",
        "FlatListExample",
+       "BigMediaExample"
     ]
   };
 }

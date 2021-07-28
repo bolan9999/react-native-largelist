@@ -2,16 +2,9 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-07-21 13:11:34
- * @LastEditTime: 2021-07-28 09:35:17
+ * @LastEditTime: 2021-07-28 11:30:12
  * @LastEditors: 石破天惊
  * @Description:
- */
-/*
- *
- * Created by Stone
- * Email: shanshang130@gmail.com
- * Date: 2018/7/17
- *
  */
 
 import React from "react";
@@ -65,6 +58,7 @@ export class Group extends React.Component<GroupPropType> {
       renderIndexPath,
       inverted,
       offset,
+      nativeOffset
     } = this.props;
     this.contentConversion(this._offset, true);
     if (this._currentIndex >= indexes.length) return null;
@@ -87,7 +81,7 @@ export class Group extends React.Component<GroupPropType> {
 
       return (
         <View style={style} key={index}>
-          {renderIndexPath(indexPath)}
+          {renderIndexPath(indexPath,{nativeOffset})}
         </View>
       );
     });
