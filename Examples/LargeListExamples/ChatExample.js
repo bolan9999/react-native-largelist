@@ -47,6 +47,7 @@ export class ChatExample extends React.Component {
     return (
       <View
         style={{
+          flex:1,
           flexDirection: "row",
           alignItems: "center",
           justifyContent: isMyself ? "flex-end" : "flex-start"

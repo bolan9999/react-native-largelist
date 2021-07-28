@@ -1,4 +1,12 @@
 /*
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-28 09:36:15
+ * @LastEditors: 石破天惊
+ * @Description: 
+ */
+/*
  *
  * Created by Stone
  * https://github.com/bolan9999
@@ -44,7 +52,7 @@ export class MessageExample extends React.Component {
     let msg = this.messages[section].items[row];
     return (
       <TouchableOpacity
-        style={{ backgroundColor: "#FFF" }}
+        style={{flex:1, backgroundColor: "#FFF" }}
         onPress={() => console.log("=====>")}
       >
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>

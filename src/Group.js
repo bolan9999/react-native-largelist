@@ -1,4 +1,12 @@
 /*
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-28 09:35:17
+ * @LastEditors: 石破天惊
+ * @Description:
+ */
+/*
  *
  * Created by Stone
  * Email: shanshang130@gmail.com
@@ -7,21 +15,20 @@
  */
 
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import type { GroupPropType } from "./Types";
 
 export class Group extends React.Component<GroupPropType> {
   _currentIndex = 0;
   _offset = 0;
   _margin = 0;
-  // _offsetDirty = false;
 
   constructor(props) {
     super(props);
     this.contentConversion(props.offset, true);
   }
 
-  contentConversion=(offset: number, init: boolean = false) =>{
+  contentConversion = (offset: number, init: boolean = false) => {
     this._offset = offset;
     const { input, output } = this.props;
     const cc = [];
@@ -32,7 +39,7 @@ export class Group extends React.Component<GroupPropType> {
         break;
       }
     }
-  }
+  };
 
   update(index: number, init: boolean) {
     if (
@@ -69,24 +76,20 @@ export class Group extends React.Component<GroupPropType> {
       }
       const height = heightForIndexPath(indexPath);
       if (height === 0) return null;
-      const cell = React.Children.only(renderIndexPath(indexPath));
       const marginTop = this._margin;
       this._margin = 0;
-      const style = StyleSheet.flatten([
-        cell.props.style,
-        {
-          height,
-          marginTop,
-          alignSelf: "stretch",
-          flex: 0,
-          transform: [{ scaleY: inverted ? -1 : 1 }],
-        },
-      ]);
-      const key = cell.props.key ? cell.props.key : index;
-      return React.cloneElement(cell, {
-        key,
-        style,
+      const style = StyleSheet.flatten({
+        height,
+        marginTop,
+        alignSelf: "stretch",
+        transform: [{ scaleY: inverted ? -1 : 1 }],
       });
+
+      return (
+        <View style={style} key={index}>
+          {renderIndexPath(indexPath)}
+        </View>
+      );
     });
   }
 }
