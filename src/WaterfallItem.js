@@ -1,10 +1,10 @@
 /*
- *
- * Created by Stone
- * https://github.com/bolan9999
- * Email: shanshang130@gmail.com
- * Date: 2019/2/22
- *
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-27 19:59:36
+ * @LastEditors: 石破天惊
+ * @Description: 
  */
 
 import React from "react";
@@ -26,6 +26,7 @@ export class WaterfallItem extends React.Component<WaterfallItemType> {
 
   updateOffset(offset: number, init: boolean = false, next?: WaterfallItemType) {
     let index = 0;
+    this._offset = offset;
     if (!next) next = this.props;
     for (let i = 0; i < next.input.length; ++i) {
       if (offset > next.input[i]) {

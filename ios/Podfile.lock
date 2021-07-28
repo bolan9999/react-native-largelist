@@ -376,7 +376,7 @@ PODS:
   - RNScreens (3.4.0):
     - React-Core
     - React-RCTImage
-  - RNSpringScrollView (3.0.1-rc.2):
+  - RNSpringScrollView (3.0.1-rc.4):
     - React
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -585,7 +585,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
-  RNSpringScrollView: 44f825342389bd16d99fbaa21247fb9c5dd15b9c
+  RNSpringScrollView: 4ece5f29b294a4c2a4fabd8c6553e035385b5246
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
