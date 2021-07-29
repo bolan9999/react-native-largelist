@@ -1,3 +1,11 @@
+<!--
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-28 16:46:54
+ * @LastEditors: 石破天惊
+ * @Description: 
+-->
 # **React Native Large List V3**
 **React Native Large List V3** 是原生桥接实现的一组高性能弹性大列表组件（iOS & Android）。组件内容高度重用，极大地优化了列表性能。
 
@@ -10,10 +18,73 @@
 * 支持原生监听滚动，支持高性能滑动动画
 * 粘性组头支持
 * 支持inverted，适配聊天App
-* 永不白板，性能在百元安卓机（500元红米）暴力测试通过。
+* 永不白板
+* 支持pagingEnabled (<font color=red>新特性</font>)
+* 大图片大视频优化方案 (<font color=red>新特性</font>)
 
-### 预览
-![Refreshing](../res/LottieRefreshing.gif)
-![Loading](../res/LottieLoading.gif)
-![WaterfallExample](../res/WaterfallExample.gif)
-![PictureExample](../res/PictureExample.gif)
+### V3.1更新
+* 优化了SpringScrollView在安卓上的流畅性
+* 支持pagingEnabled
+* 提供一种解决大图片大视频列表的优化方案
+* 支持主动刷新beginRefresh
+* `renderHeader`,`renderFooter`,`renderIndexPath`不再执行切片操作.
+
+### LargeList
+
+All the features below are supported on both iOS and Android.
+
+##### Sticky section support
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![StickySection](../res/StickySection.gif)
+
+##### Fully Cross-platform bounces (iOS & Android).
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![bounces](../res/bounces.gif)
+
+##### Customize refreshing (Support `lottie-react-native` progress with `useNativeDriver`)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CustomizeRefreshing](../res/CustomizeRefreshing.gif)
+
+##### Customize loading (Support `lottie-react-native` progress with `useNativeDriver`)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CustomizeLoading](../res/CustomizeLoading.gif)
+
+##### Slide on both horizontal and vertical directions.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![BothDirections](../res/BothDirections.gif)
+
+##### Sticky header support.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![StickyHeader](../res/StickyHeader.gif)
+
+##### directionalLockEnabled
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![directionalLockEnabled](../res/directionalLockEnabled.gif)
+
+##### Support `inverted`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![inverted](../res/inverted.gif)
+
+##### Drag to scale header background: renderScaleHeaderBackground
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![renderScaleHeaderBackground](../res/renderScaleHeaderBackground.gif)
+
+### WaterfallList
+
+##### Complex situation
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![WaterfallExample](../res/WaterfallExample.png)
+
+##### preferColumnWidth
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![preferColumnWidth](../res/preferColumnWidth.gif)
+
+##### numColumns
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![numColumns](../res/numColumns.gif)
+
+### StickyForm
+
+##### example
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![StickyFormExample](../res/StickyFormExample.gif)

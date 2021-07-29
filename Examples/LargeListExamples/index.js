@@ -17,3 +17,4 @@ export * from "./IntensiveSectionExample";
 export * from "./ChatExample";
 export * from "./FlatListExample";
 export * from "./LargeListExamples";
+export * from "./BigMediaExample";
