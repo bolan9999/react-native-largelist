@@ -10,11 +10,11 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { LargeList } from "../../src";
-import { CommonLottieHeader, CommonLottieFooter } from "react-native-spring-scrollview/Customize";
-
+import { CommonLottieHeader } from "react-native-spring-scrollview/Customize/CommonLottieHeader";
+import { CommonLottieFooter } from "react-native-spring-scrollview/Customize/CommonLottieFooter";
 export class HeightUnequalExample extends React.Component {
   static navigationOptions = {
-    title: "HeightUnequalExample"
+    title: "HeightUnequalExample",
   };
 
   _sectionCount = 1;
@@ -38,10 +38,12 @@ export class HeightUnequalExample extends React.Component {
     return (
       <LargeList
         data={data}
-        ref={ref => (this._list = ref)}
+        ref={(ref) => (this._list = ref)}
         heightForSection={() => 50}
         renderSection={this._renderSection}
-        heightForIndexPath={({ section: section, row: row }) => (row % 2 ? 50 : 100)}
+        heightForIndexPath={({ section: section, row: row }) =>
+          row % 2 ? 50 : 100
+        }
         renderIndexPath={this._renderIndexPath}
         refreshHeader={CommonLottieHeader}
         loadingFooter={CommonLottieFooter}
@@ -55,15 +57,13 @@ export class HeightUnequalExample extends React.Component {
     setTimeout(() => this._list.endRefresh(), 2000);
   };
   _onLoading = () => {
-    setTimeout(() => this._list.endLoading(), 2000);
+    setTimeout(() => this._list.endLoading(true), 2000);
   };
 
   _renderSection = (section: number) => {
     return (
       <View style={styles.section}>
-        <Text>
-          Section {section}
-        </Text>
+        <Text>Section {section}</Text>
       </View>
     );
   };
@@ -85,11 +85,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "gray",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   row: {
+    flex:1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   line: {
     position: "absolute",
@@ -97,6 +98,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: 1,
-    backgroundColor: "#EEE"
-  }
+    backgroundColor: "#EEE",
+  },
 });

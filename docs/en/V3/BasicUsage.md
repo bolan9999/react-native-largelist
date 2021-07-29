@@ -2,7 +2,7 @@
 
 Import：
 ```$js
-import { LargeList } from "react-native-largelist-v3";
+import { LargeList } from "react-native-largelist";
 ```
 
 Check weather the installation is correct with the code below:
@@ -10,7 +10,7 @@ Check weather the installation is correct with the code below:
 ```
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { LargeList } from "react-native-largelist-v3";
+import { LargeList } from "react-native-largelist";
 
 export class HeightEqualExample extends React.Component {
   _sectionCount = 10;

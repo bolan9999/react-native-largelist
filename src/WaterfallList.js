@@ -40,20 +40,6 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
 
   constructor(props) {
     super(props);
-    this.obtainOffset();
-  }
-
-  componentWillReceiveProps(props: LargeListPropType) {
-    if (
-      props.onNativeContentOffsetExtract &&
-      this.props.onNativeContentOffsetExtract !==
-        props.onNativeContentOffsetExtract
-    ) {
-      this.obtainOffset();
-    }
-  }
-
-  obtainOffset() {
     this._nativeOffset = {
       x: new Animated.Value(0),
       y: new Animated.Value(0),
@@ -217,6 +203,7 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
           summary.itemIndexes.map((itemIndex, cellIndex) => (
             <WaterfallItem
               {...this.props}
+              columnIdx={index}
               key={summary.inputItemIndexes[cellIndex][0]}
               ref={this._itemRefs[index][cellIndex]}
               offset={this._contentOffsetY}

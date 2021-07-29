@@ -1,4 +1,12 @@
 /*
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-28 09:38:05
+ * @LastEditors: 石破天惊
+ * @Description: 
+ */
+/*
  *
  * Created by Stone
  * https://github.com/bolan9999
@@ -74,6 +82,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   row: {
+    flex:1,
     justifyContent: "center",
     alignItems: "center"
   },
