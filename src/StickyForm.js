@@ -23,25 +23,13 @@ export class StickyForm extends React.PureComponent<StickyFormPropType> {
 
   constructor(props) {
     super(props);
-    this.obtainOffset();
-  }
-
-  componentWillReceiveProps(props: LargeListPropType) {
-    if (
-      props.onNativeContentOffsetExtract &&
-      this.props.onNativeContentOffsetExtract !== props.onNativeContentOffsetExtract
-    ) {
-      this.obtainOffset();
-    }
-  }
-
-  obtainOffset() {
     this._nativeOffset = {
       x: new Animated.Value(0),
       ...this.props.onNativeContentOffsetExtract
     };
     this._offset = this._nativeOffset.x;
   }
+  
   render() {
     return (
       <LargeList

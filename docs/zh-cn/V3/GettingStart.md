@@ -1,19 +1,29 @@
+<!--
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-28 16:40:47
+ * @LastEditors: 石破天惊
+ * @Description: 
+-->
 # 快速接入
-
-### 版本需求关系
-
-* `react-native-largelist-v3` ===> `react-native-spring-scrollview@^2.0.3` ===> `react-native@0.50.0`
-* `react-native-largelist-v2` ===> `react-native-spring-scrollview@0.0.24` ===> `react-native-gesture-handler@1.0.6` ===> `react-native@0.50.0`
 
 ### 全新安装命令
 ```
-yarn add react-native-spring-scrollview react-native-largelist-v3
+yarn add react-native-spring-scrollview react-native-largelist
+```
+RN 0.50-0.59 without pod
+```
 react-native link react-native-spring-scrollview
+```
+RN 0.60+ with pod
+```
+npx pod-install
 ```
 
 如果没有异常情况，原生端就已经安装好了。为了稳妥起见，您还是应该手动检查原生端的配置是否正确
 
-### 检查原生端是否链接正确
+### 检查原生端是否链接正确(0.50-0.59)
 
 ##### iOS
 * 检查 `您的项目 ==> Libraries ==> RNSpringScrollView.xcodeproj` 是否已添加到您的项目中

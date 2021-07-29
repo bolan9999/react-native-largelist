@@ -1,4 +1,12 @@
 /*
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-28 16:00:11
+ * @LastEditors: 石破天惊
+ * @Description:
+ */
+/*
  *
  * Created by Stone
  * https://github.com/bolan9999
@@ -13,9 +21,8 @@ import { messages } from "./DataSource";
 import { LargeList } from "../../src";
 
 export class MessageExample extends React.Component {
-
   static navigationOptions = {
-    title: "MessageExample"
+    title: "MessageExample",
   };
 
   messages;
@@ -30,7 +37,8 @@ export class MessageExample extends React.Component {
   render() {
     return (
       <LargeList
-        ref={ref => (this.largeList = ref)}
+        pagingEnabled
+        ref={(ref) => (this.largeList = ref)}
         heightForSection={() => 0}
         renderSection={() => null}
         heightForIndexPath={() => 88}
@@ -44,7 +52,7 @@ export class MessageExample extends React.Component {
     let msg = this.messages[section].items[row];
     return (
       <TouchableOpacity
-        style={{ backgroundColor: "#FFF" }}
+        style={{ flex: 1, backgroundColor: "#FFF" }}
         onPress={() => console.log("=====>")}
       >
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
@@ -53,16 +61,11 @@ export class MessageExample extends React.Component {
             style={{ marginLeft: 16, width: 44, height: 44 }}
           />
           <View style={{ marginLeft: 4 }}>
-            <Text style={{ fontSize: 18 }}>
-              {msg.title}
-            </Text>
-            <Text style={{ fontSize: 14, marginTop: 8 }}>
-              {msg.subtitle}
-            </Text>
+            <Text style={{ fontSize: 18 }}>{msg.title}</Text>
+            <Text style={{ fontSize: 14, marginTop: 8 }}>{msg.subtitle}</Text>
           </View>
         </View>
       </TouchableOpacity>
     );
   };
 }
-

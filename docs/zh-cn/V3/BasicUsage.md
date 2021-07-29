@@ -1,8 +1,16 @@
+<!--
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-28 16:48:45
+ * @LastEditors: 石破天惊
+ * @Description: 
+-->
 # 简单使用
 
 导入：
 ```$js
-import { LargeList } from "react-native-largelist-v3";
+import { LargeList } from "react-native-largelist";
 ```
 
 使用下面的代码检查您的安装是否正确：
@@ -10,7 +18,7 @@ import { LargeList } from "react-native-largelist-v3";
 ```
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { LargeList } from "react-native-largelist-v3";
+import { LargeList } from "react-native-largelist";
 
 export class HeightEqualExample extends React.Component {
   _sectionCount = 10;

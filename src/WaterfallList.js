@@ -33,19 +33,6 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
 
   constructor(props) {
     super(props);
-    this.obtainOffset();
-  }
-
-  componentWillReceiveProps(props: LargeListPropType) {
-    if (
-      props.onNativeContentOffsetExtract &&
-      this.props.onNativeContentOffsetExtract !== props.onNativeContentOffsetExtract
-    ) {
-      this.obtainOffset();
-    }
-  }
-
-  obtainOffset() {
     this._nativeOffset = {
       x: new Animated.Value(0),
       y: new Animated.Value(0),

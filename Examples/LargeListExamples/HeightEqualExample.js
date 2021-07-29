@@ -78,17 +78,17 @@ export class HeightEqualExample extends React.Component {
 
   _renderHeader = () => {
     return (
-      <View>
+      <TouchableOpacity onPress={()=>console.log("_renderHeader")}>
         <Text style={styles.header}>I am header</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
   _renderFooter = () => {
     return (
-      <View>
+      <TouchableOpacity onPress={()=>console.log("_renderFooter")}>
         <Text style={styles.header}>I am Footer</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 }
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   row: {
+    flex:1,
     justifyContent: "center",
     alignItems: "center"
   },

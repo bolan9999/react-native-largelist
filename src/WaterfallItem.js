@@ -1,10 +1,10 @@
 /*
- *
- * Created by Stone
- * https://github.com/bolan9999
- * Email: shanshang130@gmail.com
- * Date: 2019/2/22
- *
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-27 19:59:36
+ * @LastEditors: 石破天惊
+ * @Description: 
  */
 
 import React from "react";
@@ -12,21 +12,21 @@ import { StyleSheet,Animated } from "react-native";
 import type { WaterfallItemType } from "./Types";
 
 export class WaterfallItem extends React.Component<WaterfallItemType> {
-  state = {
-    itemIndex: 0
-  };
+  _itemIndex=0;
 
   constructor(props) {
     super(props);
-    this.updateOffset(props.offset, true);
+    this._offset = props.offset;
   }
 
-  componentWillReceiveProps(next: WaterfallItemType) {
-    this.updateOffset(next.offset, false, next);
+  shouldComponentUpdate(nextProps) {
+    this._offset = nextProps.offset;
+    return true;
   }
 
   updateOffset(offset: number, init: boolean = false, next?: WaterfallItemType) {
     let index = 0;
+    this._offset = offset;
     if (!next) next = this.props;
     for (let i = 0; i < next.input.length; ++i) {
       if (offset > next.input[i]) {
@@ -34,20 +34,20 @@ export class WaterfallItem extends React.Component<WaterfallItemType> {
       }
     }
     const itemIndex = next.itemIndexes[index];
-    if (itemIndex !== this.state.itemIndex) {
-      if (init) this.state = { itemIndex };
-      else this.setState({ itemIndex });
+    if (itemIndex !== this._itemIndex) {
+      this._itemIndex = itemIndex;
+      if(!init) this.forceUpdate();
     }
   }
 
   render() {
     const { data, style, heightForItem, renderItem } = this.props;
-    const { itemIndex } = this.state;
-    if (itemIndex === undefined || itemIndex < 0 || itemIndex >= data.length) return null;
-    const wStyle = StyleSheet.flatten([style, { height: heightForItem(data[itemIndex], itemIndex) }]);
+    this.updateOffset(this._offset,true);
+    if (this._itemIndex === undefined || this._itemIndex < 0 || this._itemIndex >= data.length) return null;
+    const wStyle = StyleSheet.flatten([style, { height: heightForItem(data[this._itemIndex], this._itemIndex) }]);
     return (
       <Animated.View {...this.props} style={wStyle}>
-        {renderItem(data[itemIndex], itemIndex)}
+        {renderItem(data[this._itemIndex], this._itemIndex)}
       </Animated.View>
     );
   }
