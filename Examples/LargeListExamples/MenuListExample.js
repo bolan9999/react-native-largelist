@@ -77,7 +77,7 @@ export class MenuListExample extends React.Component {
         style={styles.indexes}
         onPress={() => {
           this._listRef
-            .scrollToIndexPath({ section: row, row: -1 }, false)
+            .scrollToIndexPath({ section: row, row: -1 }, true)
             .then();
         }}
       >
@@ -103,7 +103,7 @@ export class MenuListExample extends React.Component {
   renderItem = ({ section: section, row: row }) => {
     let food = foods[section].items[row];
     return (
-      <View>
+      <View style={{ flex: 1}}>
         <View style={{ flex: 1, flexDirection: "row" }}>
           <Image
             style={{
@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     flexGrow: 4
   },
   indexes: {
+    flex:1,
     backgroundColor: "#EEE",
     justifyContent: "center",
     alignItems: "center"

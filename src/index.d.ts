@@ -1,9 +1,10 @@
-/**
- * Author: Shi(bolan0000@icloud.com)
- * Date: 2019/3/3
- * Copyright (c) 2018, AoTang, Inc.
- *
- * Description:
+/*
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-28 09:57:41
+ * @LastEditors: 石破天惊
+ * @Description: 
  */
 
 declare module "react-native-largelist-v3" {
@@ -65,7 +66,8 @@ declare module "react-native-largelist-v3" {
 
   export class StickyForm extends React.PureComponent<StickyFormPropType> {
     scrollTo(offset: Offset, animated?: boolean): Promise<void>;
+    beginRefresh():Promise<void>;
     endRefresh(): void;
-    endLoading(): void;
+    endLoading(rebound?: boolean): void;
   }
 }

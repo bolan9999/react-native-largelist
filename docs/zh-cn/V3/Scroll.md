@@ -1,3 +1,11 @@
+<!--
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-28 17:02:31
+ * @LastEditors: 石破天惊
+ * @Description: 
+-->
 # 滑动
 
 要使用代码滑动到指定位置，非常简单：
@@ -19,20 +27,6 @@ scrollTo({x:number, y:number}, animated:boolean=true):Promise&lt;void>
 scrollToIndexPath({section:number, row:number}, animated: boolean = true):Promise&lt;void>
 
 滑动到指定的IndexPath，如果row===-1，则表示滑动到相应的组头
-
-<!--scroll({x:number, y:number}, animated:boolean=true):Promise&lt;void>-->
-
-<!--在当前位置上滑动指定的偏移，请注意scroll参数是偏移值，scrollTo是目标值-->
-
-<!--scrollToBegin(animated:boolean=true):Promise&lt;void>-->
-
-<!--滑动到{x:0,y:0}的位置-->
-
-<!--scrollToEnd(animated: boolean = true):Promise&lt;void>-->
-
-<!--滑动到最右下角位置-->
-
-
 # Javascript端监听滑动
 
 ### onScroll : ({nativeEvent:{contentOffset:{x:number, y:number}}})=>any

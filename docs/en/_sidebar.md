@@ -1,3 +1,11 @@
+<!--
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-28 17:17:52
+ * @LastEditors: 石破天惊
+ * @Description: 
+-->
 * [Version 3 (Latest)](en/README)
     * [Welcome](en/README)
     * [Getting Started](en/V3/GettingStart)
@@ -5,9 +13,7 @@
     * LargeList
         * [Basic Usage](en/V3/Overview)
         * [Pull to refresh](en/V3/Refresh)
-        * [Customize Refreshing](en/V3/CustomRefresh)
         * [Drag to Load data](en/V3/Loading)
-        * [Customize Loading](en/V3/CustomLoading)
         * [onScroll & Scroll Listener](en/V3/Scroll)
         * [All supported props](en/V3/SupportedProps)
         * [Known Issues](en/V3/KnownIssues)

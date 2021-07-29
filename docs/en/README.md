@@ -10,10 +10,64 @@
 * Native onScroll Listener supported.
 * Sticky headers supported.
 * Support inverted.
-* Never blanks, violence test passed on Redmi phone(only $99).
+* Never blanks.
 
-### Preview
-![Refreshing](../res/LottieRefreshing.gif)
-![Loading](../res/LottieLoading.gif)
-![WaterfallExample](../res/WaterfallExample.gif)
-![PictureExample](../res/PictureExample.gif)
+### LargeList
+
+All the features below are supported on both iOS and Android.
+
+##### Sticky section support
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![StickySection](../res/StickySection.gif)
+
+##### Fully Cross-platform bounces (iOS & Android).
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![bounces](../res/bounces.gif)
+
+##### Customize refreshing (Support `lottie-react-native` progress with `useNativeDriver`)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CustomizeRefreshing](../res/CustomizeRefreshing.gif)
+
+##### Customize loading (Support `lottie-react-native` progress with `useNativeDriver`)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CustomizeLoading](../res/CustomizeLoading.gif)
+
+##### Slide on both horizontal and vertical directions.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![BothDirections](../res/BothDirections.gif)
+
+##### Sticky header support.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![StickyHeader](../res/StickyHeader.gif)
+
+##### directionalLockEnabled
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![directionalLockEnabled](../res/directionalLockEnabled.gif)
+
+##### Support `inverted`
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![inverted](../res/inverted.gif)
+
+##### Drag to scale header background: renderScaleHeaderBackground
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![renderScaleHeaderBackground](../res/renderScaleHeaderBackground.gif)
+
+### WaterfallList
+
+##### Complex situation
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![WaterfallExample](../res/WaterfallExample.png)
+
+##### preferColumnWidth
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![preferColumnWidth](../res/preferColumnWidth.gif)
+
+##### numColumns
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![numColumns](../res/numColumns.gif)
+
+### StickyForm
+
+##### example
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![StickyFormExample](../res/StickyFormExample.gif)
