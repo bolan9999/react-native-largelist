@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-07-21 13:11:34
- * @LastEditTime: 2021-07-28 17:17:52
+ * @LastEditTime: 2021-07-29 18:28:45
  * @LastEditors: 石破天惊
  * @Description: 
 -->
@@ -15,6 +15,7 @@
         * [Pull to refresh](en/V3/Refresh)
         * [Drag to Load data](en/V3/Loading)
         * [onScroll & Scroll Listener](en/V3/Scroll)
+        * [Big picture or Video optimization](zh-cn/V3/BigMedia)
         * [All supported props](en/V3/SupportedProps)
         * [Known Issues](en/V3/KnownIssues)
 

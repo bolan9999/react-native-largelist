@@ -1,19 +1,30 @@
+<!--
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-29 18:09:43
+ * @LastEditTime: 2021-07-29 18:24:06
+ * @LastEditors: 石破天惊
+ * @Description: 
+
+-->
 # Getting Started
 
-### Version requirement
-
-* `react-native-largelist` ===> `react-native-spring-scrollview@^2.0.3` ===> `react-native@0.50.0`
-* `react-native-largelist-v2` ===> `react-native-spring-scrollview@0.0.24` ===> `react-native-gesture-handler@1.0.6` ===> `react-native@0.50.0`
-
 ### New installation code
+
 ```
 yarn add react-native-spring-scrollview react-native-largelist
+```
+RN 0.50-0.59 without pod
+```
 react-native link react-native-spring-scrollview
 ```
-
+RN 0.60+ with pod
+```
+npx pod-install
+```
 It is completed if you do not get an error. But for some reason, you should check your native installation
 
-### Check native installation
+### Check native installation(0.50-0.59)
 
 ##### iOS
 * Make sure `ProjectPath ==> Libraries ==> RNSpringScrollView.xcodeproj` is in your project.

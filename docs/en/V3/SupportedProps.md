@@ -1,3 +1,11 @@
+<!--
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-29 18:57:01
+ * @LastEditors: 石破天惊
+ * @Description: 
+-->
 # All supported props
 
 Props  |  Type  |  Default  |  Description  
@@ -16,7 +24,7 @@ data | { items: any[] }[] | required | The data source of largelist
 heightForSection | (section: number) => number | ()=>0 | The height function for every Section
 renderSection | (section: number) => React.ReactElement &lt;any> | ()=>null | The render function for every Section
 heightForIndexPath | (indexPath: IndexPath) => number | required | The height function for every IndexPath
-renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any> | required | The render function for every IndexPath
+renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any, , mediaWrapperParam:Object> | required | The render function for every IndexPath, mediaWrapperParam is the parameter of big pic/video optimization. View [Big picture or Video optimization](./BigMedia)
 renderHeader | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist header
 renderFooter | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist footer
 inverted | boolean | false | Inverted the data source, see [ChatExample](https://github.com/bolan9999/react-native-largelist/tree/master/Examples/LargeListExamples/ChatExample.js) for example.

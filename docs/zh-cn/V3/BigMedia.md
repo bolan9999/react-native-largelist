@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-07-28 17:20:21
- * @LastEditTime: 2021-07-29 17:36:24
+ * @LastEditTime: 2021-07-29 18:11:44
  * @LastEditors: 石破天惊
  * @Description: 
 -->
@@ -27,6 +27,7 @@ renderIndexPath = (indexPath, mediaWrapperParam)=>{
 }
 ```
 属性说明：
+
 属性  |  类型  |  默认值  |  描述  
 ---- | ------ | --------- | --------
 mediaWrapperParam | Object | 必须 ｜ 将renderIndexPath的第二个参数传给MediaWrapper即可。

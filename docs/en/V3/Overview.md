@@ -1,3 +1,11 @@
+<!--
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-21 13:11:34
+ * @LastEditTime: 2021-07-29 18:32:40
+ * @LastEditors: 石破天惊
+ * @Description: 
+-->
 # Overview
 
 LargeList V3 depends on `react-native-spring-scrollview@^2.0.3`, and supports almost all props in SpringScrollView.
@@ -14,7 +22,7 @@ contentStyle | ViewStyle | { height } | The content view style of LargeList.
 heightForSection | (section: number) => number | ()=>0 | The height function for every Section
 renderSection | (section: number) => React.ReactElement &lt;any> | ()=>null | The render function for every Section
 heightForIndexPath | (indexPath: IndexPath) => number | required | The height function for every IndexPath
-renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any> | required | The render function for every IndexPath
+renderIndexPath | (indexPath: IndexPath) => React.ReactElement &lt;any, , mediaWrapperParam:Object> | required | The render function for every IndexPath, mediaWrapperParam is the parameter of big pic/video optimization. View [Big picture or Video optimization](./BigMedia)
 renderHeader | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist header
 renderFooter | ()=> React.ReactElement &lt;any> | undefined | The render function of largelist footer
 inverted | boolean | false | Inverted the data source, see [ChatExample](https://github.com/bolan9999/react-native-largelist/tree/master/Examples/LargeListExamples/ChatExample.js) for example.
@@ -37,32 +45,5 @@ renderScaleHeaderBackground | ()=> React.ReactElement &lt;any> | undefined | Ren
 
 ### Precautions
 * LargeList default has a `{flex:1}` style，please be sure its parent has abounded height.
-* In V3, in order to maximize performance optimization, reduce the number of dom nodes, LargeList will slice the `renderHeader`,`renderFooter` and `renderIndexPath` and add some additional styles and `onLayout` prop to the root node. I think it is worth. If your items looks messy. If your Item is a single `Text`,`TextInput` or `Switch` component ,please wrapper it with a `View` , `TouchableOpacity`, `TouchableHighlight` or other.
-```
-renderIndexPath = ({ section, row }) => (
-    return <View><Text>{...}</Text></View>
-)
-```
-
-* If your item has a vertical margin(marginTop or marginBottom)，  You should also wrapper it with a `View` , `TouchableOpacity`, `TouchableHighlight` or other.
-```
-renderIndexPath = ({ section, row }) => (
-    return <View>
-        <TouchableOpacity style={{margin:10}}>
-            {...}
-        </TouchableOpacity>
-    </View>
-)
-```
-
-* If you want to return a customized component. You should always pass down the style prop that the <CustomizedComponent /> receives. 
-```
-const CustomizedComponent = (props) => <TouchableHighlight style={StyleSheet.flatten([this.props.style,{your customized style}])} {...other props}>{some info...}</TouchableHighlight>;
-...
-renderIndexPath = ({ section, row }) => (
-  <CustomizedComponent />
-)
-```
-
-Check out [this issue](https://github.com/bolan9999/react-native-largelist/issues/260) for more detail.
+* After V3, LargeList will no longer slice on `renderHeader`,`renderFooter`,`renderIndexPath`. `{flex:1}` is required in `renderIndexPath`.
 

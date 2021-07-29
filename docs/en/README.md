@@ -1,3 +1,11 @@
+<!--
+ * @Author: 石破天惊
+ * @email: shanshang130@gmail.com
+ * @Date: 2021-07-29 18:09:43
+ * @LastEditTime: 2021-07-29 18:22:48
+ * @LastEditors: 石破天惊
+ * @Description: 
+-->
 # **React Native Large List V3**
 **React Native Large List V3** is the best large list component（iOS & Android）。Its items are all reused, and it is highly performance.
 
@@ -11,6 +19,15 @@
 * Sticky headers supported.
 * Support inverted.
 * Never blanks.
+* Support pagingEnabled (<font color=red>New</font>)
+* Big picture or video optimization (<font color=red>New</font>)
+
+### What's updated in V3.1
+* SpringScrollView bug fix on android
+* Support pagingEnabled
+* Big picture or video optimization
+* Support beginRefresh
+* `renderHeader`,`renderIndexPath` Updated. 
 
 ### LargeList
 
