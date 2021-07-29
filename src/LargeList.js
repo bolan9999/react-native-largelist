@@ -366,7 +366,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     }
     return (
       <Animated.View
-        style={StyleSheet.flatten({ alignSelf: "stretch", transform, zIndex })}
+        style={StyleSheet.flatten({ alignSelf: "stretch", transform: transform.length ? transform: undefined, zIndex })}
         onLayout={this._onHeaderLayout}
       >
         {renderHeader()}
