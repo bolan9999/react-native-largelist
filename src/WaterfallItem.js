@@ -41,13 +41,13 @@ export class WaterfallItem extends React.Component<WaterfallItemType> {
   }
 
   render() {
-    const { data, style, heightForItem, renderItem } = this.props;
+    const { data, style, heightForItem, renderItem,columnIdx } = this.props;
     this.updateOffset(this._offset,true);
     if (this._itemIndex === undefined || this._itemIndex < 0 || this._itemIndex >= data.length) return null;
     const wStyle = StyleSheet.flatten([style, { height: heightForItem(data[this._itemIndex], this._itemIndex) }]);
     return (
       <Animated.View {...this.props} style={wStyle}>
-        {renderItem(data[this._itemIndex], this._itemIndex)}
+        {renderItem(data[this._itemIndex], this._itemIndex, columnIdx)}
       </Animated.View>
     );
   }
