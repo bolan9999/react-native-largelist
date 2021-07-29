@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-07-28 11:23:02
- * @LastEditTime: 2021-07-28 15:56:44
+ * @LastEditTime: 2021-07-29 17:17:49
  * @LastEditors: 石破天惊
  * @Description:
  */
@@ -47,24 +47,34 @@ export class BigMediaExample extends React.Component {
     );
   };
 
-  _renderIndexPath = ({ section: section, row: row }) => {
+  _renderIndexPath = ({ section: section, row: row }, mediaWrapperParam) => {
     return (
       <View style={styles.row}>
-        <MediaWrapper
-          style={{ width: 300, height: 300 }}
-          renderLoading={() => (
-            <ImageBackground
+        {true ? (
+          <MediaWrapper
+            style={{ width: 300, height: 300 }}
+            mediaWrapperParam={mediaWrapperParam}
+            renderLoading={() => (
+              <Image
+                fadeDuration={0}
+                style={{ width: 128, height: 128 }}
+                source={require("./icons/loading.gif")}
+              />
+            )}
+            loadEndFunc="onLoadEnd"
+          >
+            <Image
+              fadeDuration={0}
               style={{ flex: 1 }}
-              source={require("./icons/loading.gif")}
+              source={{ uri: pics[section].items[row] }}
             />
-          )}
-          loadEndFunc="onLoadEnd"
-        >
+          </MediaWrapper>
+        ) : (
           <Image
-            style={{ flex: 1 }}
+            style={{ width: 300, height: 300 }}
             source={{ uri: pics[section].items[row] }}
           />
-        </MediaWrapper>
+        )}
         <Text>
           Section {section} Row {row}
         </Text>

@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-07-28 10:53:28
- * @LastEditTime: 2021-07-28 15:53:23
+ * @LastEditTime: 2021-07-29 15:56:29
  * @LastEditors: 石破天惊
  * @Description: The big Media wrapper.
  */
@@ -21,7 +21,13 @@ export class MediaWrapper extends React.Component<MediaWrapperType> {
         {React.cloneElement(child, {
           [this.props.loadEndFunc]: () => this._visible.setValue(0),
         })}
-        <Animated.View style={styles.cover} opacity={this._visible}>
+        <Animated.View
+          style={styles.cover}
+          opacity={Animated.multiply(
+            this._visible,
+            this.props.mediaWrapperParam.value
+          )}
+        >
           {this.props.renderLoading()}
         </Animated.View>
       </View>
@@ -36,6 +42,8 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     right: 0,
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "white",
   },
 });

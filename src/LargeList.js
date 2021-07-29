@@ -240,31 +240,18 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
       >
         {shouldRenderContent &&
           groupIndexes.map((indexes, index) => {
-            let transform;
-            if (inputs[index].length > 1) {
-              transform = [
-                {
-                  translateY: this._offset.interpolate({
-                    inputRange: inputs[index],
-                    outputRange: outputs[index],
-                  }),
-                },
-              ];
-            }
-            const style = StyleSheet.flatten([styles.abs, { transform }]);
             return (
-              <Animated.View key={index} style={style}>
-                <Group
-                  {...this.props}
-                  index={index}
-                  ref={this._groupRefs[index]}
-                  indexes={indexes}
-                  input={inputs[index]}
-                  output={outputs[index]}
-                  offset={this._contentOffsetY}
-                  nativeOffset={this._offset}
-                />
-              </Animated.View>
+              <Group
+                {...this.props}
+                index={index}
+                key={index}
+                ref={this._groupRefs[index]}
+                indexes={indexes}
+                input={inputs[index]}
+                output={outputs[index]}
+                offset={this._contentOffsetY}
+                nativeOffset={{ value: this._offset }}
+              />
             );
           })}
         {shouldRenderContent &&
@@ -379,7 +366,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
     }
     return (
       <Animated.View
-        style={StyleSheet.flatten({ transform, zIndex })}
+        style={StyleSheet.flatten({ alignSelf: "stretch", transform, zIndex })}
         onLayout={this._onHeaderLayout}
       >
         {renderHeader()}

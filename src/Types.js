@@ -106,4 +106,5 @@ export interface StickyFormPropType extends LargeListPropType {}
 export interface MediaWrapperType {
   loadEndFunc: string;
   renderLoading: () => React.ReactElement<any>;
+  mediaWrapperParam: Animated.Value;
 }

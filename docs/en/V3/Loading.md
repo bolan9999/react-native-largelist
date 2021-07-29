@@ -8,7 +8,7 @@
 Import
 
 ```$js
-import { LargeList } from "react-native-largelist-v3";
+import { LargeList } from "react-native-largelist";
 import { NormalFooter } from "react-native-spring-scrollview/NormalFooter";
 ```
 

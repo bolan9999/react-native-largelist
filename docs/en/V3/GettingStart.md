@@ -2,12 +2,12 @@
 
 ### Version requirement
 
-* `react-native-largelist-v3` ===> `react-native-spring-scrollview@^2.0.3` ===> `react-native@0.50.0`
+* `react-native-largelist` ===> `react-native-spring-scrollview@^2.0.3` ===> `react-native@0.50.0`
 * `react-native-largelist-v2` ===> `react-native-spring-scrollview@0.0.24` ===> `react-native-gesture-handler@1.0.6` ===> `react-native@0.50.0`
 
 ### New installation code
 ```
-yarn add react-native-spring-scrollview react-native-largelist-v3
+yarn add react-native-spring-scrollview react-native-largelist
 react-native link react-native-spring-scrollview
 ```
 

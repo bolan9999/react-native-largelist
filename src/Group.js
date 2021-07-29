@@ -2,14 +2,15 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-07-21 13:11:34
- * @LastEditTime: 2021-07-28 11:30:12
+ * @LastEditTime: 2021-07-29 17:33:54
  * @LastEditors: 石破天惊
  * @Description:
  */
 
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View,Animated } from "react-native";
 import type { GroupPropType } from "./Types";
+import {styles } from "./styles";
 
 export class Group extends React.Component<GroupPropType> {
   _currentIndex = 0;
@@ -58,32 +59,57 @@ export class Group extends React.Component<GroupPropType> {
       renderIndexPath,
       inverted,
       offset,
-      nativeOffset
+      input,
+      output,
+      nativeOffset,
     } = this.props;
     this.contentConversion(this._offset, true);
     if (this._currentIndex >= indexes.length) return null;
     this._margin = 0;
-    return indexes[this._currentIndex].map((indexPath, index) => {
-      if (indexPath.row === -1) {
-        this._margin = heightForSection(indexPath.section);
-        return null;
-      }
-      const height = heightForIndexPath(indexPath);
-      if (height === 0) return null;
-      const marginTop = this._margin;
-      this._margin = 0;
-      const style = StyleSheet.flatten({
-        height,
-        marginTop,
-        alignSelf: "stretch",
-        transform: [{ scaleY: inverted ? -1 : 1 }],
-      });
-
-      return (
-        <View style={style} key={index}>
-          {renderIndexPath(indexPath,{nativeOffset})}
-        </View>
-      );
-    });
+    let transform;
+    if (input.length > 1) {
+      transform = [
+        {
+          translateY: nativeOffset.value.interpolate({
+            inputRange: input,
+            outputRange: output,
+          }),
+        },
+      ];
+    }
+    const cs = StyleSheet.flatten([styles.abs, { transform }]);
+    return (
+      <Animated.View style={cs}>
+        {indexes[this._currentIndex].map((indexPath, rowIndex) => {
+          if (indexPath.row === -1) {
+            this._margin = heightForSection(indexPath.section);
+            return null;
+          }
+          const height = heightForIndexPath(indexPath);
+          if (height === 0) return null;
+          const marginTop = this._margin;
+          this._margin = 0;
+          const style = StyleSheet.flatten({
+            height,
+            marginTop,
+            alignSelf: "stretch",
+            transform: [{ scaleY: inverted ? -1 : 1 }],
+          });
+          let rIdx = this._currentIndex;
+          if (output.length > 4 && output[0] === output[2]) rIdx += 1;
+          const from = input[rIdx * 2];
+          const to = input[rIdx * 2 + 1];
+          const mediaWrapperParam = nativeOffset.value.interpolate({
+            inputRange: [from, from + 0.1, to, to + 0.1],
+            outputRange: [1, 0, 0, 1],
+          });
+          return (
+            <View style={style} key={rowIndex}>
+              {renderIndexPath(indexPath, { value: mediaWrapperParam })}
+            </View>
+          );
+        })}
+      </Animated.View>
+    );
   }
 }
