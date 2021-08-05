@@ -2,12 +2,12 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-07-21 13:11:34
- * @LastEditTime: 2021-07-28 09:57:41
+ * @LastEditTime: 2021-08-05 18:42:43
  * @LastEditors: 石破天惊
  * @Description: 
  */
 
-declare module "react-native-largelist-v3" {
+declare module "react-native-largelist" {
   import { SpringScrollViewPropType, Offset } from "react-native-spring-scrollview";
   import * as React from "react";
   import { Animated } from "react-native";
