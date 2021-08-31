@@ -492,7 +492,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
         ht += heightForIndexPath({ section: s, row: r });
       }
     }
-    return this.scrollTo({ x: 0, y: ht }, animated);
+    return this.scrollTo({x: 0, y: ht - parseInt(screenHeight / 2)}, animated);
   }
 
   beginRefresh() {
