@@ -1,40 +1,31 @@
 {
-  "name": "largelistexample",
-  "version": "0.0.1",
-  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint ."
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
   },
   "dependencies": {
-    "@react-native-community/masked-view": "^0.1.11",
-    "@react-navigation/native": "^5.9.4",
-    "@react-navigation/stack": "^5.14.5",
+    "@react-native-async-storage/async-storage": "~1.15.0",
+    "@react-navigation/native": "^6.0.6",
+    "@react-navigation/native-stack": "^6.2.5",
+    "@react-navigation/stack": "^6.0.11",
+    "expo": "~43.0.0",
+    "expo-status-bar": "~1.1.0",
+    "lottie-react-native": "4.0.3",
     "react": "17.0.1",
+    "react-dom": "17.0.1",
     "react-native": "0.64.2",
-    "react-native-gesture-handler": "^1.10.3",
-    "react-native-reanimated": "^2.2.0",
-    "react-native-safe-area-context": "^3.2.0",
-    "react-native-screens": "^3.4.0",
-    "react-native-spring-scrollview": "3.0.1-rc.5",
-    "lottie-ios": "3.1.8",
-    "lottie-react-native": "4.0.2",
-    "@react-native-community/async-storage": "^1.12.1"
+    "react-native-reanimated": "~2.2.0",
+    "react-native-safe-area-context": "3.3.2",
+    "react-native-screens": "~3.8.0",
+    "react-native-spring-scrollview": "4.0.0-dev-0",
+    "react-native-web": "0.17.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@babel/runtime": "^7.12.5",
-    "@react-native-community/eslint-config": "^2.0.0",
-    "babel-jest": "^26.6.3",
-    "eslint": "7.14.0",
-    "jest": "^26.6.3",
-    "metro-react-native-babel-preset": "^0.64.0",
-    "react-test-renderer": "17.0.1"
+    "@babel/core": "^7.12.9"
   },
-  "jest": {
-    "preset": "react-native"
-  }
+  "private": true
 }
