@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-10-26 17:34:11
- * @LastEditTime: 2021-10-27 17:06:22
+ * @LastEditTime: 2021-10-28 17:04:13
  * @LastEditors: 石破天惊
  * @Description:
  */
@@ -21,10 +21,13 @@ export class Item extends React.Component {
   }
 
   render() {
-    const item = this.props.sections[this._sectionIndex].items[this._itemIndex].data;
+    const item = this.props.sections[this._sectionIndex].items[this._itemIndex];
     return (
       <Reanimated.View style={this.props.translate}>
-        {this.props.renderItem(item, this._itemIndex, this.props.sections[this._sectionIndex])}
+        {this.props.renderItem(item, {
+          sectionIndex: this._sectionIndex,
+          itemIndex: this._itemIndex,
+        })}
       </Reanimated.View>
     );
   }

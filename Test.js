@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-10-26 11:06:10
- * @LastEditTime: 2021-10-27 17:06:48
+ * @LastEditTime: 2021-10-28 17:06:27
  * @LastEditors: 石破天惊
  * @Description:
  */
@@ -19,22 +19,10 @@ export class Test extends React.Component {
   };
 
   render() {
-    return (
-      <LargeList
-        sections={sections}
-        renderItem={this._renderItem}
-      />
-    );
-    // return (
-    //   <SpringScrollView>
-    //     <Button onPress={() => this.setState({ click: true })} title="Example" />
-    //     {/* <Button style={{ opacity: 0 }} onPress={() => console.log("123")} title="Example" /> */}
-    //     {/* <View style={styles.testCover} /> */}
-    //   </SpringScrollView>
-    // );
+    return <LargeList sections={sections} renderItem={this._renderItem} />;
   }
-  _renderItem = (item) => {
-    return <Text style={{textAlign:"center"}}>{item}</Text>;
+  _renderItem = (_, path) => {
+    return <Button title={JSON.stringify(path)} />;
   };
 }
 
@@ -49,7 +37,7 @@ const styles = StyleSheet.create({
 
 const Button = (props: TouchableOpacityProps & { title: string }) => {
   return (
-    <TouchableOpacity {...props} style={[{ margin: 10, alignSelf: "center" }, props.style]}>
+    <TouchableOpacity {...props} style={[{ alignSelf: "center" }, props.style]}>
       <Text>{props.title}</Text>
     </TouchableOpacity>
   );
@@ -60,11 +48,11 @@ const sections = [
     items: [
       { data: 1, estimatedItemHeight: 25 },
       { data: 2, estimatedItemHeight: 25 },
-      { data: 1, estimatedItemHeight: 25 },
-      { data: 2, estimatedItemHeight: 25 },
-      { data: 1, estimatedItemHeight: 25 },
-      { data: 2, estimatedItemHeight: 25 },
-      { data: 1, estimatedItemHeight: 25 },
+      { data: 3, estimatedItemHeight: 25 },
+      { data: 4, estimatedItemHeight: 25 },
+      { data: 5, estimatedItemHeight: 25 },
+      { data: 6, estimatedItemHeight: 25 },
+      { data: 7, estimatedItemHeight: 25 },
       { data: 2, estimatedItemHeight: 25 },
       { data: 1, estimatedItemHeight: 25 },
       { data: 2, estimatedItemHeight: 25 },
@@ -88,4 +76,20 @@ const sections = [
       { data: 1, estimatedItemHeight: 55 },
     ],
   },
-]
+  {
+    items: [
+      { data: 3, estimatedItemHeight: 55 },
+      { data: 1, estimatedItemHeight: 55 },
+      { data: 1, estimatedItemHeight: 55 },
+      { data: 1, estimatedItemHeight: 55 },
+      { data: 1, estimatedItemHeight: 55 },
+      { data: 1, estimatedItemHeight: 55 },
+      { data: 1, estimatedItemHeight: 55 },
+      { data: 1, estimatedItemHeight: 55 },
+      { data: 1, estimatedItemHeight: 55 },
+      { data: 1, estimatedItemHeight: 55 },
+      { data: 1, estimatedItemHeight: 55 },
+      { data: 1, estimatedItemHeight: 55 },
+    ],
+  },
+];
