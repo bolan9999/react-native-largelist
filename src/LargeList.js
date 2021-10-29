@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-10-26 16:51:21
- * @LastEditTime: 2021-10-29 13:36:34
+ * @LastEditTime: 2021-10-29 13:48:52
  * @LastEditors: 石破天惊
  * @Description:
  */
@@ -69,15 +69,6 @@ export const LargeList = React.forwardRef((props: LargeListProps, ref) => {
     refreshingInner: useSharedValue(false),
     loadingMoreInner: useSharedValue(false),
     keyboardOffset: useSharedValue(0),
-
-    // heightSummary: useSharedValue({}),
-    // keyMapping: useSharedValue({}),
-    // trashItems: useSharedValue([]),
-    // trashSections: useSharedValue([]),
-    // availableItems: useSharedValue([]),
-    // availableItemIndexes: useSharedValue([]),
-    // topItem: useSharedValue(),
-    // bottomItem: useSharedValue(),
   });
   const combined = { ...sharedValues, ...props };
   return <LargeListClass ref={ref} {...combined} />;
@@ -94,8 +85,6 @@ const LargeListCore = (props: LargeListCoreProps) => {
   const [trashItems] = React.useState([]);
   const [availableItems] = React.useState([]);
   const [allItems] = React.useState([]);
-  // const topItem = useSharedValue();
-  // const bottomItem = useSharedValue();
   const getHeight = (section: number, item: number) => {
     "worklet";
     if (heightSummary[`${section},${item}`] === undefined) {
@@ -184,9 +173,10 @@ const LargeListCore = (props: LargeListCoreProps) => {
                     trash.itemIndex === itemInfo.itemIndex,
                 ) < 0
               ) {
+                itemInfo.animatedOffset.value = -1000;
                 trashItems.push(itemInfo);
                 availableItems.splice(availableItems.indexOf(itemInfo), 1);
-                console.log("push trash", itemInfo.sectionIndex, itemInfo.itemIndex);
+                console.log("首次回收", itemInfo.sectionIndex, itemInfo.itemIndex);
               }
             }
           });
@@ -224,6 +214,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
             availableItems[0].offset + availableItems[0].height <
             res.y - (screenHeight * extraRenderRate) / 2
           ) {
+            availableItems[0].animatedOffset.value = -1000;
             trashItems.push(availableItems[0]);
             console.log(
               "下滑回收",
@@ -295,6 +286,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
             res.y + res.height + (screenHeight * extraRenderRate) / 2
           ) {
             const last = availableItems[availableItems.length - 1];
+            last.animatedOffset.value = -1000;
             trashItems.push(last);
             console.log("上滑回收", last.sectionIndex, last.itemIndex, trashItems.length);
             availableItems.splice(availableItems.length - 1, 1);
