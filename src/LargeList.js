@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-10-26 16:51:21
- * @LastEditTime: 2021-10-28 18:09:33
+ * @LastEditTime: 2021-10-29 13:36:34
  * @LastEditors: 石破天惊
  * @Description:
  */
@@ -71,13 +71,13 @@ export const LargeList = React.forwardRef((props: LargeListProps, ref) => {
     keyboardOffset: useSharedValue(0),
 
     // heightSummary: useSharedValue({}),
-    keyMapping: useSharedValue({}),
-    trashItems: useSharedValue([]),
-    trashSections: useSharedValue([]),
-    availableItems: useSharedValue([]),
-    availableItemIndexes: useSharedValue([]),
-    topItem: useSharedValue(),
-    bottomItem: useSharedValue(),
+    // keyMapping: useSharedValue({}),
+    // trashItems: useSharedValue([]),
+    // trashSections: useSharedValue([]),
+    // availableItems: useSharedValue([]),
+    // availableItemIndexes: useSharedValue([]),
+    // topItem: useSharedValue(),
+    // bottomItem: useSharedValue(),
   });
   const combined = { ...sharedValues, ...props };
   return <LargeListClass ref={ref} {...combined} />;
@@ -90,7 +90,12 @@ class LargeListClass extends React.PureComponent {
 }
 
 const LargeListCore = (props: LargeListCoreProps) => {
-  const [heightSummary] = React.useState({});
+  const [heightSummary] = React.useState([]);
+  const [trashItems] = React.useState([]);
+  const [availableItems] = React.useState([]);
+  const [allItems] = React.useState([]);
+  // const topItem = useSharedValue();
+  // const bottomItem = useSharedValue();
   const getHeight = (section: number, item: number) => {
     "worklet";
     if (heightSummary[`${section},${item}`] === undefined) {
@@ -104,12 +109,11 @@ const LargeListCore = (props: LargeListCoreProps) => {
     return heightSummary[`${section},${item}`];
   };
 
-  //计算当前需要渲染的起始和结束index
+  //#region  计算当前需要渲染的起始和结束index
   const screenHeight = Dimensions.get("window").height;
-  const extraRenderRate = 0.2;
-  props.topItem.value = null;
-  props.bottomItem.value = null;
-  let height = 0;
+  const extraRenderRate = 0.5;
+  let height = 0,
+    rowIndex = 0;
   const elements = [];
   let bottom = props.contentOffset.y.value + screenHeight * (1 + extraRenderRate);
   if (props.contentOffset.y.value < screenHeight) bottom = screenHeight * (1 + 2 * extraRenderRate);
@@ -117,7 +121,6 @@ const LargeListCore = (props: LargeListCoreProps) => {
     return section.items.every((item, itemIndex) => {
       const preHeight = height + getHeight(sectionIndex, itemIndex);
       if (preHeight >= props.contentOffset.y.value - screenHeight * extraRenderRate) {
-        props.availableItemIndexes.value.push({ sectionIndex, itemIndex });
         const ref = React.useRef();
         const offset = useSharedValue(height);
         const translate = useAnimatedStyle(() => ({
@@ -142,6 +145,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
           />,
         );
         const itemInfo = {
+          rowIndex: rowIndex++,
           sectionIndex,
           itemIndex,
           offset: height,
@@ -149,23 +153,15 @@ const LargeListCore = (props: LargeListCoreProps) => {
           animatedOffset: offset,
           height: getHeight(sectionIndex, itemIndex),
         };
-        props.availableItems.value.push(itemInfo);
-        if (
-          !props.topItem.value &&
-          preHeight >= props.contentOffset.y.value - (screenHeight * extraRenderRate) / 2
-        ) {
-          props.topItem.value = itemInfo;
-        }
-        if (preHeight <= bottom - (screenHeight * extraRenderRate) / 2)
-          props.bottomItem.value = itemInfo;
+        allItems.push(itemInfo);
+        availableItems.push(itemInfo);
         if (preHeight > bottom) return false;
       }
       height = preHeight;
       return true;
     });
   });
-
-  props.availableItems.value=[...props.availableItems.value];
+  //#endregion
 
   useAnimatedReaction(
     () => {
@@ -174,28 +170,32 @@ const LargeListCore = (props: LargeListCoreProps) => {
     (res, pre) => {
       if (res && res.height > 0 && (res.y !== pre.y || res.height !== pre.height)) {
         //将超出范围的Item标记为可回收Item
-        // console.log("props.availableItems.value",props.availableItems.value.length);
-        props.availableItems.value.forEach((itemInfo, index) => {
-          if (
-            itemInfo.offset + itemInfo.height < res.y - (screenHeight * extraRenderRate) / 2 ||
-            itemInfo.offset > res.y + res.height + (screenHeight * extraRenderRate) / 2
-          ) {
-            if (props.trashItems.value.indexOf(itemInfo) < 0) {
-              props.trashItems.value.push(itemInfo);
-              console.log("push trash", itemInfo.sectionIndex, itemInfo.itemIndex);
+        if (trashItems.length === 0) {
+          availableItems.forEach((itemInfo, index) => {
+            if (
+              itemInfo.offset + itemInfo.height >
+                res.y + res.height + (screenHeight * extraRenderRate) / 2 ||
+              itemInfo.offset + itemInfo.height < res.y - (screenHeight * extraRenderRate) / 2
+            ) {
+              if (
+                trashItems.findIndex(
+                  (trash) =>
+                    trash.sectionIndex === itemInfo.sectionIndex &&
+                    trash.itemIndex === itemInfo.itemIndex,
+                ) < 0
+              ) {
+                trashItems.push(itemInfo);
+                availableItems.splice(availableItems.indexOf(itemInfo), 1);
+                console.log("push trash", itemInfo.sectionIndex, itemInfo.itemIndex);
+              }
             }
-          } else {
-            const findIndex = props.trashItems.value.indexOf(itemInfo);
-            if (findIndex >= 0) {
-              props.trashItems.value.splice(findIndex, 1);
-            }
-          }
-        });
+          });
+        }
 
         //开始置换
         const scrollY = res.y - pre.y;
         //比较Item
-        const isBetter = (item, trash, nextItemData) => {
+        const isTrashBetter = (item, trash, nextItemData) => {
           if (!item) return true;
           if (
             trash.sectionIndex === nextItemData.sectionIndex &&
@@ -217,12 +217,92 @@ const LargeListCore = (props: LargeListCoreProps) => {
             return true;
           return false;
         };
-        if (scrollY < 0) {
-          if (
-            props.topItem.value?.offset + props.topItem.value?.height >=
+        //下滑
+        if (scrollY > 0) {
+          //先回收顶部超出的Item
+          while (
+            availableItems[0].offset + availableItems[0].height <
             res.y - (screenHeight * extraRenderRate) / 2
           ) {
-            const prePath = { ...props.topItem.value };
+            trashItems.push(availableItems[0]);
+            console.log(
+              "下滑回收",
+              availableItems[0].sectionIndex,
+              availableItems[0].itemIndex,
+              trashItems.length,
+            );
+            availableItems.splice(0, 1);
+          }
+          //处理底部新的Item进入
+          const bottomItem = availableItems[availableItems.length - 1];
+          if (
+            bottomItem?.offset + bottomItem?.height <=
+            res.y + res.height + (screenHeight * extraRenderRate) / 2
+          ) {
+            //获取即将渲染的Item下标
+            const nextPath = { ...bottomItem };
+            if (nextPath.itemIndex < props.sections[nextPath.sectionIndex].items.length - 1) {
+              nextPath.itemIndex++;
+            } else {
+              if (nextPath.sectionIndex === props.sections.length - 1) {
+                return;
+              }
+              nextPath.sectionIndex++;
+              nextPath.itemIndex = 0;
+            }
+
+            //从垃圾桶选取一个最合适的Item
+            const nextItemData = props.sections[nextPath.sectionIndex].items[nextPath.itemIndex];
+            let recyleItem;
+            trashItems.forEach((trashItem) => {
+              if (isTrashBetter(recyleItem, trashItem, nextItemData)) recyleItem = trashItem;
+            });
+            if (!recyleItem) {
+              return console.log(
+                "Cannot find a trash item to bottom in reuse pool!",
+                trashItems.length,
+              );
+            }
+            trashItems.splice(trashItems.indexOf(recyleItem), 1);
+            const nextItem = {
+              rowIndex: recyleItem.rowIndex,
+              sectionIndex: nextPath.sectionIndex,
+              itemIndex: nextPath.itemIndex,
+              offset: bottomItem.offset + bottomItem.height,
+              height: getHeight(nextPath.sectionIndex, nextPath.itemIndex),
+              reuseType: nextItemData.reuseType,
+              animatedOffset: recyleItem.animatedOffset,
+            };
+            nextItem.animatedOffset.value = nextItem.offset;
+            availableItems.push(nextItem);
+            allItems.splice(allItems.indexOf(recyleItem), 1, nextItem);
+            console.log(
+              "bottom reuse",
+              recyleItem.sectionIndex,
+              recyleItem.itemIndex,
+              nextItem.sectionIndex,
+              nextItem.itemIndex,
+              trashItems.length,
+            );
+          }
+        }
+        //上滑
+        if (scrollY < 0) {
+          //先回收底部超出的Item
+          while (
+            availableItems[availableItems.length - 1].offset +
+              availableItems[availableItems.length - 1].height >
+            res.y + res.height + (screenHeight * extraRenderRate) / 2
+          ) {
+            const last = availableItems[availableItems.length - 1];
+            trashItems.push(last);
+            console.log("上滑回收", last.sectionIndex, last.itemIndex, trashItems.length);
+            availableItems.splice(availableItems.length - 1, 1);
+          }
+          //处理顶部的item进入
+          const topItem = availableItems[0];
+          if (topItem?.offset + topItem?.height >= res.y - (screenHeight * extraRenderRate) / 2) {
+            const prePath = { ...topItem };
             //获取即将渲染的Item
             if (prePath.itemIndex > 0) {
               prePath.itemIndex--;
@@ -231,59 +311,39 @@ const LargeListCore = (props: LargeListCoreProps) => {
               prePath.sectionIndex--;
               prePath.itemIndex = props.sections[prePath.sectionIndex].items.length - 1;
             }
-            const preItemData = props.sections[prePath.sectionIndex].items[prePath.itemIndex];
-            let preItem;
-            props.trashItems.value.forEach((trashItem) => {
-              if (isBetter(preItem, trashItem, preItemData)) preItem = trashItem;
-            });
-            console.log("top reuse", preItem.sectionIndex, preItem.itemIndex);
-            props.trashItems.value.splice(props.trashItems.value.indexOf(preItem), 1);
-            preItem.sectionIndex = prePath.sectionIndex;
-            preItem.itemIndex = prePath.itemIndex;
-            preItem.height = getHeight(prePath.sectionIndex, prePath.itemIndex);
-            preItem.offset = props.topItem.value.offset - preItem.height;
-            preItem.reuseType = preItemData.reuseType;
-            preItem.animatedOffset.value = preItem.offset;
-            props.topItem.value = preItem;
-          }
-        }
-        if (scrollY > 0) {
-          if (
-            props.bottomItem.value?.offset + props.bottomItem.value?.height <=
-            res.y + res.height + (screenHeight * extraRenderRate) / 2
-          ) {
-            const nextPath = { ...props.bottomItem.value };
-            //获取即将渲染的Item
-            if (nextPath.itemIndex < props.sections[nextPath.sectionIndex].items.length - 1) {
-              nextPath.itemIndex++;
-            } else {
-              if (nextPath.sectionIndex === props.sections.length - 1) return;
-              nextPath.sectionIndex++;
-              nextPath.itemIndex = 0;
-            }
-            const nextItemData = props.sections[nextPath.sectionIndex].items[nextPath.itemIndex];
-            let nextItem;
-
             //从垃圾桶选取一个最合适的Item
-            props.trashItems.value.forEach((trashItem) => {
-              if (isBetter(nextItem, trashItem, nextItemData)) nextItem = trashItem;
+            const preItemData = props.sections[prePath.sectionIndex].items[prePath.itemIndex];
+            let recyleItem;
+            trashItems.forEach((trashItem) => {
+              if (isTrashBetter(recyleItem, trashItem, preItemData)) recyleItem = trashItem;
             });
+            if (!recyleItem) {
+              return console.log(
+                "Cannot find a trash item to top in reuse pool!",
+                trashItems.length,
+              );
+            }
             console.log(
-              "bottom reuse",
-              nextItem.sectionIndex,
-              nextItem.itemIndex,
-              nextPath.sectionIndex,
-              nextPath.itemIndex,
+              "top reuse",
+              recyleItem.sectionIndex,
+              recyleItem.itemIndex,
+              prePath.sectionIndex,
+              prePath.itemIndex,
+              trashItems.length,
             );
-            props.trashItems.value.splice(props.trashItems.value.indexOf(nextItem), 1);
-            nextItem.sectionIndex = nextPath.sectionIndex;
-            nextItem.itemIndex = nextPath.itemIndex;
-            nextItem.offset = props.bottomItem.value.offset + props.bottomItem.value.height;
-            nextItem.height = getHeight(nextPath.sectionIndex, nextPath.itemIndex);
-            nextItem.reuseType = nextItemData.reuseType;
-            nextItem.animatedOffset.value = nextItem.offset;
-            props.bottomItem.value = nextItem;
-            console.log("bottom completed", nextItem.sectionIndex, nextItem.itemIndex);
+            trashItems.splice(trashItems.indexOf(recyleItem), 1);
+            const preItem = {
+              rowIndex: recyleItem.rowIndex,
+              sectionIndex: prePath.sectionIndex,
+              itemIndex: prePath.itemIndex,
+              offset: topItem.offset - getHeight(prePath.sectionIndex, prePath.itemIndex),
+              height: getHeight(prePath.sectionIndex, prePath.itemIndex),
+              reuseType: preItemData.reuseType,
+              animatedOffset: recyleItem.animatedOffset,
+            };
+            preItem.animatedOffset.value = preItem.offset;
+            availableItems.splice(0, 0, preItem);
+            allItems.splice(allItems.indexOf(recyleItem), 1, preItem);
           }
         }
       }
@@ -293,6 +353,13 @@ const LargeListCore = (props: LargeListCoreProps) => {
   return (
     <SpringScrollView contentContainerStyle={{ height: 1500 }} {...props}>
       {elements}
+      <TouchableOpacity
+        onPress={() => {
+          console.log("trashItems.length", trashItems.length);
+        }}
+      >
+        <Text>123123</Text>
+      </TouchableOpacity>
     </SpringScrollView>
   );
 };
