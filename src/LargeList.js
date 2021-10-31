@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-10-26 16:51:21
- * @LastEditTime: 2021-10-31 11:17:20
+ * @LastEditTime: 2021-10-31 11:27:37
  * @LastEditors: 石破天惊
  * @Description:
  */
@@ -256,8 +256,9 @@ const LargeListCore = (props: LargeListCoreProps) => {
             availableItems.splice(0, 1);
           }
           //处理底部新的Item进入
-          const bottomItem = availableItems[availableItems.length - 1];
-          if (
+          let bottomItem = availableItems[availableItems.length - 1];
+
+          while (
             bottomItem?.offset + bottomItem?.height <=
             res.y + res.height + (screenHeight * extraRenderRate) / 2
           ) {
@@ -312,6 +313,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
             //   nextItem.itemIndex,
             //   trashItems.length,
             // );
+            bottomItem = availableItems[availableItems.length - 1];
           }
         }
         //上滑
@@ -329,8 +331,11 @@ const LargeListCore = (props: LargeListCoreProps) => {
             availableItems.splice(availableItems.length - 1, 1);
           }
           //处理顶部的item进入
-          const topItem = availableItems[0];
-          if (topItem?.offset + topItem?.height >= res.y - (screenHeight * extraRenderRate) / 2) {
+          let topItem = availableItems[0];
+          while (
+            topItem?.offset + topItem?.height >=
+            res.y - (screenHeight * extraRenderRate) / 2
+          ) {
             const prePath = { ...topItem };
             //获取即将渲染的Item
             if (prePath.itemIndex > 0) {
@@ -379,6 +384,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
             );
             availableItems.splice(0, 0, preItem);
             allItems.splice(allItems.indexOf(recyleItem), 1, preItem);
+            topItem = availableItems[0];
           }
         }
       }
