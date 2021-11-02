@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-10-26 11:06:10
- * @LastEditTime: 2021-10-31 11:18:22
+ * @LastEditTime: 2021-11-02 13:23:35
  * @LastEditors: 石破天惊
  * @Description:
  */
@@ -22,18 +22,11 @@ export class Test extends React.Component {
     return <LargeList sections={sections} renderItem={this._renderItem} />;
   }
   _renderItem = (_, path) => {
-    return <Button title={JSON.stringify(path)} />;
+    return (
+      <Button style={{ padding: path.sectionIndex % 2 ? 15 : 35 }} title={JSON.stringify(path)} />
+    );
   };
 }
-
-const styles = StyleSheet.create({
-  testCover: {
-    opacity: 0,
-    marginTop: -50,
-    height: 50,
-    backgroundColor: "white",
-  },
-});
 
 const Button = (props: TouchableOpacityProps & { title: string }) => {
   return (
