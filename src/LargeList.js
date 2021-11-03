@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-10-26 16:51:21
- * @LastEditTime: 2021-11-02 19:52:55
+ * @LastEditTime: 2021-11-03 13:55:58
  * @LastEditors: 石破天惊
  * @Description:
  */
@@ -129,10 +129,10 @@ const LargeListCore = (props: LargeListCoreProps) => {
             sectionIndex={sectionIndex}
             itemIndex={itemIndex}
             sections={props.sections}
-            onLayout={() => {
-              measureable.value = true;
-              console.log("measureable", sectionIndex, itemIndex);
-            }}
+            // onLayout={() => {
+            //   measureable.value = true;
+            //   console.log("measureable", sectionIndex, itemIndex);
+            // }}
           />,
         );
         const itemInfo = {
@@ -180,7 +180,9 @@ const LargeListCore = (props: LargeListCoreProps) => {
           const item = availableItems[i];
           if (!item.measured) {
             const layout = measure(item.ref);
-            item.measureable.value = false;
+            
+            if (layout.height === item.height) continue;
+            // item.measureable.value = false;
             const newItem = { ...item, height: layout.height, measured: true };
             const increment = layout.height - item.height;
             if (newItem.sectionIndex === 0 && newItem.itemIndex === 0) {
@@ -189,12 +191,19 @@ const LargeListCore = (props: LargeListCoreProps) => {
             }
             if (summary[`${item.sectionIndex},${item.itemIndex}`] === undefined) {
               gotItemHeightCount.value++;
-              sumGotHeight.value += 20;
+              // sumGotHeight.value += item.height;
+              sumGotHeight.value += layout.height;
+              console.log(
+                "gotItemHeightCount",
+                item.sectionIndex,
+                item.itemIndex,
+                gotItemHeightCount.value,
+              );
+              summary[`${item.sectionIndex},${item.itemIndex}`] = layout.height;
             }
-            sumGotHeight.value += increment;
-            summary[`${item.sectionIndex},${item.itemIndex}`] = newItem.height;
+
             availableItems.splice(i, 1, newItem);
-            console.log("measure", item.sectionIndex, item.itemIndex, layout.height);
+            // console.log("measure", item.sectionIndex, item.itemIndex, layout.height);
 
             if (i < availableItems.length - 1) {
               availableItems[i + 1].animatedOffset.value += increment;
@@ -218,7 +227,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
               itemInfo.animatedOffset.value = trashOffset;
               trashItems.push(itemInfo);
               availableItems.splice(i, 1);
-              console.log("首次回收", itemInfo.sectionIndex, itemInfo.itemIndex);
+              // console.log("首次回收", itemInfo.sectionIndex, itemInfo.itemIndex);
               i--;
             }
           }
@@ -297,9 +306,8 @@ const LargeListCore = (props: LargeListCoreProps) => {
               sectionIndex: nextPath.sectionIndex,
               itemIndex: nextPath.itemIndex,
               offset: bottomItem.offset + bottomItem.height,
-              height: getHeight(nextPath.sectionIndex, nextPath.itemIndex),
               reuseType: nextItemData.reuseType,
-              measured: summary[`${nextPath.sectionIndex},${nextPath.itemIndex}`] !== undefined,
+              measured: false,
             };
             nextItem.animatedOffset.value = nextItem.offset;
             runOnJS(updateItem)(
@@ -375,9 +383,9 @@ const LargeListCore = (props: LargeListCoreProps) => {
               sectionIndex: prePath.sectionIndex,
               itemIndex: prePath.itemIndex,
               offset: topItem.offset - getHeight(prePath.sectionIndex, prePath.itemIndex),
-              height: getHeight(prePath.sectionIndex, prePath.itemIndex),
+              // height: getHeight(prePath.sectionIndex, prePath.itemIndex),
               reuseType: preItemData.reuseType,
-              measured: summary[`${prePath.sectionIndex},${prePath.itemIndex}`] !== undefined,
+              measured: false,
             };
             preItem.animatedOffset.value = preItem.offset;
             runOnJS(updateItem)(
@@ -399,7 +407,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
   const heightStyle = useAnimatedStyle(() => {
     if (!gotItemHeightCount.value) return {};
     if (itemCount !== gotItemHeightCount.value) {
-      // console.log("itemCount", itemCount, gotItemHeightCount.value);
+      console.log("itemCount", itemCount, gotItemHeightCount.value);
       return { height: (sumGotHeight.value / gotItemHeightCount.value) * itemCount };
     }
     console.log("sumGotHeight", sumGotHeight.value);
