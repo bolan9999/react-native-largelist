@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-10-26 16:51:21
- * @LastEditTime: 2021-11-03 22:35:21
+ * @LastEditTime: 2021-11-04 16:53:34
  * @LastEditors: 石破天惊
  * @Description:
  */
@@ -103,6 +103,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
   if (elements.length === 0) {
     let rowIndex = 0;
     let initItemCount = (screenHeight * 2) / 40;
+    let heightSum = 0;
     props.sections.forEach((section, sectionIndex) => {
       itemCount += section.items.length;
       section.items.every((item, itemIndex) => {
@@ -142,9 +143,8 @@ const LargeListCore = (props: LargeListCoreProps) => {
           offset: trashOffset,
           reuseType: item.reuseType,
           animatedOffset: offset,
-          measured: false,
         };
-        // allItems.push(itemInfo);
+        // heightSum += item.estimatedItemHeight;
         refs.push(ref);
         availableItems.push(itemInfo);
         return true;
@@ -172,9 +172,42 @@ const LargeListCore = (props: LargeListCoreProps) => {
         if (ht === undefined) return props.sections[section].items[item].estimatedItemHeight;
         return ht;
       };
+      //将超出范围的Item标记为可回收Item
+      if (res.height > 0 && !pre?.height) {
+        for (let i = 0; i < availableItems.length; i++) {
+          let item = availableItems[i];
+          if (item.sectionIndex === 0 && item.itemIndex === 0 && item.offset === trashOffset) {
+            console.log("处理第一个item的偏移");
+            const newItem = { ...item, offset: 0 };
+            newItem.animatedOffset.value = 0;
+            availableItems.splice(0, 1, newItem);
+            item = newItem;
+          }
+          let nextItem = availableItems[i + 1];
+          if (nextItem) {
+            const newNext = { ...nextItem };
+            newNext.offset = item.offset + item.height;
+            availableItems.splice(i + 1, 1, newNext);
+          }
+          if (
+            item.offset + item.height > res.y + res.height + (screenHeight * extraRenderRate) / 2 ||
+            item.offset + item.height < res.y - (screenHeight * extraRenderRate) / 2
+          ) {
+            item.animatedOffset.value = trashOffset;
+            trashItems.push(item);
+            availableItems.splice(i, 1);
+            console.log("首次回收", item.sectionIndex, item.itemIndex);
+            i--;
+          } else {
+            sumGotHeight.value += item.height;
+            gotItemHeightCount.value++;
+          }
+        }
+      }
       //需要测量items
       if (res.measureables.length > 0) {
         // console.log("需要测量items", res.measureables.length);
+        let minMeasureIndex = availableItems.length;
         res.measureables.forEach((itemShouldMeasure) => {
           const layout = measure(itemShouldMeasure.ref);
           const indexInAV = availableItems.findIndex(
@@ -182,60 +215,45 @@ const LargeListCore = (props: LargeListCoreProps) => {
           );
           if (indexInAV < 0) return;
           const item = availableItems[indexInAV];
+          item.measureable.value = false;
+          if (minMeasureIndex > indexInAV) minMeasureIndex = indexInAV;
           const newItem = { ...item, height: layout.height };
           const increment = layout.height - item.height;
-          if (newItem.sectionIndex === 0 && newItem.itemIndex === 0) {
-            newItem.offset = 0;
-            newItem.animatedOffset.value = 0;
-          }
-          if (summary[`${item.sectionIndex},${item.itemIndex}`] === undefined) {
-            gotItemHeightCount.value++;
-            sumGotHeight.value += layout.height;
+          // if (newItem.sectionIndex === 0 && newItem.itemIndex === 0) {
+          //   newItem.offset = 0;
+          //   newItem.animatedOffset.value = 0;
+          // }
+          if (summary[`${item.sectionIndex},${item.itemIndex}`] !== layout.height) {
+            sumGotHeight.value += increment;
             console.log(
-              "gotItemHeightCount",
+              "探索",
               item.sectionIndex,
               item.itemIndex,
-              gotItemHeightCount.value,summary[`${item.sectionIndex},${item.itemIndex}`]
-              );
-              summary[`${item.sectionIndex},${item.itemIndex}`] = layout.height;
+              gotItemHeightCount.value,
+              layout.height,
+            );
+            summary[`${item.sectionIndex},${item.itemIndex}`] = layout.height;
+            heightSummary.value = summary;
           }
           availableItems.splice(indexInAV, 1, newItem);
         });
-        for (let i = 0, started = false; i < availableItems.length - 1; i++) {
+        for (let i = minMeasureIndex; i < availableItems.length - 1; i++) {
           const item = availableItems[i];
-          if (item.measureable.value) started = true;
-          if (started) {
-            // console.log("started", item.sectionIndex, item.itemIndex);
-            const newNext = { ...availableItems[i + 1] };
-            newNext.offset = item.offset + item.height;
-            newNext.animatedOffset.value = newNext.offset;
-            availableItems.splice(i + 1, 1, newNext);
-            // console.log("set", newNext.sectionIndex, newNext.itemIndex, newNext.offset);
-          }
+          // if (item.measureable.value) started = true;
+          // if (started) {
+          // console.log("started", item.sectionIndex, item.itemIndex);
+          const newNext = { ...availableItems[i + 1] };
+          newNext.offset = item.offset + item.height;
+          newNext.animatedOffset.value = newNext.offset;
+          availableItems.splice(i + 1, 1, newNext);
+          // console.log("set", newNext.sectionIndex, newNext.itemIndex, newNext.offset);
+          // }
         }
-        res.measureables.forEach((item) => {
-          item.measureable.value = false;
-        });
+        // res.measureables.forEach((item) => {
+        //   item.measureable.value = false;
+        // });
       }
       if (res && res.height > 0 && (res.y !== pre?.y || res.height !== pre?.height)) {
-        //将超出范围的Item标记为可回收Item
-        if (trashItems.length === 0) {
-          for (let i = 0; i < availableItems.length; i++) {
-            const itemInfo = availableItems[i];
-            if (
-              itemInfo.offset + itemInfo.height >
-                res.y + res.height + (screenHeight * extraRenderRate) / 2 ||
-              itemInfo.offset + itemInfo.height < res.y - (screenHeight * extraRenderRate) / 2
-            ) {
-              itemInfo.animatedOffset.value = trashOffset;
-              trashItems.push(itemInfo);
-              availableItems.splice(i, 1);
-              // console.log("首次回收", itemInfo.sectionIndex, itemInfo.itemIndex);
-              i--;
-            }
-          }
-        }
-
         //比较Item
         const isTrashBetter = (item, trash, nextItemData) => {
           if (!item) return true;
@@ -285,7 +303,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
               nextPath.itemIndex++;
             } else {
               if (nextPath.sectionIndex === props.sections.length - 1) {
-                return;
+                return console.log("到底");
               }
               nextPath.sectionIndex++;
               nextPath.itemIndex = 0;
@@ -310,8 +328,17 @@ const LargeListCore = (props: LargeListCoreProps) => {
               itemIndex: nextPath.itemIndex,
               offset: bottomItem.offset + bottomItem.height,
               reuseType: nextItemData.reuseType,
-              measured: false,
+              height: getHeight(recyleItem.sectionIndex, recyleItem.itemIndex),
             };
+            if (summary[`${nextItem.sectionIndex},${nextItem.itemIndex}`] === undefined) {
+              sumGotHeight.value += nextItem.height;
+              gotItemHeightCount.value++;
+            } 
+            // else {
+            //   const ins =
+            //     nextItem.height - summary[`${nextItem.sectionIndex},${nextItem.itemIndex}`];
+            //   sumGotHeight.value += ins;
+            // }
             nextItem.animatedOffset.value = nextItem.offset;
             runOnJS(updateItem)(
               nextItem.rowIndex,
@@ -320,14 +347,14 @@ const LargeListCore = (props: LargeListCoreProps) => {
               nextItem.offset,
             );
             availableItems.push(nextItem);
-            // console.log(
-            //   "bottom reuse",
-            //   recyleItem.sectionIndex,
-            //   recyleItem.itemIndex,
-            //   nextItem.sectionIndex,
-            //   nextItem.itemIndex,
-            //   trashItems.length,
-            // );
+            console.log(
+              "bottom reuse",
+              recyleItem.sectionIndex,
+              recyleItem.itemIndex,
+              nextItem.sectionIndex,
+              nextItem.itemIndex,
+              trashItems.length,
+            );
             bottomItem = availableItems[availableItems.length - 1];
           }
         }
@@ -357,7 +384,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
             if (prePath.itemIndex > 0) {
               prePath.itemIndex--;
             } else {
-              if (prePath.sectionIndex === 0) return;
+              if (prePath.sectionIndex === 0) return console.log("到头");
               prePath.sectionIndex--;
               prePath.itemIndex = props.sections[prePath.sectionIndex].items.length - 1;
             }
@@ -387,10 +414,18 @@ const LargeListCore = (props: LargeListCoreProps) => {
               sectionIndex: prePath.sectionIndex,
               itemIndex: prePath.itemIndex,
               offset: topItem.offset - getHeight(prePath.sectionIndex, prePath.itemIndex),
-              // height: getHeight(prePath.sectionIndex, prePath.itemIndex),
+              height: getHeight(prePath.sectionIndex, prePath.itemIndex),
               reuseType: preItemData.reuseType,
-              measured: false,
             };
+            if (summary[`${preItem.sectionIndex},${preItem.itemIndex}`] === undefined) {
+              sumGotHeight.value += preItem.height;
+              gotItemHeightCount.value++;
+            } 
+            // else {
+            //   const ins =
+            //     preItem.height - summary[`${preItem.sectionIndex},${preItem.itemIndex}`];
+            //   sumGotHeight.value += ins;
+            // }
             preItem.animatedOffset.value = preItem.offset;
             runOnJS(updateItem)(
               preItem.rowIndex,
@@ -403,7 +438,6 @@ const LargeListCore = (props: LargeListCoreProps) => {
             topItem = availableItems[0];
           }
         }
-        heightSummary.value = summary;
       }
     },
   );
@@ -411,7 +445,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
   const heightStyle = useAnimatedStyle(() => {
     if (!gotItemHeightCount.value) return {};
     if (itemCount !== gotItemHeightCount.value) {
-      console.log("itemCount", itemCount, gotItemHeightCount.value);
+      // console.log("itemCount", itemCount, gotItemHeightCount.value);
       return { height: (sumGotHeight.value / gotItemHeightCount.value) * itemCount };
     }
     console.log("sumGotHeight", sumGotHeight.value);

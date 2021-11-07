@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-10-26 17:34:11
- * @LastEditTime: 2021-11-02 16:42:40
+ * @LastEditTime: 2021-11-04 16:30:28
  * @LastEditors: 石破天惊
  * @Description:
  */
@@ -23,10 +23,7 @@ export class Item extends React.Component {
   render() {
     const item = this.props.sections[this._sectionIndex].items[this._itemIndex];
     return (
-      <Reanimated.View
-        style={this.props.style}
-        onLayout={this.props.onLayout}
-      >
+      <Reanimated.View style={this.props.style} onLayout={this.props.onLayout}>
         {this.props.renderItem(item, {
           sectionIndex: this._sectionIndex,
           itemIndex: this._itemIndex,
@@ -38,8 +35,6 @@ export class Item extends React.Component {
   updateIndex(sectionIndex, itemIndex, offset, update = true) {
     this._sectionIndex = sectionIndex;
     this._itemIndex = itemIndex;
-    // this._offset = offset;
-    // this.props.translate.value = offset;
     update && this.forceUpdate();
   }
 
