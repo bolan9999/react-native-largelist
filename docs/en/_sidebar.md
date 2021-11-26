@@ -15,7 +15,7 @@
         * [Pull to refresh](en/V3/Refresh)
         * [Drag to Load data](en/V3/Loading)
         * [onScroll & Scroll Listener](en/V3/Scroll)
-        * [Big picture or Video optimization](zh-cn/V3/BigMedia)
+        * [Big picture or Video optimization](en/V3/BigMedia)
         * [All supported props](en/V3/SupportedProps)
         * [Known Issues](en/V3/KnownIssues)
 
