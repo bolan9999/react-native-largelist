@@ -451,8 +451,7 @@ export class LargeList extends React.PureComponent<LargeListPropType> {
       );
     this.props.onScroll && this.props.onScroll(e);
     const now = new Date().getTime();
-    if (this._lastTick - now > 30) {
-      this._lastTick = now;
+    if (now - this._lastTick < this.props.updateTimeInterval) {
       return;
     }
     this._lastTick = now;

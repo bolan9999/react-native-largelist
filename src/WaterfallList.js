@@ -300,8 +300,7 @@ export class WaterfallList extends React.PureComponent<WaterfallListType> {
   _onScroll = e => {
     this._contentOffsetY = e.nativeEvent.contentOffset.y;
     const now = new Date().getTime();
-    if (this._lastTick - now > 30) {
-      this._lastTick = now;
+    if (now - this._lastTick < 30) {
       return;
     }
     this._lastTick = now;
