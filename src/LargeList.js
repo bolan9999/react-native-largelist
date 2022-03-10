@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2021-10-26 16:51:21
- * @LastEditTime: 2021-11-07 17:19:32
+ * @LastEditTime: 2021-12-16 20:03:49
  * @LastEditors: 石破天惊
  * @Description:
  */
@@ -15,6 +15,7 @@ import {
   useAnimatedRef,
   useAnimatedStyle,
   useSharedValue,
+  withDecay,
 } from "react-native-reanimated";
 import { SpringScrollView } from "react-native-spring-scrollview";
 import Reanimated from "react-native-reanimated";
@@ -111,7 +112,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
         initItemCount--;
         const ref = useAnimatedRef();
         const offset = useSharedValue(trashOffset);
-        const measurDirection = useSharedValue(false);
+        const measureDirection = useSharedValue(false);
         const style = useAnimatedStyle(() => ({
           position: "absolute",
           top: 0,
@@ -130,12 +131,16 @@ const LargeListCore = (props: LargeListCoreProps) => {
             sectionIndex={sectionIndex}
             itemIndex={itemIndex}
             sections={props.sections}
-            onLayout={(direction) => (measurDirection.value = direction)}
+            measureDirection={"bottom"}
+            onLayout={(direction) => {
+              measureDirection.value = direction;
+              // console.log("onLayout", sectionIndex, itemIndex, direction);
+            }}
           />,
         );
         const itemInfo = {
           ref,
-          measurDirection,
+          measureDirection,
           elementId: elementId++,
           sectionIndex,
           itemIndex,
@@ -153,15 +158,15 @@ const LargeListCore = (props: LargeListCoreProps) => {
 
   const updateItem = (elementId, sectionIndex, itemIndex, direction) => {
     // console.log("更新", sectionIndex, itemIndex,refs[elementId]?.current);
-    refs[elementId]?.current?.updateIndex(sectionIndex, itemIndex, direction);
+    // refs[elementId]?.current?.updateIndex(sectionIndex, itemIndex, direction);
   };
-  //#endregion
+  //#endregion onConten Change
   useAnimatedReaction(
     () => {
       return {
         y: props.contentOffset.y.value,
         height: props.size.height.value,
-        measureables: trashItems.filter((item) => item.measurDirection.value != false),
+        measureables: trashItems.filter((item) => item.measureDirection.value),
       };
     },
     (res, pre) => {
@@ -206,6 +211,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
         return false;
       };
       //需要测量items
+      // console.log("需要测量items", res.measureables.length);
       if (res.measureables.length > 0) {
         let minMeasuredIndex = availableItems.length;
         res.measureables.forEach((itemShouldMeasure) => {
@@ -213,22 +219,42 @@ const LargeListCore = (props: LargeListCoreProps) => {
             (fItem) => fItem.elementId === itemShouldMeasure.elementId,
           );
           if (indexInAV < 0) return;
-          const layout = measure(itemShouldMeasure.ref);
           const item = availableItems[indexInAV];
-          console.log("测量", item.sectionIndex, item.itemIndex);
-          item.measurDirection.value = false;
-          if (minMeasuredIndex > indexInAV) minMeasuredIndex = indexInAV;
+          const layout = measure(itemShouldMeasure.ref);
           setItemHeight(item.sectionIndex, item.itemIndex, layout.height);
           const newItem = { ...item, height: layout.height };
+          if (item.measureDirection.value === "top") {
+            const ins = layout.height - item.height;
+            newItem.offset -= ins;
+            newItem.animatedOffset.value = newItem.offset;
+          }
           availableItems.splice(indexInAV, 1, newItem);
+          if (item.measureDirection.value === "bottom") {
+            for (let i = indexInAV; i < availableItems.length - 1; i++) {
+              const item = availableItems[i];
+              const nextItem = { ...availableItems[i + 1] };
+              nextItem.offset = item.offset + item.height;
+              nextItem.animatedOffset.value = nextItem.offset;
+              availableItems.splice(i + 1, 1, nextItem);
+            }
+          } else {
+            // console.log(
+            //   "top use 测量",
+            //   item.sectionIndex,
+            //   item.itemIndex,
+            //   item.height,
+            //   item.measureDirection.value,
+            // );
+            for (let i = indexInAV; i > 1; i--) {
+              const item = availableItems[i];
+              const preItem = { ...availableItems[i - 1] };
+              preItem.offset = item.offset - preItem.height;
+              preItem.animatedOffset.value = preItem.offset;
+              availableItems.splice(i - 1, 1, preItem);
+            }
+          }
+          item.measureDirection.value = false;
         });
-        for (let i = minMeasuredIndex; i < availableItems.length - 1; i++) {
-          const item = availableItems[i];
-          const newNext = { ...availableItems[i + 1] };
-          newNext.offset = item.offset + item.height;
-          newNext.animatedOffset.value = newNext.offset;
-          availableItems.splice(i + 1, 1, newNext);
-        }
       }
 
       if (res && res.height > 0 && (res.y !== pre?.y || res.height !== pre?.height)) {
@@ -260,7 +286,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
                 nextPath.itemIndex = bottomItem.itemIndex + 1;
               } else {
                 if (bottomItem.sectionIndex === props.sections.length - 1) {
-                  return console.log("到底");
+                  return;
                 }
                 nextPath.sectionIndex = bottomItem.sectionIndex + 1;
                 nextPath.itemIndex = 0;
@@ -287,18 +313,17 @@ const LargeListCore = (props: LargeListCoreProps) => {
               itemIndex: nextPath.itemIndex,
               offset: bottomItem ? bottomItem.offset + bottomItem.height : 0,
               reuseType: nextItemData.reuseType,
-              // height: getItemHeight(nextPath.sectionIndex, nextPath.itemIndex),
             };
             nextItem.animatedOffset.value = nextItem.offset;
             availableItems.push(nextItem);
-            console.log(
-              "bottom reuse",
-              recyleItem.sectionIndex,
-              recyleItem.itemIndex,
-              nextItem.sectionIndex,
-              nextItem.itemIndex,
-              nextItem.offset,
-            );
+            // console.log(
+            //   "bottom reuse",
+            //   recyleItem.sectionIndex,
+            //   recyleItem.itemIndex,
+            //   nextItem.sectionIndex,
+            //   nextItem.itemIndex,
+            //   nextItem.offset,
+            // );
             setItemHeight(nextItem.sectionIndex, nextItem.itemIndex, nextItem.height);
             bottomItem = availableItems[availableItems.length - 1];
             runOnJS(updateItem)(
@@ -334,7 +359,7 @@ const LargeListCore = (props: LargeListCoreProps) => {
             if (prePath.itemIndex > 0) {
               prePath.itemIndex--;
             } else {
-              if (prePath.sectionIndex === 0) return console.log("到头");
+              if (prePath.sectionIndex === 0) return;
               prePath.sectionIndex--;
               prePath.itemIndex = props.sections[prePath.sectionIndex].items.length - 1;
             }
@@ -356,21 +381,21 @@ const LargeListCore = (props: LargeListCoreProps) => {
             //   recyleItem.itemIndex,
             //   prePath.sectionIndex,
             //   prePath.itemIndex,
-            //   trashItems.length,
             // );
             trashItems.splice(trashItems.indexOf(recyleItem), 1);
             const preItem = {
               ...recyleItem,
               sectionIndex: prePath.sectionIndex,
               itemIndex: prePath.itemIndex,
-              offset: topItem.offset - recyleItem.height,
-              // height: getItemHeight(prePath.sectionIndex, prePath.itemIndex),
+              offset: topItem.offset - getItemHeight(prePath.sectionIndex, prePath.itemIndex),
+              height: getItemHeight(prePath.sectionIndex, prePath.itemIndex),
               reuseType: preItemData.reuseType,
             };
             preItem.animatedOffset.value = preItem.offset;
+            preItem.measureDirection.value = false;
             setItemHeight(preItem.sectionIndex, preItem.itemIndex, preItem.height);
-            runOnJS(updateItem)(preItem.elementId, preItem.sectionIndex, preItem.itemIndex, "top");
             availableItems.splice(0, 0, preItem);
+            runOnJS(updateItem)(preItem.elementId, preItem.sectionIndex, preItem.itemIndex, "top");
             topItem = availableItems[0];
           }
         }
@@ -380,18 +405,17 @@ const LargeListCore = (props: LargeListCoreProps) => {
 
   const heightStyle = useAnimatedStyle(() => {
     if (!gotItemHeightCount.value) return {};
-    // if (itemCount !== gotItemHeightCount.value) {
-    // console.log("itemCount", itemCount, gotItemHeightCount.value);
     return { height: (sumGotHeight.value / gotItemHeightCount.value) * itemCount };
-    // }
-    // console.log("sumGotHeight", sumGotHeight.value);
-    // return { height: sumGotHeight.value };
   });
-
+  const t = useSharedValue(100);
   return (
     <SpringScrollView contentContainerStyle={heightStyle} {...props}>
       {elements}
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity
+        onPress={() => {
+          t.value = withDecay({ velocity: 10 });
+        }}
+      >
         <Text>123123</Text>
       </TouchableOpacity>
     </SpringScrollView>
