@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2022-03-12 21:18:06
- * @LastEditTime: 2022-03-14 20:13:30
+ * @LastEditTime: 2022-03-14 23:00:23
  * @LastEditors: 石破天惊
  * @Description: 电商平台的瀑布流组件，支持多section
  */
@@ -14,6 +14,7 @@ import Reanimated, {
   useAnimatedStyle,
   useAnimatedScrollHandler,
   runOnJS,
+  runOnUI,
 } from "react-native-reanimated";
 import { WaterFallPropsType } from "./Types";
 import { styles } from "./styles";
@@ -21,8 +22,8 @@ import { Item } from "./WaterFallItem2";
 import { Dimensions, Text } from "react-native";
 
 const TRASH_OFFSET = -10000;
-const MAX_REUSE_SIZE = 20;
-const EXTRA_RENDER_HEIGHT = 1000;
+const MAX_REUSE_SIZE = 15;
+const EXTRA_RENDER_HEIGHT = 500;
 const screenWidth = Dimensions.get("window").width;
 
 export function WaterFall(props: WaterFallPropsType) {
@@ -46,6 +47,7 @@ export function WaterFall(props: WaterFallPropsType) {
       },
     },
   ]);
+  const indexGraph = [];
 
   const sectionElements = [];
   const itemElements = [];
@@ -60,6 +62,7 @@ export function WaterFall(props: WaterFallPropsType) {
     );
     height += section.height;
     const heights = new Array(section.column).fill(height);
+    const graph = new Array(section.column).fill([]);
     section.items.forEach((item, itemIndex) => {
       const size = reuseMap.get(item.reuseType) ?? 0;
       if (size < MAX_REUSE_SIZE) {
@@ -103,14 +106,16 @@ export function WaterFall(props: WaterFallPropsType) {
           minIndex = idx;
         }
       });
+      graph[minIndex].push({ sectionIndex, itemIndex });
       heights[minIndex] += item.height;
     });
-    //寻找最短的瀑布
+    //寻找最长的瀑布
     let maxOffset = heights[0];
     heights.forEach((offset, idx) => {
       if (offset > maxOffset) maxOffset = offset;
     });
     height = maxOffset;
+    indexGraph.push(graph);
   });
 
   const updateItem = (item) => {
@@ -157,18 +162,63 @@ export function WaterFall(props: WaterFallPropsType) {
     };
 
     //先将超出渲染视图外的Item标记为可回收
+    let topItem = boundary[0].top;
+    let bottomItem = boundary[0].bottom;
     for (let i = 0; i < availableItems.length; ) {
       const item = availableItems[i];
-      if (
-        item.y.value + item.height < contentOffset.y - EXTRA_RENDER_HEIGHT ||
-        item.y.value > contentOffset.y + contentSize.height.value + EXTRA_RENDER_HEIGHT
-      ) {
+      if (item.y.value + item.height < contentOffset.y - EXTRA_RENDER_HEIGHT) {
         console.log("trash", item.sectionIndex, item.itemIndex);
         trashItems.push(item);
         availableItems.splice(i, 1);
+        // console.log(
+        //   "top trash",
+        //   topItem.sectionIndex,
+        //   topItem.itemIndex,
+        //   item.sectionIndex,
+        //   item.itemIndex,
+        // );
+        if (
+          topItem.sectionIndex < item.sectionIndex ||
+          (topItem.sectionIndex === item.sectionIndex && topItem.itemIndex < item.itemIndex)
+        ) {
+          topItem = item;
+        }
+        continue;
+      } else if (item.y.value > contentOffset.y + contentSize.height.value + EXTRA_RENDER_HEIGHT) {
+        console.log("trash", item.sectionIndex, item.itemIndex);
+        trashItems.push(item);
+        availableItems.splice(i, 1);
+        if (
+          bottomItem.sectionIndex > item.sectionIndex ||
+          (bottomItem.sectionIndex === item.sectionIndex && bottomItem.itemIndex > item.itemIndex)
+        ) {
+          bottomItem = item;
+        }
         continue;
       }
       i++;
+    }
+    if (topItem !== boundary[0].top) {
+      console.log("top", topItem.sectionIndex, topItem.itemIndex);
+      boundary.splice(0, 1, {
+        ...boundary[0],
+        top: {
+          sectionIndex: topItem.sectionIndex,
+          itemIndex: topItem.itemIndex,
+          offsets: boundary[0].top.offsets,
+        },
+      });
+    }
+    if (bottomItem !== boundary[0].bottom) {
+      // console.log("top", bottomItem)
+      boundary.splice(0, 1, {
+        ...boundary[0],
+        bottom: {
+          sectionIndex: bottomItem.sectionIndex,
+          itemIndex: bottomItem.itemIndex,
+          offsets: boundary[0].bottom.offsets,
+        },
+      });
     }
 
     const shouldRenderBottom = () => {
@@ -223,7 +273,7 @@ export function WaterFall(props: WaterFallPropsType) {
         };
         nextItem.x.value = (contentSize.width.value / section.column) * minIndex;
         nextItem.y.value = minOffset;
-        console.log(recyleItem.sectionIndex, recyleItem.itemIndex, "==>", sectionIndex, itemIndex);
+        // console.log(recyleItem.sectionIndex, recyleItem.itemIndex, "==>", sectionIndex, itemIndex);
         runOnJS(updateItem)(nextItem);
         availableItems.push(recyleItem);
 
@@ -253,15 +303,90 @@ export function WaterFall(props: WaterFallPropsType) {
       }
     }
 
+    const shouldRenderTop = () => {
+      if (boundary[0].top.sectionIndex === 0 && boundary[0].top.itemIndex === 0) return false;
+      return !boundary[0].top.offsets.every((offset) => {
+        return offset < contentOffset.y - EXTRA_RENDER_HEIGHT;
+      });
+    };
+    for (
+      let sectionIndex = boundary[0].top.sectionIndex;
+      sectionIndex >= 0 && shouldRenderTop();
+      sectionIndex--
+    ) {
+      console.log("1");
+      const section = props.data[sectionIndex];
+      for (
+        let itemIndex = boundary[0].top.itemIndex - 1;
+        itemIndex >= 0 && shouldRenderTop();
+        itemIndex--
+      ) {
+        const item = section.items[itemIndex];
+        console.log("2");
+        const index = 0;
+        indexGraph.every((graph) => {
+          index = graph.findIndex((group) => {
+            return (
+              group.findIndex((path) => {
+                return path.sectionIndex === sectionIndex && path.itemIndex === itemIndex;
+              }) >= 0
+            );
+          });
+          return index < 0;
+        });
+        console.log("index=", index);
+        //寻找最合适的Item
+        const recyleItem = bestItem({
+          sectionIndex,
+          itemIndex,
+          height: item.height,
+          reuseType: item.reuseType,
+        });
+        //从回收站移动到尾部
+        trashItems.splice(trashItems.indexOf(recyleItem), 1);
+        const nextItem = {
+          ...recyleItem,
+          sectionIndex,
+          itemIndex,
+          width: contentSize.width.value / section.column,
+          height: item.height,
+          reuseType: item.reuseType,
+          column: index,
+        };
+        nextItem.x.value = (contentSize.width.value / section.column) * index;
+        nextItem.y.value = boundary[0].top.offsets[index] - item.height;
+        console.log(recyleItem.sectionIndex, recyleItem.itemIndex, "==>", sectionIndex, itemIndex);
+        runOnJS(updateItem)(nextItem);
+        availableItems.push(recyleItem);
+
+        //更新边界信息
+        boundary[0].top.offsets[index] = boundary[0].top.offsets[index] - item.height;
+        if (sectionIndex > 0 && itemIndex === 0) {
+          boundary.splice(0, 1, {
+            ...boundary[0],
+            top: {
+              offsets: new Array(props.data[sectionIndex - 1].column).fill(
+                boundary[0].top.offsets[index],
+              ),
+              sectionIndex: sectionIndex - 1,
+              itemIndex: props.data[sectionIndex - 1].items.length,
+            },
+          });
+        } else {
+          boundary.splice(0, 1, {
+            ...boundary[0],
+            top: { sectionIndex, itemIndex, offsets: boundary[0].top.offsets },
+          });
+        }
+      }
+    }
+
     //回收站的Item挪到不可见区域
     trashItems.forEach((item) => {
       if (item.y.value !== TRASH_OFFSET) item.y.value = TRASH_OFFSET;
     });
   };
-  const scrollHandler = useAnimatedScrollHandler({ onScroll }, [
-    contentSize.width.value,
-    contentSize.height.value,
-  ]);
+  const scrollHandler = useAnimatedScrollHandler({ onScroll });
 
   const onLayout = (evt) => {
     const { height, width } = evt.nativeEvent.layout;
