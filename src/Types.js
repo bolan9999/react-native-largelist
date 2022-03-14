@@ -108,3 +108,37 @@ export interface MediaWrapperType {
   renderLoading: () => React.ReactElement<any>;
   mediaWrapperParam: Animated.Value;
 }
+
+export interface ItemType {
+  reuseType?: string;
+  height: numbser;
+}
+
+export interface SectionType extends ItemType {
+  column?: number;
+  items: ItemType[];
+}
+
+export interface WaterFallItemPropsType {
+  data: SectionType[];
+  sectionIndex: number;
+  itemIndex: number;
+}
+
+export interface WaterFallPropsType {
+  data: SectionType[];
+  // heightForSectionHeader?: (section: SectionType, sectionIndex: number) => number;
+  // heightForItem?: (
+  //   item: ItemType,
+  //   itemIndex: Number,
+  //   section: SectionType,
+  //   column: number,
+  // ) => Number;
+  renderSectionHeader?: (section: SectionType, sectionIndex: number) => JSX.Element;
+  renderItem?: (
+    item: ItemType,
+    itemIndex: Number,
+    section: SectionType,
+    column: number,
+  ) => JSX.Element;
+}
