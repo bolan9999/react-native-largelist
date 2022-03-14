@@ -2,7 +2,7 @@
  * @Author: 石破天惊
  * @email: shanshang130@gmail.com
  * @Date: 2022-03-12 21:18:06
- * @LastEditTime: 2022-03-14 17:47:45
+ * @LastEditTime: 2022-03-14 20:13:30
  * @LastEditors: 石破天惊
  * @Description: 电商平台的瀑布流组件，支持多section
  */
@@ -21,8 +21,8 @@ import { Item } from "./WaterFallItem2";
 import { Dimensions, Text } from "react-native";
 
 const TRASH_OFFSET = -10000;
-const MAX_REUSE_SIZE = 10;
-const EXTRA_RENDER_HEIGHT = 200;
+const MAX_REUSE_SIZE = 20;
+const EXTRA_RENDER_HEIGHT = 1000;
 const screenWidth = Dimensions.get("window").width;
 
 export function WaterFall(props: WaterFallPropsType) {
@@ -62,55 +62,67 @@ export function WaterFall(props: WaterFallPropsType) {
     const heights = new Array(section.column).fill(height);
     section.items.forEach((item, itemIndex) => {
       const size = reuseMap.get(item.reuseType) ?? 0;
-      if (size >= MAX_REUSE_SIZE) {
-        height += item.height;
-        return;
+      if (size < MAX_REUSE_SIZE) {
+        const itemInfo = {
+          id: id++,
+          sectionIndex,
+          itemIndex,
+          width: screenWidth / section.column,
+          height: item.height,
+          ref: useAnimatedRef(),
+          x: useSharedValue(TRASH_OFFSET),
+          y: useSharedValue(TRASH_OFFSET),
+          reuseType: item.reuseType,
+        };
+        const itemTransform = useAnimatedStyle(() => ({
+          transform: [{ translateX: itemInfo.x.value }, { translateY: itemInfo.y.value }],
+        }));
+        itemElements.push(
+          <Item
+            data={props.data}
+            ref={itemInfo.ref}
+            itemIndex={itemIndex}
+            sectionIndex={sectionIndex}
+            renderItem={props.renderItem}
+            key={`${sectionIndex},${itemIndex}`}
+            width={itemInfo.width}
+            height={itemInfo.height}
+            style={[styles.leftTop, itemTransform]}
+          />,
+        );
+        console.log("trash", itemInfo.sectionIndex, itemInfo.itemIndex);
+        trashItems.push(itemInfo);
+        item.reuseType && reuseMap.set(item.reuseType, size + 1);
       }
-      const itemInfo = {
-        id: id++,
-        sectionIndex,
-        itemIndex,
-        width: screenWidth / section.column,
-        height: item.height,
-        ref: useAnimatedRef(),
-        x: useSharedValue(TRASH_OFFSET),
-        y: useSharedValue(TRASH_OFFSET),
-        reuseType: item.reuseType,
-      };
-      const itemTransform = useAnimatedStyle(() => ({
-        transform: [{ translateX: itemInfo.x.value }, { translateY: itemInfo.y.value }],
-      }));
-      itemElements.push(
-        <Item
-          data={props.data}
-          ref={itemInfo.ref}
-          itemIndex={itemIndex}
-          sectionIndex={sectionIndex}
-          renderItem={props.renderItem}
-          key={`${sectionIndex},${itemIndex}`}
-          width={itemInfo.width}
-          height={itemInfo.height}
-          style={[styles.leftTop, itemTransform]}
-        />,
-      );
-      console.log("trash", itemInfo.sectionIndex, itemInfo.itemIndex);
-      trashItems.push(itemInfo);
-      height += item.height;
-      item.reuseType && reuseMap.set(item.reuseType, size + 1);
+      //寻找最短的瀑布
+      let minOffset = heights[0];
+      let minIndex = 0;
+      heights.forEach((offset, idx) => {
+        if (offset < minOffset) {
+          minOffset = offset;
+          minIndex = idx;
+        }
+      });
+      heights[minIndex] += item.height;
     });
+    //寻找最短的瀑布
+    let maxOffset = heights[0];
+    heights.forEach((offset, idx) => {
+      if (offset > maxOffset) maxOffset = offset;
+    });
+    height = maxOffset;
   });
 
   const updateItem = (item) => {
     trashItems
       .find((trash) => trash.id === item.id)
-      .ref.current.updateItem(
+      ?.ref?.current?.updateItem(
         item.sectionIndex,
         item.itemIndex,
         item.column,
         item.width,
         item.height,
       );
-    // console.log("update", item.sectionIndex, item.itemIndex);
   };
 
   const onScroll = (evt) => {
@@ -209,7 +221,6 @@ export function WaterFall(props: WaterFallPropsType) {
           reuseType: item.reuseType,
           column: minIndex,
         };
-        // console.log("x", nextItem.x === undefined, sectionIndex, itemIndex);
         nextItem.x.value = (contentSize.width.value / section.column) * minIndex;
         nextItem.y.value = minOffset;
         console.log(recyleItem.sectionIndex, recyleItem.itemIndex, "==>", sectionIndex, itemIndex);
